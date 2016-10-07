@@ -9,7 +9,7 @@ import {
   Text,
 } from 'react-native';
 
-import Station from './Station';
+import StationView from './Station';
 import {startLocation} from '../actions/locationActions';
 import {startFetchingTimes, stopFetchingTimes, hackilySetLoc} from '../actions/dataActions';
 
@@ -52,7 +52,7 @@ class DataContainer extends React.Component {
     return (
       <ScrollView style={styles.container}>
         {stations && stations.map((s, i) =>
-          <Station key={i} station={s} walking={walkingData[s.abbr]} location={location} />)}
+          <StationView key={i} station={s} walking={walkingData[s.abbr]} location={location} />)}
         {locationError && <Text>Location Error</Text>}
       </ScrollView>
     );

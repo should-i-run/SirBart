@@ -5,7 +5,7 @@ import {locationOptions, locationError} from './locationActions';
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let timeout;
 
-type Location = {lat: number, lng: number};
+export type Location = {lat: number, lng: number};
 let location: ?Location;
 
 function receiveStations(stations) {

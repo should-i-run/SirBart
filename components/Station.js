@@ -7,7 +7,7 @@ import {
   Linking,
 } from 'react-native';
 
-import {getClosestEntrance} from '../utils/distance';
+import type {Station, Line} from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 
@@ -111,13 +111,15 @@ const styles = StyleSheet.create({
 
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 
-export default class Station extends React.Component {
-  static propTypes = {
-    station: React.PropTypes.object.isRequired,
-    walking: React.PropTypes.object,
-  }
+type Props = {
+  station: Station,
+  walking: Object,
+};
 
-  renderDeparture = (departure, i) => {
+export default class StationView extends React.Component {
+  props: Props;
+
+  renderDeparture = (departure: string, i: number) => {
     if (departure === 'blank') {
       return (
         <View key={i} style={styles.departure}>
@@ -128,7 +130,7 @@ export default class Station extends React.Component {
       );
     }
     const {distance, time} = this.props.walking || {};
-    const departureTime = departure === 'Leaving' ? 0 : departure;
+    const departureTime = departure === 'Leaving' ? 0 : parseInt(departure, 10);
     let labelStyle = styles.missed;
     if (departureTime >= time) {
       labelStyle = styles.walk;
@@ -144,7 +146,7 @@ export default class Station extends React.Component {
     );
   }
 
-  renderLine = (line, i) => {
+  renderLine = (line: Line, i: number) => {
     const {destination, estimates} = line;
     const times = estimates.map(e => e.minutes);
     while (times.length < 3) {
@@ -165,10 +167,12 @@ export default class Station extends React.Component {
     );
   }
 
-  renderStationName = (s, distance) => {
+  renderStationName = (s: Station, distance: number) => {
     const goToDirections = () => {
-      const {lat, lng} = getClosestEntrance(s, this.props.location);
-      Linking.openURL(`http://maps.apple.com/?daddr=${lat},${lng}&dirflg=w&t=r`);
+      if (s.closestEntranceLoc) {
+        const {lat, lng} = s.closestEntranceLoc;
+        Linking.openURL(`http://maps.apple.com/?daddr=${lat},${lng}&dirflg=w&t=r`);
+      }
     };
     return (
       <View style={styles.stationNameContainer}>
@@ -183,7 +187,7 @@ export default class Station extends React.Component {
   render() {
     const s = this.props.station;
     const {distance, time} = this.props.walking || {};
-    const isMakable = estimate => estimate.minutes >= time;
+    const isMakable = estimate => parseInt(estimate.minutes, 10) >= time;
     const makableDepartureTime = (a, b) => {
       const aBest = a.estimates.filter(isMakable)[0];
       const aMinutes = aBest ? aBest.minutes : 999;
@@ -226,24 +230,3 @@ export default class Station extends React.Component {
     );
   }
 }
-
-
-// "address": "899 Market Street",
-// "departures": [
-//   {
-//     "code": "DALY",
-//     "departures": [
-//       "8",
-//       "27",
-//       "47"
-//     ]
-//   },
-// "gtfs_longitude": "-122.406857",
-// "name": "Powell St.",
-// "city": "San Francisco",
-// "county": "sanfrancisco",
-// "abbr": "POWL",
-// "state": "CA",
-// "zipcode": "94102",
-// "distance": 0.0027096245127228285,
-// "gtfs_latitude": "37.784991"
