@@ -45,6 +45,7 @@ class DataContainer extends React.Component {
     if (this.props.location && !nextProps.location) {
       this.props.stopFetchingTimes();
     }
+    // if any walking directions are dirty, fetch walking directions for it.
   }
 
   render() {

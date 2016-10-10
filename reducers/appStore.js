@@ -1,6 +1,6 @@
 /* @flow */
 
-import {getClosestEntrance} from '../utils/distance';
+import {getClosestEntrance, isSameLocation} from '../utils/distance';
 
 import type {Location} from '../actions/dataActions';
 
@@ -18,6 +18,15 @@ export type Line = {
   estimates: Estimate[],
 };
 
+type WalkingDirections = {
+  state: 'dirty' | 'loading' | 'loaded',
+  distance: ?number,
+  time: ?number,
+  stationAbbr: string,
+  entranceLocation: Location,
+  key: string,
+};
+
 export type Station = {
   abbr: string,
   name: string,
@@ -25,7 +34,8 @@ export type Station = {
   entrances: Location[],
   gtfs_latitude: number,
   gtfs_longitude: number,
-  closestEntranceLoc: ?Location,
+  closestEntranceLoc: Location,
+  WalkingDirections: ?WalkingDirections,
 };
 
 type State = {
@@ -35,7 +45,6 @@ type State = {
     lng: number,
   },
   locationError: bool,
-  walkingDirections: ?Object,
 };
 
 const initialState: State = {
@@ -45,19 +54,43 @@ const initialState: State = {
   locationError: false,
 };
 
-const addClosestEntrances = (stations: ?Station[], location: ?Location): ?Station[] => {
-  if (!location || !stations) {
-    return stations;
-  }
-  return stations.map(s => ({...s, closestEntranceLoc: getClosestEntrance(s, location)}));
+const addClosestEntrance = (station: Station, location: ?Location): Station => ({
+  ...station,
+  closestEntranceLoc: location && getClosestEntrance(station, location),
+});
+
+const createWalkingDirections = (station: Station, location: ?Location): WalkingDirections => {
+  const existingWalking = station.walkingDirections || {};
+  return ({
+    state: 'dirty',
+    stationAbbr: station.abbr,
+    entranceLocation: station.closestEntranceLoc,
+    distance: undefined,
+    time: undefined,
+  });
 };
 
 export default function(state: State = initialState, action: Object) {
   switch (action.type) {
     case 'RECEIVE_LOCATION': {
+      if (state.location && action.location && isSameLocation(state.location, action.location)) {
+        return state;
+      }
+
+      if (!state.stations) {
+        return {
+          ...state,
+          location: action.location,
+          locationError: false,
+        };
+      }
+
+      const stations = state.stations
+        .map(s => addClosestEntrance(s, action.location));
       return {
         ...state,
-        stations: addClosestEntrances(state.stations, action.location),
+        stations,
+        walkingDirections: stations.map(s => createWalkingDirections(s, action.location)),
         location: action.location,
         locationError: false,
       };
@@ -65,7 +98,6 @@ export default function(state: State = initialState, action: Object) {
     case 'LOCATION_ERROR': {
       return {
         ...state,
-        // location: null,
         locationError: true,
       };
     }

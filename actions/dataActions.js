@@ -1,6 +1,7 @@
 /* @flow */
+import {NativeModules} from 'react-native';
 
-import {locationOptions, locationError} from './locationActions';
+const {WalkingDirectionsManager} = NativeModules;
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let timeout;
@@ -55,4 +56,18 @@ export function stopFetchingTimes() {
 
 export function hackilySetLoc(loc: ?Location) {
   location = loc;
+}
+
+export function fetchWalkingDirections(endLoc: Location) {
+  return (dispatch: Function) => {
+    if (!location) {
+      return {};
+    }
+    WalkingDirectionsManager.getWalkingDirectionsBetween(
+      location.lat,
+      location.lng,
+      endLoc.lat,
+      endLoc.lng)
+    .then();
+  };
 }
