@@ -128,13 +128,17 @@ export default class StationView extends React.Component {
         </View>
       );
     }
-    const {distance, time} = this.props.station.walkingDirections || {};
-    const departureTime = departure === 'Leaving' ? 0 : parseInt(departure, 10);
+    const {walkingDirections} = this.props.station;
     let labelStyle = styles.missed;
-    if (departureTime >= time) {
-      labelStyle = styles.walk;
-    } else if (departureTime >= getRunningTime(distance)) {
-      labelStyle = styles.run;
+    const departureTime = departure === 'Leaving' ? 0 : parseInt(departure, 10);
+
+    const {distance, time} = (walkingDirections || {});
+    if (distance && time) {
+      if (departureTime >= time) {
+        labelStyle = styles.walk;
+      } else if (departureTime >= getRunningTime(distance)) {
+        labelStyle = styles.run;
+      }
     }
     return (
       <View key={i} style={styles.departure}>
@@ -166,7 +170,7 @@ export default class StationView extends React.Component {
     );
   }
 
-  renderStationName = (s: Station, distance: number) => {
+  renderStationName = (s: Station, distance: ?number) => {
     const goToDirections = () => {
       if (s.closestEntranceLoc) {
         const {lat, lng} = s.closestEntranceLoc;
@@ -185,8 +189,8 @@ export default class StationView extends React.Component {
 
   render() {
     const s = this.props.station;
-    const {distance, time} = this.props.station.walkingDirections || {};
-    const isMakable = estimate => parseInt(estimate.minutes, 10) >= time;
+    const {distance, time} = (this.props.station.walkingDirections || {});
+    const isMakable = estimate => parseInt(estimate.minutes, 10) >= (time || 999);
     const makableDepartureTime = (a, b) => {
       const aBest = a.estimates.filter(isMakable)[0];
       const aMinutes = aBest ? aBest.minutes : 999;

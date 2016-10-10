@@ -32,7 +32,7 @@ export type Station = {
   gtfs_latitude: number,
   gtfs_longitude: number,
   closestEntranceLoc: Location,
-  WalkingDirections: ?WalkingDirections,
+  walkingDirections: WalkingDirections,
 };
 
 type State = {
@@ -111,7 +111,7 @@ export default function(state: State = initialState, action: Object) {
       const {abbr} = action.station;
       return {
         ...state,
-        stations: state.stations.map((s: Station) => {
+        stations: state.stations && state.stations.map((s: Station) => {
           if (s.abbr === abbr) {
             return {
               ...s,
@@ -130,7 +130,7 @@ export default function(state: State = initialState, action: Object) {
       const {abbr} = station;
       return {
         ...state,
-        stations: state.stations.map((s: Station) => {
+        stations: state.stations && state.stations.map((s: Station) => {
           if (s.abbr === abbr) {
             return {
               ...s,
