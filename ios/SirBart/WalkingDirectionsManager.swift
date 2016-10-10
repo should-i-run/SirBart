@@ -21,7 +21,7 @@ class WalkingDirectionsManager: NSObject {
     return mapItem
   }
   
-  @objc func getWalkingDirectionsBetween(_ startLat: Double, startLng: Double, endLat: Double, endLng: Double, resolver: RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
+  @objc func getWalkingDirectionsBetween(_ startLat: Double, startLng: Double, endLat: Double, endLng: Double, resolver: @escaping RCTPromiseResolveBlock, rejecter: RCTPromiseRejectBlock) {
     let startLatLon:CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: CLLocationDegrees.init(startLat), longitude: CLLocationDegrees.init(startLng))
     let endLatLon:CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: CLLocationDegrees.init(endLat), longitude: CLLocationDegrees.init(endLng))
 
@@ -36,7 +36,7 @@ class WalkingDirectionsManager: NSObject {
     let walkingRouteDirections = MKDirections(request: walkingRouteRequest)
     walkingRouteDirections.calculate { (response: MKDirectionsResponse?, error: Error?) in
       if let distance = response?.routes[0].distance, let time = response?.routes[0].expectedTravelTime {
-        self.delegate?.handleWalkingDistance("", distance: Int(distance), time: Int(time / 60))
+        resolver(["distance": Int(distance), "time": Int(time / 60)])
       }
     }
   }

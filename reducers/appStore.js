@@ -22,9 +22,6 @@ type WalkingDirections = {
   state: 'dirty' | 'loading' | 'loaded',
   distance: ?number,
   time: ?number,
-  stationAbbr: string,
-  entranceLocation: Location,
-  key: string,
 };
 
 export type Station = {
@@ -54,21 +51,15 @@ const initialState: State = {
   locationError: false,
 };
 
-const addClosestEntrance = (station: Station, location: ?Location): Station => ({
-  ...station,
-  closestEntranceLoc: location && getClosestEntrance(station, location),
-});
-
-const createWalkingDirections = (station: Station, location: ?Location): WalkingDirections => {
-  const existingWalking = station.walkingDirections || {};
-  return ({
-    state: 'dirty',
-    stationAbbr: station.abbr,
-    entranceLocation: station.closestEntranceLoc,
-    distance: undefined,
-    time: undefined,
-  });
+const initialWalkingDirections: WalkingDirections = {
+  state: 'dirty',
+  distance: undefined,
+  time: undefined,
 };
+const mergeStations = (existing: Station, newStation: Station) => ({
+  ...existing,
+  departures: newStation.departures,
+});
 
 export default function(state: State = initialState, action: Object) {
   switch (action.type) {
@@ -76,23 +67,18 @@ export default function(state: State = initialState, action: Object) {
       if (state.location && action.location && isSameLocation(state.location, action.location)) {
         return state;
       }
-
-      if (!state.stations) {
-        return {
-          ...state,
-          location: action.location,
-          locationError: false,
-        };
-      }
-
-      const stations = state.stations
-        .map(s => addClosestEntrance(s, action.location));
       return {
         ...state,
-        stations,
-        walkingDirections: stations.map(s => createWalkingDirections(s, action.location)),
         location: action.location,
         locationError: false,
+        stations: state.stations && state.stations.map((s) => ({
+          ...s,
+          closestEntranceLoc: getClosestEntrance(s, action.location),
+          walkingDirections: {
+            ...s.walkingDirections,
+            state: 'dirty',
+          },
+        })),
       };
     }
     case 'LOCATION_ERROR': {
@@ -102,10 +88,61 @@ export default function(state: State = initialState, action: Object) {
       };
     }
     case 'RECEIVE_TIMES': {
+      const newStations = action.stations
+        .map(s => {
+          const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
+          if (existing) {
+            return mergeStations(existing, s);
+          }
+          return {
+            ...s,
+            walkingDirections: initialWalkingDirections,
+            closestEntranceLoc: getClosestEntrance(s, state.location),
+          };
+        });
       return {
         ...state,
-        stations: addClosestEntrances(action.stations, state.location),
+        stations: newStations,
         locationError: false,
+      };
+    }
+
+    case 'START_WALKING_DIRECTIONS': {
+      const {abbr} = action.station;
+      return {
+        ...state,
+        stations: state.stations.map((s: Station) => {
+          if (s.abbr === abbr) {
+            return {
+              ...s,
+              walkingDirections: {
+                ...s.walkingDirections,
+                state: 'loading',
+              },
+            };
+          }
+          return s;
+        }),
+      };
+    }
+    case 'RECEIVE_WALKING_DIRECTIONS': {
+      const {result, station} = action;
+      const {abbr} = station;
+      return {
+        ...state,
+        stations: state.stations.map((s: Station) => {
+          if (s.abbr === abbr) {
+            return {
+              ...s,
+              walkingDirections: {
+                state: 'loaded',
+                distance: result.distance,
+                time: result.time,
+              },
+            };
+          }
+          return s;
+        }),
       };
     }
     default:

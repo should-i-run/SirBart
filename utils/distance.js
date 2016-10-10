@@ -11,9 +11,6 @@ export function isSameLocation(old: Location, newLoc: Location) {
 }
 
 export function getClosestEntrance(station: Station, start: ?Location) {
-  if (!start) {
-    return {lat: station.gtfs_latitude, lng: station.gtfs_longitude};
-  }
   if (start && station.entrances.length) {
     const getDistance = (entrance) => {
       const latDistance = Math.pow((start.lat - entrance.lat), 2);
@@ -22,7 +19,6 @@ export function getClosestEntrance(station: Station, start: ?Location) {
     };
     const sortedEntrances = station.entrances.sort((a, b) => getDistance(a) - getDistance(b));
     return sortedEntrances[0];
-  } else {
-    return {lat: station.gtfs_latitude, lng: station.gtfs_longitude};
   }
+  return {lat: station.gtfs_latitude, lng: station.gtfs_longitude};
 }

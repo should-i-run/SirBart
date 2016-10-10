@@ -11,7 +11,9 @@ import {
 
 import StationView from './Station';
 import {startLocation} from '../actions/locationActions';
-import {startFetchingTimes, stopFetchingTimes, hackilySetLoc} from '../actions/dataActions';
+import {startFetchingTimes, stopFetchingTimes, hackilySetLoc, fetchWalkingDirections} from '../actions/dataActions';
+
+import type {Station} from '../reducers/appStore';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,6 +30,7 @@ type Props = {
   startLocation: Function,
   startFetchingTimes: Function,
   stopFetchingTimes: Function,
+  fetchWalkingDirections: (s: Station) => void,
 };
 
 class DataContainer extends React.Component {
@@ -45,7 +48,13 @@ class DataContainer extends React.Component {
     if (this.props.location && !nextProps.location) {
       this.props.stopFetchingTimes();
     }
-    // if any walking directions are dirty, fetch walking directions for it.
+    if (nextProps.stations) {
+      nextProps.stations.forEach((s: Station) => {
+        if (s.walkingDirections.state === 'dirty') {
+          this.props.fetchWalkingDirections(s);
+        }
+      });
+    }
   }
 
   render() {
@@ -70,6 +79,7 @@ const mapDispatchToProps = (dispatch: Function) =>
     startLocation,
     startFetchingTimes,
     stopFetchingTimes,
+    fetchWalkingDirections,
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataContainer);

@@ -113,7 +113,6 @@ const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 
 type Props = {
   station: Station,
-  walking: Object,
 };
 
 export default class StationView extends React.Component {
@@ -129,7 +128,7 @@ export default class StationView extends React.Component {
         </View>
       );
     }
-    const {distance, time} = this.props.walking || {};
+    const {distance, time} = this.props.station.walkingDirections || {};
     const departureTime = departure === 'Leaving' ? 0 : parseInt(departure, 10);
     let labelStyle = styles.missed;
     if (departureTime >= time) {
@@ -186,7 +185,7 @@ export default class StationView extends React.Component {
 
   render() {
     const s = this.props.station;
-    const {distance, time} = this.props.walking || {};
+    const {distance, time} = this.props.station.walkingDirections || {};
     const isMakable = estimate => parseInt(estimate.minutes, 10) >= time;
     const makableDepartureTime = (a, b) => {
       const aBest = a.estimates.filter(isMakable)[0];

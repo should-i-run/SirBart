@@ -1,7 +1,10 @@
 /* @flow */
 import {NativeModules} from 'react-native';
 
+import type {Station} from '../reducers/appStore';
+
 const {WalkingDirectionsManager} = NativeModules;
+
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let timeout;
@@ -58,16 +61,33 @@ export function hackilySetLoc(loc: ?Location) {
   location = loc;
 }
 
-export function fetchWalkingDirections(endLoc: Location) {
+function startWalkingDirections(station) {
+  return {
+    type: 'START_WALKING_DIRECTIONS',
+    station,
+  };
+}
+function receiveWalkingDirections(station: Station, result: Object) {
+  return {
+    type: 'RECEIVE_WALKING_DIRECTIONS',
+    station,
+    result,
+  };
+}
+
+export function fetchWalkingDirections(station: Station) {
   return (dispatch: Function) => {
-    if (!location) {
-      return {};
+    if (location) {
+      dispatch(startWalkingDirections(station));
+      const closestEntrance = station.closestEntranceLoc;
+      WalkingDirectionsManager.getWalkingDirectionsBetween(
+        location.lat,
+        location.lng,
+        closestEntrance.lat,
+        closestEntrance.lng)
+        .then((results) => {
+          dispatch(receiveWalkingDirections(station, results));
+        });
     }
-    WalkingDirectionsManager.getWalkingDirectionsBetween(
-      location.lat,
-      location.lng,
-      endLoc.lat,
-      endLoc.lng)
-    .then();
   };
 }
