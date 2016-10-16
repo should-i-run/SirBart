@@ -133,7 +133,7 @@ export default class StationView extends React.Component {
     const departureTime = departure === 'Leaving' ? 0 : parseInt(departure, 10);
 
     const {distance, time} = (walkingDirections || {});
-    if (distance && time) {
+    if (distance && typeof time === 'number') {
       if (departureTime >= time) {
         labelStyle = styles.walk;
       } else if (departureTime >= getRunningTime(distance)) {

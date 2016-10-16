@@ -42,6 +42,7 @@ type State = {
     lng: number,
   },
   locationError: bool,
+  refreshingStations: bool,
 };
 
 const initialState: State = {
@@ -49,6 +50,7 @@ const initialState: State = {
   location: null,
   walkingDirections: null,
   locationError: false,
+  refreshingStations: false,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -104,6 +106,7 @@ export default function(state: State = initialState, action: Object) {
         ...state,
         stations: newStations,
         locationError: false,
+        refreshingStations: false,
       };
     }
 
@@ -143,6 +146,12 @@ export default function(state: State = initialState, action: Object) {
           }
           return s;
         }),
+      };
+    }
+    case 'START_REFRESH_STATIONS': {
+      return {
+        ...state,
+        refreshingStations: true,
       };
     }
     default:

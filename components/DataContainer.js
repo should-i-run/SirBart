@@ -7,11 +7,13 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  RefreshControl,
 } from 'react-native';
 
 import StationView from './Station';
 import {startLocation} from '../actions/locationActions';
 import {startFetchingTimes, stopFetchingTimes, hackilySetLoc, fetchWalkingDirections} from '../actions/dataActions';
+  refreshStations,
 
 import type {Station} from '../reducers/appStore';
 
@@ -31,6 +33,8 @@ type Props = {
   startFetchingTimes: Function,
   stopFetchingTimes: Function,
   fetchWalkingDirections: (s: Station) => void,
+  refreshingStations: bool,
+  refreshStations: Function,
 };
 
 class DataContainer extends React.Component {
@@ -60,7 +64,15 @@ class DataContainer extends React.Component {
   render() {
     const {location, walkingData, stations, locationError} = this.props;
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.refreshingStations}
+            onRefresh={this.props.refreshStations}
+          />
+        }
+        style={styles.container}
+      >
         {stations && stations.map((s, i) =>
           <StationView key={i} station={s} walking={walkingData[s.abbr]} location={location} />)}
         {locationError && <Text>Location Error</Text>}
@@ -72,6 +84,7 @@ class DataContainer extends React.Component {
 const mapStateToProps = state => ({
   location: state.location,
   stations: state.stations,
+  refreshingStations: state.refreshingStations,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>
@@ -80,6 +93,7 @@ const mapDispatchToProps = (dispatch: Function) =>
     startFetchingTimes,
     stopFetchingTimes,
     fetchWalkingDirections,
+    refreshStations,
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataContainer);

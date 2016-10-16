@@ -19,6 +19,12 @@ function receiveStations(stations) {
   };
 }
 
+function startRefreshStations() {
+  return {
+    type: 'START_REFRESH_STATIONS',
+  };
+}
+
 function fetchData(dispatch) {
   if (!location) {
     return;
@@ -52,6 +58,12 @@ export function startFetchingTimes() {
   };
 }
 
+export function refreshStations() {
+  return (dispatch: Function) => {
+    dispatch(startRefreshStations());
+    fetchData(dispatch);
+  };
+}
 export function stopFetchingTimes() {
   clearTimeout(timeout);
   return {};
