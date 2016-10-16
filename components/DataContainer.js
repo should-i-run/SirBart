@@ -12,11 +12,11 @@ import {
 
 import StationView from './Station';
 import {startLocation} from '../actions/locationActions';
-import {startFetchingTimes,
+import {setupDataFetching,
   stopFetchingTimes,
   hackilySetLoc,
   fetchWalkingDirections,
-  fetchImmediate,
+  fetchStations,
   refreshStations,
 } from '../actions/dataActions';
 
@@ -35,10 +35,11 @@ type Props = {
   location: ?Object,
   locationError: bool,
   startLocation: Function,
-  startFetchingTimes: Function,
+  setupDataFetching: Function,
   fetchWalkingDirections: (s: Station) => void,
   refreshingStations: bool,
   refreshStations: Function,
+  fetchStations: Function,
 };
 
 class DataContainer extends React.Component {
@@ -46,12 +47,15 @@ class DataContainer extends React.Component {
 
   componentWillMount() {
     this.props.startLocation();
-    this.props.startFetchingTimes();
+    this.props.fetchStations();
+    this.props.setupDataFetching();
   }
 
   componentWillReceiveProps(nextProps: Props) {
     hackilySetLoc(nextProps.location);
-    this.props.startFetchingTimes();
+    if (!this.props.location && nextProps.location) {
+      this.props.fetchStations();
+    }
 
     if (nextProps.stations) {
       nextProps.stations.forEach((s: Station) => {
@@ -70,6 +74,7 @@ class DataContainer extends React.Component {
           <RefreshControl
             refreshing={this.props.refreshingStations}
             onRefresh={this.props.refreshStations}
+            tintColor="#E6E6E6"
           />
         }
         style={styles.container}
@@ -91,10 +96,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch: Function) =>
   bindActionCreators({
     startLocation,
-    startFetchingTimes,
+    setupDataFetching,
     stopFetchingTimes,
     fetchWalkingDirections,
     refreshStations,
+    fetchStations,
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataContainer);

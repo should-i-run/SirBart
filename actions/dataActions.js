@@ -25,7 +25,9 @@ function startRefreshStations() {
 }
 
 function fetchData(dispatch) {
+  console.log('fetching stations');
   if (!location) {
+    console.log('fetching stations called without a station, exiting');
     return;
   }
   fetch(URL, {
@@ -40,6 +42,7 @@ function fetchData(dispatch) {
   })
   .then((response) => response.json())
   .then(data => {
+    console.log('stations received');
     dispatch(receiveStations(data));
   })
   .catch((error) => {
@@ -48,8 +51,9 @@ function fetchData(dispatch) {
   });
 }
 
-export function startFetchingTimes() {
+export function setupDataFetching() {
   return (dispatch: Function) => {
+    console.log('start fetching times, interval: ', interval);
     if (interval) {
       clearInterval(interval);
     } else {
@@ -57,6 +61,7 @@ export function startFetchingTimes() {
       fetchData(dispatch);
     }
     interval = setInterval(() => {
+      console.log('within interval: ', interval);
       fetchData(dispatch);
     }, 1000 * 20);
   };
@@ -65,6 +70,11 @@ export function startFetchingTimes() {
 export function refreshStations() {
   return (dispatch: Function) => {
     dispatch(startRefreshStations());
+    fetchData(dispatch);
+  };
+}
+export function fetchStations() {
+  return (dispatch: Function) => {
     fetchData(dispatch);
   };
 }
