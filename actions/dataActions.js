@@ -5,9 +5,8 @@ import type {Station} from '../reducers/appStore';
 
 const {WalkingDirectionsManager} = NativeModules;
 
-
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
-let timeout;
+let interval;
 
 export type Location = {lat: number, lng: number};
 let location: ?Location;
@@ -51,8 +50,13 @@ function fetchData(dispatch) {
 
 export function startFetchingTimes() {
   return (dispatch: Function) => {
-    fetchData(dispatch);
-    timeout = setTimeout(() => {
+    if (interval) {
+      clearInterval(interval);
+    } else {
+      // fetch right away if we haven't been fetching
+      fetchData(dispatch);
+    }
+    interval = setInterval(() => {
       fetchData(dispatch);
     }, 1000 * 20);
   };
@@ -64,8 +68,9 @@ export function refreshStations() {
     fetchData(dispatch);
   };
 }
+
 export function stopFetchingTimes() {
-  clearTimeout(timeout);
+  clearInterval(interval);
   return {};
 }
 

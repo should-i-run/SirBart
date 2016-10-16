@@ -12,8 +12,13 @@ import {
 
 import StationView from './Station';
 import {startLocation} from '../actions/locationActions';
-import {startFetchingTimes, stopFetchingTimes, hackilySetLoc, fetchWalkingDirections} from '../actions/dataActions';
+import {startFetchingTimes,
+  stopFetchingTimes,
+  hackilySetLoc,
+  fetchWalkingDirections,
+  fetchImmediate,
   refreshStations,
+} from '../actions/dataActions';
 
 import type {Station} from '../reducers/appStore';
 
@@ -31,7 +36,6 @@ type Props = {
   locationError: bool,
   startLocation: Function,
   startFetchingTimes: Function,
-  stopFetchingTimes: Function,
   fetchWalkingDirections: (s: Station) => void,
   refreshingStations: bool,
   refreshStations: Function,
@@ -42,16 +46,13 @@ class DataContainer extends React.Component {
 
   componentWillMount() {
     this.props.startLocation();
+    this.props.startFetchingTimes();
   }
 
   componentWillReceiveProps(nextProps: Props) {
     hackilySetLoc(nextProps.location);
-    if (!this.props.location && nextProps.location) {
-      this.props.startFetchingTimes();
-    }
-    if (this.props.location && !nextProps.location) {
-      this.props.stopFetchingTimes();
-    }
+    this.props.startFetchingTimes();
+
     if (nextProps.stations) {
       nextProps.stations.forEach((s: Station) => {
         if (s.walkingDirections.state === 'dirty') {
