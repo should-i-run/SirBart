@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  walkingData: Object,
   stations: ?Object,
   location: ?Object,
   locationError: bool,
@@ -67,7 +66,7 @@ class DataContainer extends React.Component {
   }
 
   render() {
-    const {location, walkingData, stations, locationError} = this.props;
+    const {location, stations, locationError} = this.props;
     return (
       <ScrollView
         refreshControl={
@@ -80,7 +79,7 @@ class DataContainer extends React.Component {
         style={styles.container}
       >
         {stations && stations.map((s, i) =>
-          <StationView key={i} station={s} walking={walkingData[s.abbr]} location={location} />)}
+          <StationView key={i} station={s} location={location} />)}
         {locationError && <Text>Location Error</Text>}
       </ScrollView>
     );
