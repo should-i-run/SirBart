@@ -172,8 +172,6 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         selectorShown: false,
-        selectionKind: null,
-        selectionData: null,
       };
     }
     default:

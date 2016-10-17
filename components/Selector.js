@@ -21,18 +21,22 @@ import type {Station, Line, Estimate} from '../reducers/appStore';
 type Props = {
   selectorShown: bool,
   hideSelector: Function,
-  selectionKind: 'distance',
+  selectionKind: 'distance' | 'departure',
   selectionData: ?Object,
 };
 
 class Selector extends React.Component {
   props: Props;
+  state: {closing: bool};
+
+  state = {closing: false};
 
   componentWillReceiveProps(nextProps: Props) {
     if (!this.props.selectorShown && nextProps.selectorShown) {
       this.show();
     }
     if (this.props.selectorShown && !nextProps.selectorShown) {
+      this.setState({closing: true});
       this.close();
     }
   }
@@ -40,6 +44,7 @@ class Selector extends React.Component {
   height: Animated.Value = new Animated.Value(0);
 
   show = () => {
+    this.height.setValue(0);
     Animated.spring(this.height, {
       toValue: 1,
       friction: 7,
@@ -48,11 +53,12 @@ class Selector extends React.Component {
   }
 
   close = () => {
+    this.height.setValue(1);
     Animated.spring(this.height, {
       toValue: 0,
       friction: 7,
       tension: 70,
-    }).start();
+    }).start(() => this.setState({closing: false}));
   }
 
   goToDirections = () => {
@@ -83,8 +89,8 @@ class Selector extends React.Component {
   }
 
   render() {
-    const {selectionData, selectionKind} = this.props;
-    if (selectionData && selectionKind) {
+    const {selectorShown, selectionData, selectionKind} = this.props;
+    if ((selectorShown || this.state.closing) && selectionData && selectionKind) {
       let stuff;
       if (selectionKind === 'distance' && selectionData.station) {
         stuff = this.renderDistance(selectionData.station);
@@ -92,23 +98,21 @@ class Selector extends React.Component {
       if (selectionKind === 'departure' && selectionData.station) {
         stuff = this.renderDeparture(selectionData.station, selectionData.line, selectionData.estimate);
       }
-      if (stuff) {
-        const bottom = this.height.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, -100],
-        });
-        return (
-          <Animated.View
-            style={[styles.selector, {
-              transform: [{translateY: bottom}],
-            }]}>
-            {stuff}
-            <View style={styles.closeContainer}>
-              <Text onPress={this.props.hideSelector} style={styles.genericText}>X</Text>
-            </View>
-          </Animated.View>
-        );
-      }
+      const bottom = this.height.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -100],
+      });
+      return (
+        <Animated.View
+          style={[styles.selector, {
+            transform: [{translateY: bottom}],
+          }]}>
+          {stuff}
+          <View style={styles.closeContainer}>
+            <Text onPress={this.props.hideSelector} style={styles.genericText}>X</Text>
+          </View>
+        </Animated.View>
+      );
     }
     return null;
   }

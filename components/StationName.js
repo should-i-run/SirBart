@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-import {showSelector} from '../actions/selectorActions';
+import {showSelector, hideSelector} from '../actions/selectorActions';
 
 import type {Station} from '../reducers/appStore';
 import styles from './Station.styles';
@@ -18,12 +18,24 @@ type Props = {
   station: Station,
   distance: ?number,
   showSelector: Function,
+  hideSelector: Function,
+  selectorShown: bool,
+  selectionData: ?Object,
+  selectionKind: 'distance' | 'departure',
 };
 
 class StationView extends React.Component {
   props: Props;
 
   goToDirections = () => {
+    const {selectorShown, selectionData, selectionKind, station} = this.props;
+    if (selectorShown && selectionData && selectionKind === 'distance') {
+      const isSelected = selectionData.station.abbr === station.abbr;
+      if (isSelected) {
+        this.props.hideSelector();
+        return;
+      }
+    }
     this.props.showSelector('distance', {station: this.props.station});
   }
 
@@ -48,9 +60,16 @@ class StationView extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  selectorShown: state.selectorShown,
+  selectionData: state.selectionData,
+  selectionKind: state.selectionKind,
+});
+
 const mapDispatchToProps = (dispatch: Function) =>
   bindActionCreators({
     showSelector,
+    hideSelector,
   }, dispatch);
 
-export default connect(undefined, mapDispatchToProps)(StationView);
+export default connect(mapStateToProps, mapDispatchToProps)(StationView);

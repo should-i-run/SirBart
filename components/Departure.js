@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import styles from './Station.styles';
-import {showSelector} from '../actions/selectorActions';
+import {showSelector, hideSelector} from '../actions/selectorActions';
 
 import type {Station, Estimate, Line} from '../reducers/appStore';
 
@@ -21,13 +21,24 @@ type Props = {
   estimate: Estimate,
   line: Line,
   showSelector: Function,
+  hideSelector: Function,
+  selectorShown: bool,
+  selectionData: ?Object,
+  selectionKind: 'departure' | 'distance',
 };
 
 class Departure extends React.Component {
   props: Props;
 
   toggle = () => {
-    const {station, line, estimate} = this.props;
+    const {selectorShown, selectionData, selectionKind, estimate, station, line} = this.props;
+    if (selectorShown && selectionData && selectionKind === 'departure') {
+      const isSelected = selectionData.estimate.minutes === estimate.minutes;
+      if (isSelected) {
+        this.props.hideSelector();
+        return;
+      }
+    }
     this.props.showSelector('departure', {station, line, estimate});
   }
 
@@ -66,10 +77,16 @@ class Departure extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  selectionData: state.selectionData,
+  selectionKind: state.selectionKind,
+  selectorShown: state.selectorShown,
+});
 
 const mapDispatchToProps = (dispatch: Function) =>
   bindActionCreators({
     showSelector,
+    hideSelector,
   }, dispatch);
 
-export default connect(undefined, mapDispatchToProps)(Departure);
+export default connect(mapStateToProps, mapDispatchToProps)(Departure);
