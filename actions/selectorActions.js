@@ -1,7 +1,14 @@
 /* @flow */
 
-export function toggleSelector() {
+export function showSelector(kind: string, data: Object) {
   return {
-    type: 'TOGGLE_SELECTOR',
+    type: 'SHOW_SELECTOR',
+    kind,
+    data,
+  };
+}
+export function hideSelector() {
+  return {
+    type: 'HIDE_SELECTOR',
   };
 }

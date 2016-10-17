@@ -14,6 +14,7 @@ export default StyleSheet.create({
     ...genericText,
     fontWeight: '600',
   },
+  genericText,
   selector: {
     position: 'absolute',
     height: 120,
@@ -32,8 +33,11 @@ export default StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 10,
+    height: 30,
+    width: 30,
   },
-  close: {
-    ...genericText,
+  leftRight: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
 });

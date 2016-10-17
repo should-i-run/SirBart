@@ -14,9 +14,11 @@ export default StyleSheet.create({
     ...genericText,
   },
   stationName: {
+    flex: 5,
+  },
+  stationNameText: {
     ...genericText,
     fontSize: 26,
-    flex: 5,
   },
   stationMetadata: {
     ...genericText,
@@ -38,7 +40,8 @@ export default StyleSheet.create({
     backgroundColor: '#344453',
     padding: 5,
     marginTop: 10,
-    borderRadius: 2,
+    marginBottom: 5,
+    borderRadius: 5,
     paddingLeft: 10,
   },
   directionText: {
@@ -47,13 +50,17 @@ export default StyleSheet.create({
     color: '#AAA',
     marginBottom: -5,
   },
-  stationDistance: {
+  stationDistanceText: {
     ...genericText,
     color: '#AAA',
     fontSize: 26,
     flex: 4,
     marginRight: 10,
     textAlign: 'right',
+  },
+  stationDistance: {
+    flex: 4,
+    marginRight: 10,
   },
   station: {
     flex: 1,

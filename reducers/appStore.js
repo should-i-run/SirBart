@@ -4,7 +4,7 @@ import {getClosestEntrance, isSameLocation} from '../utils/distance';
 
 import type {Location} from '../actions/dataActions';
 
-type Estimate = {
+export type Estimate = {
   direction: string,
   hexcolor: string,
   length: string,
@@ -27,7 +27,7 @@ type WalkingDirections = {
 export type Station = {
   abbr: string,
   name: string,
-  departures: Line[],
+  lines: Line[],
   entrances: Location[],
   gtfs_latitude: number,
   gtfs_longitude: number,
@@ -44,6 +44,8 @@ type State = {
   locationError: bool,
   refreshingStations: bool,
   selectorShown: bool,
+  selectionKind: ?'distance',
+  selectionData: ?Object,
 };
 
 const initialState: State = {
@@ -53,6 +55,8 @@ const initialState: State = {
   locationError: false,
   refreshingStations: false,
   selectorShown: false,
+  selectionData: null,
+  selectionKind: null,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -62,7 +66,7 @@ const initialWalkingDirections: WalkingDirections = {
 };
 const mergeStations = (existing: Station, newStation: Station) => ({
   ...existing,
-  departures: newStation.departures,
+  lines: newStation.lines,
 });
 
 export default function(state: State = initialState, action: Object) {
@@ -156,10 +160,20 @@ export default function(state: State = initialState, action: Object) {
         refreshingStations: true,
       };
     }
-    case 'TOGGLE_SELECTOR': {
+    case 'SHOW_SELECTOR': {
       return {
         ...state,
-        selectorShown: !state.selectorShown,
+        selectorShown: true,
+        selectionKind: action.kind,
+        selectionData: action.data,
+      };
+    }
+    case 'HIDE_SELECTOR': {
+      return {
+        ...state,
+        selectorShown: false,
+        selectionKind: null,
+        selectionData: null,
       };
     }
     default:
