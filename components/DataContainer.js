@@ -8,11 +8,14 @@ import {
   StyleSheet,
   Text,
   RefreshControl,
+  View,
 } from 'react-native';
 
 import StationView from './Station';
+import Selector from './Selector';
 import {startLocation} from '../actions/locationActions';
-import {setupDataFetching,
+import {
+  setupDataFetching,
   stopFetchingTimes,
   hackilySetLoc,
   fetchWalkingDirections,
@@ -68,20 +71,23 @@ class DataContainer extends React.Component {
   render() {
     const {location, stations, locationError} = this.props;
     return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={this.props.refreshingStations}
-            onRefresh={this.props.refreshStations}
-            tintColor="#E6E6E6"
-          />
-        }
-        style={styles.container}
-      >
-        {stations && stations.map((s, i) =>
-          <StationView key={i} station={s} location={location} />)}
-        {locationError && <Text>Location Error</Text>}
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.props.refreshingStations}
+              onRefresh={this.props.refreshStations}
+              tintColor="#E6E6E6"
+            />
+          }
+          style={styles.container}
+        >
+          {stations && stations.map((s, i) =>
+            <StationView key={i} station={s} location={location} />)}
+          {locationError && <Text>Location Error</Text>}
+        </ScrollView>
+        <Selector />
+      </View>
     );
   }
 }

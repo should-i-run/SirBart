@@ -43,6 +43,7 @@ type State = {
   },
   locationError: bool,
   refreshingStations: bool,
+  selectorShown: bool,
 };
 
 const initialState: State = {
@@ -51,6 +52,7 @@ const initialState: State = {
   walkingDirections: null,
   locationError: false,
   refreshingStations: false,
+  selectorShown: false,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -152,6 +154,12 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         refreshingStations: true,
+      };
+    }
+    case 'TOGGLE_SELECTOR': {
+      return {
+        ...state,
+        selectorShown: !state.selectorShown,
       };
     }
     default:

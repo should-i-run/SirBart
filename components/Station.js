@@ -7,6 +7,8 @@ import {
   Linking,
 } from 'react-native';
 
+import StationName from './StationName';
+
 import type {Station, Line} from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
@@ -207,7 +209,7 @@ export default class StationView extends React.Component {
       .sort(makableDepartureTime);
     return (
       <View style={styles.station}>
-        {this.renderStationName(s, distance)}
+        <StationName station={s} distance={distance} />
         <View style={styles.stationMetadataContainer}>
           <Text style={styles.stationMetadata}>
             Running:
