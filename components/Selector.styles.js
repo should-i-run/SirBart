@@ -31,10 +31,12 @@ export default StyleSheet.create({
   },
   closeContainer: {
     position: 'absolute',
-    right: 10,
-    top: 10,
-    height: 30,
-    width: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 0,
+    top: 0,
+    height: 40,
+    width: 40,
   },
   leftRight: {
     flexDirection: 'row',

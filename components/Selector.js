@@ -69,9 +69,9 @@ class Selector extends React.Component {
   }
 
   renderDistance(station: Station) {
-    const {distance} = station.walkingDirections; // TODO calculate color in the store and use here.
+    const {distance} = station.walkingDirections;
     return (
-      <TouchableOpacity onPress={this.goToDirections} activeOpacity={0.5}>
+      <TouchableOpacity onPress={this.goToDirections}>
         <Text style={styles.title}>{typeof distance === 'number' ? distance.toLocaleString() : '...'} meters</Text>
         <Text style={styles.genericText}>Get walking directions</Text>
       </TouchableOpacity>
@@ -81,7 +81,7 @@ class Selector extends React.Component {
   renderDeparture(station: Station, line: Line, estimate: Estimate) {
     // const {distance} = station.walkingDirections; // TODO calculate color in the store and use here.
     return (
-      <TouchableOpacity onPress={this.goToDirections} activeOpacity={0.5}>
+      <TouchableOpacity>
         <Text style={styles.title}>{estimate.minutes} minutes</Text>
         <Text style={[styles.genericText, {color: estimate.hexcolor}]}>{estimate.length} cars</Text>
       </TouchableOpacity>
@@ -108,9 +108,9 @@ class Selector extends React.Component {
             transform: [{translateY: bottom}],
           }]}>
           {stuff}
-          <View style={styles.closeContainer}>
-            <Text onPress={this.props.hideSelector} style={styles.genericText}>X</Text>
-          </View>
+          <TouchableOpacity style={styles.closeContainer} onPress={this.props.hideSelector}>
+            <Text style={styles.genericText}>X</Text>
+          </TouchableOpacity>
         </Animated.View>
       );
     }
