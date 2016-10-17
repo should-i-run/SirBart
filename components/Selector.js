@@ -31,9 +31,10 @@ class Selector extends React.Component {
   }
 
   toggle = () => {
-    Animated.timing(this.height, {
+    Animated.spring(this.height, {
       toValue: this.props.selectorShown ? 0 : 1,
-      duration: 150,
+      friction: 6,
+      tension: 70,
     }).start();
   }
 
@@ -50,7 +51,6 @@ class Selector extends React.Component {
     return (
       <Animated.View
         style={[styles.selector, {
-          bottom: -100,
           transform: [{translateY: bottom}],
         }]}>
         <Text style={styles.title}>Heyyy</Text>

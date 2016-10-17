@@ -16,8 +16,8 @@ export default StyleSheet.create({
   },
   selector: {
     position: 'absolute',
-    height: 100,
-    bottom: 0,
+    height: 120,
+    bottom: -120,
     left: 0,
     right: 0,
     backgroundColor: '#19212C',
