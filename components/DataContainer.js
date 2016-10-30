@@ -28,7 +28,7 @@ import type {Station} from '../reducers/appStore';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#252F39',
-    paddingTop: 20,
+    paddingTop: 30,
   },
 });
 

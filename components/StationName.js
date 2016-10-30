@@ -11,7 +11,7 @@ import {
 import {showSelector, hideSelector} from '../actions/selectorActions';
 
 import type {Station} from '../reducers/appStore';
-import styles from './Station.styles';
+import styles from './StationName.styles';
 
 
 type Props = {
@@ -46,12 +46,18 @@ class StationView extends React.Component {
         <TouchableOpacity
           onPress={this.goToDirections}
           style={styles.stationName}>
-          <Text style={styles.stationNameText} numberOfLines={1}>{station.name}</Text>
+          <Text
+            style={styles.stationNameText}
+            numberOfLines={1}>
+            {station.name}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={this.goToDirections}
           style={[styles.stationDistance]}>
-          <Text style={styles.stationDistanceText} >
+          <Text
+            style={styles.stationDistanceText}
+            numberOfLines={1}>
             {typeof distance === 'number' ? distance.toLocaleString() : '...'} meters
           </Text>
         </TouchableOpacity>

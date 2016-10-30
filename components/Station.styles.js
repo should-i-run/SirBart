@@ -10,15 +10,15 @@ const genericText = {
 };
 
 export default StyleSheet.create({
+  station: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    padding: 10,
+    paddingTop: 20,
+  },
   genericText: {
     ...genericText,
-  },
-  stationName: {
-    flex: 5,
-  },
-  stationNameText: {
-    ...genericText,
-    fontSize: 26,
   },
   stationMetadata: {
     ...genericText,
@@ -50,36 +50,11 @@ export default StyleSheet.create({
     color: '#AAA',
     marginBottom: -5,
   },
-  stationDistanceText: {
-    ...genericText,
-    color: '#AAA',
-    fontSize: 26,
-    flex: 4,
-    marginRight: 10,
-    textAlign: 'right',
-  },
-  stationDistance: {
-    flex: 4,
-    marginRight: 10,
-  },
-  station: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    padding: 10,
-    paddingTop: 30,
-    marginBottom: 20,
-  },
-  stationNameContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   stationMetadataContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingLeft: 10,
-    marginTop: 10,
+    marginTop: 6,
   },
   departure: {
     marginLeft: 5,
@@ -100,10 +75,8 @@ export default StyleSheet.create({
   },
   run: {
     color: '#FC5B3F',
-    // fontWeight: '400',
   },
   walk: {
     color: '#6FD57F',
-    // fontWeight: '400',
   },
 });
