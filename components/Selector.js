@@ -2,9 +2,9 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
-  View,
   Text,
   Animated,
   Linking,
@@ -109,7 +109,7 @@ class Selector extends React.Component {
           }]}>
           {stuff}
           <TouchableOpacity style={styles.closeContainer} onPress={this.props.hideSelector}>
-            <Text style={styles.genericText}>X</Text>
+            <Icon name="times-circle" size={24} color="#E6E6E6" />
           </TouchableOpacity>
         </Animated.View>
       );
