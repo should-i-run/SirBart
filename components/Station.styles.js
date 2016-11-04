@@ -37,12 +37,13 @@ export default StyleSheet.create({
     width: 120,
   },
   direction: {
-    backgroundColor: '#344453',
-    padding: 5,
     marginTop: 10,
     marginBottom: 5,
-    borderRadius: 5,
+    backgroundColor: '#344453',
     paddingLeft: 10,
+    paddingBottom: 10,
+    paddingTop: 10,
+    borderRadius: 5,
   },
   directionText: {
     ...genericText,

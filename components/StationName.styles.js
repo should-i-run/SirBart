@@ -19,17 +19,17 @@ export default StyleSheet.create({
     flex: 1,
   },
   stationDistance: {
-    maxWidth: 100,
+    maxWidth: 120,
   },
   stationDistanceText: {
     ...genericText,
     color: '#AAA',
     fontSize: 20,
     textAlign: 'right',
+    lineHeight: 26,
   },
   stationNameText: {
     ...genericText,
-    height: 29,
     fontSize: 26,
   },
 });
