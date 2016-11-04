@@ -10,7 +10,7 @@ export type Estimate = {
   length: string,
   minutes: string,
   platform: string,
-}
+};
 
 export type Line = {
   abbreviation: string,

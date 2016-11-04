@@ -9,6 +9,8 @@ module.exports = {
     'space-before-function-paren': 0,
     'arrow-parens': 0,
     'prefer-default-export': 0,
+    'react/jsx-closing-bracket-location': 0,
+    'max-len': 0,
 
     // change airbnb rules
     'object-curly-spacing': [2, 'never'],
