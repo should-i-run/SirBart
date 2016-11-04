@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
   },
 });
 
+type State = {
+  fakeRefreshing: false,
+};
+
 type Props = {
   stations: ?Object,
   location: ?Object,
@@ -46,6 +50,11 @@ type Props = {
 
 class DataContainer extends React.Component {
   props: Props;
+  state: State;
+
+  state = {
+    fakeRefreshing: false,
+  };
 
   componentWillMount() {
     this.props.startLocation();
@@ -68,6 +77,14 @@ class DataContainer extends React.Component {
     }
   }
 
+  refreshStations = () => {
+    this.props.refreshStations();
+    this.setState({fakeRefreshing: true});
+    setTimeout(() => {
+      this.setState({fakeRefreshing: false});
+    }, 800);
+  }
+
   render() {
     const {location, stations, locationError} = this.props;
     return (
@@ -75,8 +92,8 @@ class DataContainer extends React.Component {
         <ScrollView
           refreshControl={
             <RefreshControl
-              refreshing={this.props.refreshingStations}
-              onRefresh={this.props.refreshStations}
+              refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
+              onRefresh={this.refreshStations}
               tintColor="#E6E6E6"
             />
           }
