@@ -10,6 +10,7 @@ import {
 
 import styles from './Station.styles';
 import {showSelector, hideSelector} from '../actions/selectorActions';
+import tracker from '../native/ga';
 
 import type {Station, Estimate, Line} from '../reducers/appStore';
 
@@ -36,10 +37,13 @@ class Departure extends React.Component {
       const isSelected = selectionData.estimate.minutes === estimate.minutes;
       if (isSelected) {
         this.props.hideSelector();
+        tracker.trackEvent('interaction', 'hide-selector-departure');
+
         return;
       }
     }
     this.props.showSelector('departure', {station, line, estimate});
+    tracker.trackEvent('interaction', 'show-selector-departure');
   }
 
   render = () => {

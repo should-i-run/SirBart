@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import {showSelector, hideSelector} from '../actions/selectorActions';
+import tracker from '../native/ga';
 
 import type {Station} from '../reducers/appStore';
 import styles from './StationName.styles';
@@ -33,10 +34,12 @@ class StationView extends React.Component {
       const isSelected = selectionData.station.abbr === station.abbr;
       if (isSelected) {
         this.props.hideSelector();
+        tracker.trackEvent('interaction', 'hide-selector-station');
         return;
       }
     }
     this.props.showSelector('distance', {station: this.props.station});
+    tracker.trackEvent('interaction', 'show-selector-station');
   }
 
   render() {

@@ -113,6 +113,7 @@ export default function(state: State = initialState, action: Object) {
         stations: newStations,
         locationError: false,
         refreshingStations: false,
+        selectorShown: false,
       };
     }
 

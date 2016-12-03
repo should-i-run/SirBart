@@ -23,6 +23,8 @@ import {
   refreshStations,
 } from '../actions/dataActions';
 
+import tracker from '../native/ga';
+
 import type {Station} from '../reducers/appStore';
 
 const styles = StyleSheet.create({
@@ -83,6 +85,7 @@ class DataContainer extends React.Component {
     setTimeout(() => {
       this.setState({fakeRefreshing: false});
     }, 800);
+    tracker.trackEvent('interaction', 'pull-to-refresh');
   }
 
   render() {

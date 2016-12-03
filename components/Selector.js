@@ -14,6 +14,8 @@ import {
 import {
   hideSelector,
 } from '../actions/selectorActions';
+import tracker from '../native/ga';
+
 import styles from './Selector.styles';
 
 import type {Station, Line, Estimate} from '../reducers/appStore';
@@ -53,6 +55,7 @@ class Selector extends React.Component {
   }
 
   close = () => {
+    tracker.trackEvent('interaction', 'close-selector');
     this.height.setValue(1);
     Animated.spring(this.height, {
       toValue: 0,
@@ -62,6 +65,7 @@ class Selector extends React.Component {
   }
 
   goToDirections = () => {
+    tracker.trackEvent('interaction', 'go-to-directions');
     if (this.props.selectionData) {
       const {lat, lng} = this.props.selectionData.station.closestEntranceLoc;
       Linking.openURL(`http://maps.apple.com/?daddr=${lat},${lng}&dirflg=w&t=r`);

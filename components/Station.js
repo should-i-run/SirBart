@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import StationName from './StationName';
 import styles from './Station.styles';
 import Departure from './Departure';
+import tracker from '../native/ga';
 
 import type {Station, Line} from '../reducers/appStore';
 
@@ -23,6 +24,11 @@ type Props = {
 
 export default class StationView extends React.Component {
   props: Props;
+
+  goToSchedule = () => {
+    tracker.trackEvent('interaction', 'go-to-schedule');
+    Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`)
+  };
 
   renderLine = (line: Line, i: number) => {
     const {destination, estimates} = line;
@@ -61,7 +67,7 @@ export default class StationView extends React.Component {
             Departure times aren’t avaliable.
           </Text>
           <TouchableOpacity
-            onPress={() => Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${s.abbr}`)}>
+            onPress={this.goToSchedule}>
             <Text
               style={{color: '#565FBF', fontSize: 16}}
             >
