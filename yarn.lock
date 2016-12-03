@@ -3378,9 +3378,9 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-native-analytics:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-analytics/-/react-native-analytics-0.1.1.tgz#a03d0e8a0630d16e898f0b4c0f2079056defb3a8"
+react-native-google-analytics-bridge@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-google-analytics-bridge/-/react-native-google-analytics-bridge-4.0.2.tgz#24adac55043adaddb01a61822d338fe5cd3ddd61"
 
 react-native-vector-icons@^3.0.0:
   version "3.0.0"
