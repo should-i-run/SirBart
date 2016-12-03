@@ -61,7 +61,7 @@ export default class StationView extends React.Component {
             Departure times aren’t avaliable.
           </Text>
           <TouchableOpacity
-            onPress={() => Linking.openURL(`https://www.bart.gov/schedules/bystationresults?station=${s.abbr}`)}>
+            onPress={() => Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${s.abbr}`)}>
             <Text
               style={{color: '#565FBF', fontSize: 16}}
             >
