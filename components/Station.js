@@ -27,7 +27,7 @@ export default class StationView extends React.Component {
 
   goToSchedule = () => {
     tracker.trackEvent('interaction', 'go-to-schedule');
-    Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`)
+    Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`);
   };
 
   renderLine = (line: Line, i: number) => {
@@ -57,7 +57,7 @@ export default class StationView extends React.Component {
     );
   }
 
-  renderNoDepartures(s: Station) {
+  renderNoDepartures() {
     return (
       <View style={{flexDirection: 'row', margin: 10, justifyContent: 'center', alignItems: 'center'}}>
         <Icon name="chain-broken" size={24} color="#FC5B3F" />

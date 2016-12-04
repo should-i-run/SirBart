@@ -13,6 +13,7 @@ import {
 
 import StationView from './Station';
 import Selector from './Selector';
+import DestinationSelector from './DestinationSelector';
 import {startLocation} from '../actions/locationActions';
 import {
   setupDataFetching,
@@ -102,6 +103,7 @@ class DataContainer extends React.Component {
           }
           style={styles.container}
         >
+          <DestinationSelector />
           {stations && stations.map((s, i) =>
             <StationView key={i} station={s} location={location} />)}
           {locationError && <Text>Location Error</Text>}

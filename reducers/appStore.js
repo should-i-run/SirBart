@@ -46,6 +46,8 @@ type State = {
   selectorShown: bool,
   selectionKind: ?'distance',
   selectionData: ?Object,
+  selectedDestinationCode: ?string,
+  savedDestinations: string[],
 };
 
 const initialState: State = {
@@ -57,6 +59,8 @@ const initialState: State = {
   selectorShown: false,
   selectionData: null,
   selectionKind: null,
+  selectedDestinationCode: null,
+  savedDestinations: [],
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -173,6 +177,24 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         selectorShown: false,
+      };
+    }
+    case 'DEST_SELECT': {
+      return {
+        ...state,
+        selectedDestinationCode: action.code,
+      };
+    }
+    case 'DEST_ADD': {
+      return {
+        ...state,
+        savedDestinations: [...state.savedDestinations, action.code],
+      };
+    }
+    case 'DEST_REMOVE': {
+      return {
+        ...state,
+        savedDestinations: state.savedDestinations.filter(d => d !== action.code),
       };
     }
     default:

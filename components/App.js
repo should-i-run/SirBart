@@ -7,14 +7,12 @@ import thunkMiddleware from 'redux-thunk';
 
 import DataContainer from './DataContainer';
 import appStore from '../reducers/appStore';
-import tracker from '../native/ga';
 
 const store = createStore(appStore, applyMiddleware(thunkMiddleware));
 
 class App extends React.Component {
   componentWillMount() {
     StatusBar.setBarStyle('light-content');
-    tracker.trackScreenView('home');
   }
 
   render() {

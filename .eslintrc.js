@@ -11,6 +11,7 @@ module.exports = {
     'prefer-default-export': 0,
     'react/jsx-closing-bracket-location': 0,
     'max-len': 0,
+    'class-methods-use-this': 0,
 
     // change airbnb rules
     'object-curly-spacing': [2, 'never'],

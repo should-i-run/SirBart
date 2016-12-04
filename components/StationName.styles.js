@@ -3,11 +3,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const genericText = {
-  color: '#E6E6E6',
-  fontSize: 18,
-  fontWeight: '200',
-};
+import {genericText} from '../styles';
 
 export default StyleSheet.create({
   stationNameContainer: {
