@@ -42,6 +42,15 @@ class DestinationSelector extends React.Component {
   props: Props;
   state = {adding: false, code: 'EMBR'};
 
+  componentDidUpdate(prevProps: Props) {
+    const {savedDestinations, stations, selectedDestinationCode} = this.props;
+    const oldDests = prevProps.savedDestinations.filter(d => !prevProps.stations || !prevProps.stations.some(s => s.abbr === d));
+    const newDests = savedDestinations.filter(d => !stations || !stations.some(s => s.abbr === d));
+    if (newDests.length !== oldDests.length && newDests.length === 1 && !selectedDestinationCode) {
+      this.select(newDests[0]);
+    }
+  }
+
   add = (code) => {
     this.props.add(code);
   };
@@ -60,10 +69,12 @@ class DestinationSelector extends React.Component {
   };
 
   renderDest = (code: string) => {
+    const {stations} = this.props;
     return (
       <TouchableOpacity
-        style={styles.destToken}
         key={code}
+        style={styles.destToken}
+        disabled={!stations || stations.some(s => s.abbr === code)}
         onPress={() => this.select(code)}>
         <Text
           numberOfLines={1}

@@ -27,7 +27,15 @@ function setDestinations(destinations: string[]) {
 export function loadSavedDestinations() {
   return (dispatch: Function) => {
     AsyncStorage.getItem('savedDestinations')
-      .then(destinations => dispatch(setDestinations(JSON.parse(destinations))));
+      .then(destinations => {
+        let dests;
+        try {
+          dests = JSON.parse(destinations);
+        } catch (e) {
+          dests = [];
+        }
+        dispatch(setDestinations(dests));
+      });
   };
 }
 
