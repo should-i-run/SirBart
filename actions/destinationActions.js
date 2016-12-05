@@ -1,4 +1,5 @@
 /* @flow */
+import {AsyncStorage} from 'react-native';
 
 // const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 
@@ -20,6 +21,20 @@ export function destinationRemove(code: string) {
   return {
     type: 'DEST_REMOVE',
     code,
+  };
+}
+
+function setDestinations(destinations: string[]) {
+  return {
+    type: 'DEST_LOAD',
+    destinations,
+  };
+}
+
+export function loadSavedDestinations() {
+  return (dispatch: Function) => {
+    AsyncStorage.getItem('savedDestinations')
+      .then(destinations => dispatch(setDestinations(JSON.parse(destinations))));
   };
 }
 

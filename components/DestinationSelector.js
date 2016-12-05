@@ -16,6 +16,8 @@ import {
   destinationAdd,
   destinationRemove,
 } from '../actions/destinationActions';
+
+import StationPicker from './StationPicker';
 // import tracker from '../native/ga';
 
 
@@ -31,9 +33,10 @@ type Props = {
 
 class DestinationSelector extends React.Component {
   props: Props;
+  state = {adding: false};
 
-  add = () => {
-    this.props.add('24TH');
+  add = (code) => {
+    this.props.add(code);
   };
 
   remove = () => {
@@ -61,7 +64,7 @@ class DestinationSelector extends React.Component {
         </Text>
 
         <TouchableOpacity onPress={() => select(null)}>
-          <Icon name="close" size={20} color="#E6E6E6" />
+          <Icon name="times" size={20} color="#E6E6E6" />
         </TouchableOpacity>
       </View>
     );
@@ -70,20 +73,43 @@ class DestinationSelector extends React.Component {
   renderSome() {
     const {savedDestinations} = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.leftRight]}>
         {savedDestinations.map(this.renderDest)}
-        <TouchableOpacity onPress={this.remove}>
-          <Icon name="close" size={20} color="#E6E6E6" />
+        <TouchableOpacity style={styles.container} onPress={() => this.setState({adding: true})}>
+          <Icon name="plus-square" size={20} color="#E6E6E6" />
         </TouchableOpacity>
+        <TouchableOpacity onPress={this.remove}>
+          <Icon name="times" size={20} color="#E6E6E6" />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  renderPicker() {
+    return (
+      <View style={styles.pickerContainer}>
+        <View style={styles.leftRight}>
+          <TouchableOpacity onPress={() => this.setState({adding: false})}>
+            <Text style={styles.genericText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+        <StationPicker
+          onSelect={(code) => {
+            this.add(code);
+            this.props.select(code);
+            this.setState({adding: false});
+          }}
+          onClose={() => this.setState({adding: false})}
+        />
       </View>
     );
   }
 
   renderEmpty() {
     return (
-      <TouchableOpacity style={styles.container} onPress={this.add}>
+      <TouchableOpacity style={styles.container} onPress={() => this.setState({adding: true})}>
         <Text style={styles.label}>Add a destination</Text>
-        <Icon name="plus" size={20} color="#E6E6E6" />
+        <Icon name="plus-square" size={20} color="#E6E6E6" />
       </TouchableOpacity>
     );
   }
@@ -91,7 +117,9 @@ class DestinationSelector extends React.Component {
   render() {
     const {savedDestinations, selectedDestinationCode} = this.props;
     let body;
-    if (!savedDestinations.length) {
+    if (this.state.adding) {
+      body = this.renderPicker();
+    } else if (!savedDestinations.length) {
       body = this.renderEmpty();
     } else if (selectedDestinationCode) {
       body = this.renderSelected();

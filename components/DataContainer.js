@@ -24,6 +24,10 @@ import {
   refreshStations,
 } from '../actions/dataActions';
 
+import {
+  loadSavedDestinations,
+} from '../actions/destinationActions';
+
 import tracker from '../native/ga';
 
 import type {Station} from '../reducers/appStore';
@@ -49,6 +53,7 @@ type Props = {
   refreshingStations: bool,
   refreshStations: Function,
   fetchStations: Function,
+  loadSavedDestinations: Function,
 };
 
 class DataContainer extends React.Component {
@@ -63,6 +68,7 @@ class DataContainer extends React.Component {
     this.props.startLocation();
     this.props.fetchStations();
     this.props.setupDataFetching();
+    this.props.loadSavedDestinations();
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -128,6 +134,7 @@ const mapDispatchToProps = (dispatch: Function) =>
     fetchWalkingDirections,
     refreshStations,
     fetchStations,
+    loadSavedDestinations,
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataContainer);

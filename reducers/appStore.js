@@ -1,5 +1,5 @@
 /* @flow */
-
+import {AsyncStorage} from 'react-native';
 import {getClosestEntrance, isSameLocation} from '../utils/distance';
 
 import type {Location} from '../actions/dataActions';
@@ -186,15 +186,26 @@ export default function(state: State = initialState, action: Object) {
       };
     }
     case 'DEST_ADD': {
+      const alreadyPresent = state.savedDestinations.some(d => d === action.code);
+      const savedDestinations = alreadyPresent ? state.savedDestinations : [...state.savedDestinations, action.code];
+      AsyncStorage.setItem('savedDestinations', JSON.stringify(savedDestinations));
       return {
         ...state,
-        savedDestinations: [...state.savedDestinations, action.code],
+        savedDestinations,
       };
     }
     case 'DEST_REMOVE': {
+      AsyncStorage.setItem('savedDestinations', JSON.stringify([]));
       return {
         ...state,
-        savedDestinations: state.savedDestinations.filter(d => d !== action.code),
+        // savedDestinations: state.savedDestinations.filter(d => d !== action.code),
+        savedDestinations: [],
+      };
+    }
+    case 'DEST_LOAD': {
+      return {
+        ...state,
+        savedDestinations: action.destinations || [],
       };
     }
     default:
