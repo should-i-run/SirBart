@@ -47,7 +47,7 @@ type Props = {
   stations: ?Object,
   location: ?Object,
   locationError: bool,
-  linesForStations: ?Trip[],
+  trips: ?Trip[],
   startLocation: Function,
   setupDataFetching: Function,
   fetchWalkingDirections: (s: Station) => void,
@@ -97,7 +97,7 @@ class DataContainer extends React.Component {
   }
 
   render() {
-    const {location, stations, locationError, linesForStations} = this.props;
+    const {location, stations, locationError, trips} = this.props;
     return (
       <View style={{flex: 1}}>
         <ScrollView
@@ -112,7 +112,7 @@ class DataContainer extends React.Component {
         >
           <DestinationSelector />
           {stations && stations.map((s, i) => {
-            const selectedLines = linesForStations && linesForStations.find(l => l.code === s.abbr);
+            const selectedLines = trips && trips.find(l => l.code === s.abbr);
             return (
               <StationView
                 key={i}
@@ -134,7 +134,7 @@ const mapStateToProps = state => ({
   location: state.location,
   stations: state.stations,
   refreshingStations: state.refreshingStations,
-  linesForStations: state.linesForStations,
+  trips: state.trips,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>

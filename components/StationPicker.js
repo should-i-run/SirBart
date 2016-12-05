@@ -11,6 +11,7 @@ import styles from './StationPicker.styles';
 
 type Props = {
   onSelect: Function,
+  selectedValue: string,
 };
 
 class StationPicker extends React.Component {
@@ -21,7 +22,7 @@ class StationPicker extends React.Component {
       <Picker
         style={styles.picker}
         itemStyle={styles.item}
-        selectedValue="EMBR"
+        selectedValue={this.props.selectedValue}
         onValueChange={this.props.onSelect}>
         {Object.keys(stationNames).map(k =>
           <Picker.Item

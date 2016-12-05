@@ -27,7 +27,11 @@ export default StyleSheet.create({
     shadowOpacity: 1,
     backgroundColor: '#19212C',
     padding: 10,
-
+  },
+  listContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   genericText,
   label: {
@@ -36,6 +40,15 @@ export default StyleSheet.create({
   },
   leftRight: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  destToken: {
+    marginRight: 8,
+    maxWidth: 120,
+    padding: 6,
+    borderRadius: 4,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#FFF',
+    height: 35,
   },
 });

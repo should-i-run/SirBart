@@ -54,7 +54,7 @@ type State = {
   selectionData: ?Object,
   selectedDestinationCode: ?string,
   savedDestinations: string[],
-  linesForStations: ?Trip[],
+  trips: ?Trip[],
 };
 
 const initialState: State = {
@@ -68,7 +68,7 @@ const initialState: State = {
   selectionKind: null,
   selectedDestinationCode: null,
   savedDestinations: [],
-  linesForStations: null,
+  trips: null,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -191,7 +191,7 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         selectedDestinationCode: action.code,
-        linesForStations: null,
+        trips: null,
       };
     }
     case 'DEST_ADD': {
@@ -220,9 +220,10 @@ export default function(state: State = initialState, action: Object) {
 
     case 'TRIPS_LOAD': {
       const trips = action.trips.map(tripsForStation => {
-        const code = tripsForStation[0].leg.origin;
+        let code;
         const lines = tripsForStation.map(t => {
           const legs = Array.isArray(t.leg) ? t.leg : [t.leg];
+          code = legs[0].origin;
           return legs[0].trainHeadStation;
         });
         return {
@@ -232,7 +233,7 @@ export default function(state: State = initialState, action: Object) {
       });
       return {
         ...state,
-        linesForStations: trips,
+        trips,
       };
     }
     default:
