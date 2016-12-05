@@ -12,10 +12,11 @@ import {
 } from 'react-native';
 
 import {
-  destinationSelect,
+  selectDestination,
   destinationAdd,
   destinationRemove,
 } from '../actions/destinationActions';
+import type {Station} from '../reducers/appStore';
 
 import StationPicker from './StationPicker';
 // import tracker from '../native/ga';
@@ -26,6 +27,7 @@ import styles from './DestinationSelector.styles';
 type Props = {
   savedDestinations: string[],
   selectedDestinationCode: ?string,
+  stations: ?Station[],
   add: Function,
   remove: Function,
   select: Function,
@@ -43,18 +45,25 @@ class DestinationSelector extends React.Component {
     this.props.remove('24TH');
   };
 
+  select = (code: ?string) => {
+    if (this.props.stations) {
+      const stationCodes = this.props.stations.map((s: Station) => s.abbr);
+      this.props.select(code, stationCodes);
+    }
+  };
+
   renderDest = (code: string) => {
     return (
       <TouchableOpacity
         key={code}
-        onPress={() => this.props.select(code)}>
+        onPress={() => this.select(code)}>
         <Text style={styles.label}>{code}</Text>
       </TouchableOpacity>
     );
   };
 
   renderSelected() {
-    const {selectedDestinationCode, select} = this.props;
+    const {selectedDestinationCode} = this.props;
     invariant(selectedDestinationCode, 'renderSelected called without a selectedDestinationCode');
     return (
       <View style={styles.container}>
@@ -63,7 +72,7 @@ class DestinationSelector extends React.Component {
           {` ${selectedDestinationCode}`}
         </Text>
 
-        <TouchableOpacity onPress={() => select(null)}>
+        <TouchableOpacity onPress={() => this.select(null)}>
           <Icon name="times" size={20} color="#E6E6E6" />
         </TouchableOpacity>
       </View>
@@ -96,7 +105,7 @@ class DestinationSelector extends React.Component {
         <StationPicker
           onSelect={(code) => {
             this.add(code);
-            this.props.select(code);
+            this.select(code);
             this.setState({adding: false});
           }}
           onClose={() => this.setState({adding: false})}
@@ -137,13 +146,14 @@ class DestinationSelector extends React.Component {
 const mapStateToProps = state => ({
   savedDestinations: state.savedDestinations,
   selectedDestinationCode: state.selectedDestinationCode,
+  stations: state.stations,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>
   bindActionCreators({
     add: destinationAdd,
     remove: destinationRemove,
-    select: destinationSelect,
+    select: selectDestination,
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DestinationSelector);

@@ -13,13 +13,14 @@ import styles from './Station.styles';
 import Departure from './Departure';
 import tracker from '../native/ga';
 
-import type {Station, Line} from '../reducers/appStore';
+import type {Station, Line, Trip} from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 
 type Props = {
   station: Station,
+  selectedLines: ?Trip,
 };
 
 export default class StationView extends React.Component {
@@ -80,6 +81,7 @@ export default class StationView extends React.Component {
   }
 
   render() {
+    const {selectedLines} = this.props;
     const s = this.props.station;
     const {distance, time} = (this.props.station.walkingDirections || {});
     const isMakable = estimate => parseInt(estimate.minutes, 10) >= (time || 999);
@@ -91,10 +93,14 @@ export default class StationView extends React.Component {
       return parseInt(aMinutes, 10) - parseInt(bMinutes, 10);
     };
 
-    const north = s.lines
+    const selected = selectedLines ?
+      s.lines.filter(l => selectedLines.lines.includes(l.abbreviation)) :
+      s.lines;
+
+    const north = selected
       .filter(d => d.estimates[0].direction === 'North')
       .sort(makableDepartureTime);
-    const south = s.lines
+    const south = selected
       .filter(d => d.estimates[0].direction === 'South')
       .sort(makableDepartureTime);
     return (

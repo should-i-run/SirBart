@@ -1,5 +1,6 @@
 /* @flow */
 import {AsyncStorage} from 'react-native';
+import {uniq} from 'lodash';
 import {getClosestEntrance, isSameLocation} from '../utils/distance';
 
 import type {Location} from '../actions/dataActions';
@@ -35,6 +36,11 @@ export type Station = {
   walkingDirections: WalkingDirections,
 };
 
+export type Trip = {
+  code: string,
+  lines: string[],
+};
+
 type State = {
   stations: ?Station[],
   location: ?{
@@ -48,6 +54,7 @@ type State = {
   selectionData: ?Object,
   selectedDestinationCode: ?string,
   savedDestinations: string[],
+  linesForStations: ?Trip[],
 };
 
 const initialState: State = {
@@ -61,6 +68,7 @@ const initialState: State = {
   selectionKind: null,
   selectedDestinationCode: null,
   savedDestinations: [],
+  linesForStations: null,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -183,6 +191,7 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         selectedDestinationCode: action.code,
+        linesForStations: null,
       };
     }
     case 'DEST_ADD': {
@@ -206,6 +215,24 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         savedDestinations: action.destinations || [],
+      };
+    }
+
+    case 'TRIPS_LOAD': {
+      const trips = action.trips.map(tripsForStation => {
+        const code = tripsForStation[0].leg.origin;
+        const lines = tripsForStation.map(t => {
+          const legs = Array.isArray(t.leg) ? t.leg : [t.leg];
+          return legs[0].trainHeadStation;
+        });
+        return {
+          code,
+          lines: uniq(lines),
+        };
+      });
+      return {
+        ...state,
+        linesForStations: trips,
       };
     }
     default:

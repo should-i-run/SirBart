@@ -30,7 +30,7 @@ import {
 
 import tracker from '../native/ga';
 
-import type {Station} from '../reducers/appStore';
+import type {Station, Trip} from '../reducers/appStore';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,6 +47,7 @@ type Props = {
   stations: ?Object,
   location: ?Object,
   locationError: bool,
+  linesForStations: ?Trip[],
   startLocation: Function,
   setupDataFetching: Function,
   fetchWalkingDirections: (s: Station) => void,
@@ -96,7 +97,7 @@ class DataContainer extends React.Component {
   }
 
   render() {
-    const {location, stations, locationError} = this.props;
+    const {location, stations, locationError, linesForStations} = this.props;
     return (
       <View style={{flex: 1}}>
         <ScrollView
@@ -110,8 +111,17 @@ class DataContainer extends React.Component {
           style={styles.container}
         >
           <DestinationSelector />
-          {stations && stations.map((s, i) =>
-            <StationView key={i} station={s} location={location} />)}
+          {stations && stations.map((s, i) => {
+            const selectedLines = linesForStations && linesForStations.find(l => l.code === s.abbr);
+            return (
+              <StationView
+                key={i}
+                station={s}
+                location={location}
+                selectedLines={selectedLines}
+              />
+            );
+          })}
           {locationError && <Text>Location Error</Text>}
         </ScrollView>
         <Selector />
@@ -124,6 +134,7 @@ const mapStateToProps = state => ({
   location: state.location,
   stations: state.stations,
   refreshingStations: state.refreshingStations,
+  linesForStations: state.linesForStations,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>
