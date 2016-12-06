@@ -36,7 +36,6 @@ export default StyleSheet.create({
   genericText,
   label: {
     ...genericText,
-    marginRight: 10,
   },
   leftRight: {
     flexDirection: 'row',
@@ -44,11 +43,20 @@ export default StyleSheet.create({
   },
   destToken: {
     marginRight: 8,
-    maxWidth: 120,
+    maxWidth: 140,
     padding: 6,
-    borderRadius: 4,
+    borderRadius: 2,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#FFF',
     height: 35,
+  },
+  clearToken: {
+    marginRight: 8,
+    padding: 5,
+    borderRadius: 2,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#FFF',
+    height: 30,
+    width: 45,
   },
 });

@@ -1,6 +1,8 @@
 /* @flow */
 import {AsyncStorage} from 'react-native';
 
+import tracker from '../native/ga';
+
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart/directions';
 
 export function destinationAdd(code: string) {
@@ -60,7 +62,7 @@ function fetchData(trips: Object[], dispatch) {
   })
   .catch((error) => {
     console.warn(error);
-    // TODO set data error state
+    tracker.trackEvent('api', 'fetchTrips error');
   });
 }
 

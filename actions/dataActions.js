@@ -2,6 +2,7 @@
 import {NativeModules} from 'react-native';
 
 import type {Station} from '../reducers/appStore';
+import tracker from '../native/ga';
 
 const {WalkingDirectionsManager} = NativeModules;
 
@@ -44,7 +45,7 @@ function fetchData(dispatch) {
   })
   .catch((error) => {
     console.warn(error);
-    // TODO set data error state
+    tracker.trackEvent('api', 'fetchData stations error');
   });
 }
 

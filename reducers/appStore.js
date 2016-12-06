@@ -120,12 +120,16 @@ export default function(state: State = initialState, action: Object) {
             closestEntranceLoc: getClosestEntrance(s, state.location),
           };
         });
+      const selectedDestinationCode = newStations.some(s => s.abbr === state.selectedDestinationCode) ?
+        null :
+        state.selectedDestinationCode;
       return {
         ...state,
         stations: newStations,
         locationError: false,
         refreshingStations: false,
         selectorShown: false,
+        selectedDestinationCode,
       };
     }
 

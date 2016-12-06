@@ -21,6 +21,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     padding: 10,
+    paddingBottom: 30,
     shadowColor: '#19212C',
     shadowRadius: 10,
     shadowOpacity: 1,
@@ -33,5 +34,24 @@ export default StyleSheet.create({
     top: 0,
     height: 40,
     width: 40,
+  },
+  token: {
+    marginRight: 30,
+    padding: 5,
+    borderRadius: 3,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#FFF',
+    height: 35,
+  },
+  leftRight: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  stationContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    flex: 1,
   },
 });

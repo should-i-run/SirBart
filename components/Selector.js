@@ -9,6 +9,7 @@ import {
   Animated,
   Linking,
   TouchableOpacity,
+  View,
 } from 'react-native';
 
 import {
@@ -75,20 +76,30 @@ class Selector extends React.Component {
   renderDistance(station: Station) {
     const {distance} = station.walkingDirections;
     return (
-      <TouchableOpacity onPress={this.goToDirections}>
-        <Text style={styles.title}>{typeof distance === 'number' ? distance.toLocaleString() : '...'} meters</Text>
-        <Text style={styles.genericText}>Get walking directions</Text>
-      </TouchableOpacity>
+      <View style={styles.stationContainer}>
+        <View style={[styles.leftRight, {marginRight: 30}]}>
+          <Text numberOfLines={1} style={[styles.genericText, {flex: 1}]}>{station.name}</Text>
+          <Text numberOfLines={1} style={[styles.title, {flex: 1, marginLeft: 10}]}>{typeof distance === 'number' ? distance.toLocaleString() : '...'} meters</Text>
+        </View>
+        <TouchableOpacity onPress={this.goToDirections}>
+          <Text style={[styles.genericText, styles.token]}>
+            See on Map
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 
   renderDeparture(station: Station, line: Line, estimate: Estimate) {
-    // const {distance} = station.walkingDirections; // TODO calculate color in the store and use here.
+    const min = estimate.minutes;
+    const desc = min === 'Leaving' ?
+      'Leaving now' :
+      `${min} minute${parseInt(min, 10) !== 1 ? 's' : ''}`;
     return (
-      <TouchableOpacity>
-        <Text style={styles.title}>{estimate.minutes} minutes</Text>
-        <Text style={[styles.genericText, {color: estimate.hexcolor}]}>{estimate.length} cars</Text>
-      </TouchableOpacity>
+      <View>
+        <Text style={styles.title}>{desc}</Text>
+        <Text style={[styles.genericText]}>{estimate.length} cars</Text>
+      </View>
     );
   }
 

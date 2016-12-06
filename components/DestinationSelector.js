@@ -23,8 +23,7 @@ import type {Station} from '../reducers/appStore';
 import StationPicker from './StationPicker';
 import {stationNames} from '../utils/stations';
 
-// import tracker from '../native/ga';
-
+import tracker from '../native/ga';
 
 import styles from './DestinationSelector.styles';
 
@@ -42,20 +41,29 @@ class DestinationSelector extends React.Component {
   props: Props;
   state = {adding: false, code: 'EMBR'};
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props, prevState: Object) {
     const {savedDestinations, stations, selectedDestinationCode} = this.props;
     const oldDests = prevProps.savedDestinations.filter(d => !prevProps.stations || !prevProps.stations.some(s => s.abbr === d));
     const newDests = savedDestinations.filter(d => !stations || !stations.some(s => s.abbr === d));
     if (newDests.length !== oldDests.length && newDests.length === 1 && !selectedDestinationCode) {
+      tracker.trackEvent('auto', 'auto-select-destination');
       this.select(newDests[0]);
+    }
+    if (!prevState.adding && this.state.adding) {
+      tracker.trackScreenView('destination-picker');
+      tracker.trackEvent('interaction', 'destination-picker-open');
+    } else if (prevState.adding && !this.state.adding) {
+      tracker.trackEvent('interaction', 'destination-picker-close');
     }
   }
 
   add = (code) => {
+    tracker.trackEvent('interaction', 'add-destination');
     this.props.add(code);
   };
 
   remove = () => {
+    tracker.trackEvent('interaction', 'remove-destinations');
     this.props.remove();
   };
 
@@ -63,6 +71,7 @@ class DestinationSelector extends React.Component {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
       if (!stationCodes.includes(code)) {
+        tracker.trackEvent('interaction', 'select-destination');
         this.props.select(code, stationCodes);
       }
     }
@@ -87,15 +96,20 @@ class DestinationSelector extends React.Component {
     const {selectedDestinationCode, trips} = this.props;
     invariant(selectedDestinationCode, 'renderSelected called without a selectedDestinationCode');
     return (
-      <View style={styles.container}>
-        <Text style={styles.label} key={selectedDestinationCode}>
-          Trains to
-          {` ${stationNames[selectedDestinationCode]}`}
-        </Text>
-        <TouchableOpacity onPress={() => this.select(null)}>
-          <Icon name="times" size={20} color="#E6E6E6" />
+      <View style={[styles.container, styles.leftRight]}>
+        <View style={[styles.leftRight, {flex: 1}]}>
+          <Text style={styles.label} key={selectedDestinationCode}>
+            Trains to
+            {` ${stationNames[selectedDestinationCode]}`}
+          </Text>
+          {!trips && <ActivityIndicator style={{marginRight: 10}} />}
+        </View>
+        <TouchableOpacity style={[styles.clearToken]} onPress={() => this.select(null)}>
+          {/* <Icon name="times" size={20} color="#E6E6E6" /> */}
+          <Text style={[styles.genericText, {fontSize: 14}]}>
+            Clear
+          </Text>
         </TouchableOpacity>
-        {!trips && <ActivityIndicator style={{marginLeft: 10}} />}
       </View>
     );
   }
@@ -104,7 +118,7 @@ class DestinationSelector extends React.Component {
     const {savedDestinations} = this.props;
     return (
       <View style={[styles.container, styles.leftRight]} horizontal>
-        <ScrollView style={{height: 40}} horizontal>
+        <ScrollView style={{height: 40}} horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.listContainer}>
             {savedDestinations.map(this.renderDest)}
             <TouchableOpacity style={styles.container} onPress={() => this.setState({adding: true})}>
@@ -147,7 +161,7 @@ class DestinationSelector extends React.Component {
     return (
       <TouchableOpacity style={styles.container} onPress={() => this.setState({adding: true})}>
         <Text style={styles.label}>Add a destination</Text>
-        <Icon name="plus-square" size={20} color="#E6E6E6" />
+        <Icon style={{marginLeft: 10}} name="plus-square" size={20} color="#E6E6E6" />
       </TouchableOpacity>
     );
   }

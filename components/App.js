@@ -4,6 +4,7 @@ import {createStore, applyMiddleware} from 'redux';
 import React from 'react';
 import {StatusBar} from 'react-native';
 import thunkMiddleware from 'redux-thunk';
+import codePush from 'react-native-code-push';
 
 import DataContainer from './DataContainer';
 import appStore from '../reducers/appStore';
@@ -24,4 +25,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default codePush(App);
