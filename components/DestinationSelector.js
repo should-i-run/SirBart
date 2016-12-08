@@ -105,7 +105,6 @@ class DestinationSelector extends React.Component {
           {!trips && <ActivityIndicator style={{marginRight: 10}} />}
         </View>
         <TouchableOpacity style={[styles.clearToken]} onPress={() => this.select(null)}>
-          {/* <Icon name="times" size={20} color="#E6E6E6" /> */}
           <Text style={[styles.genericText, {fontSize: 14}]}>
             Clear
           </Text>

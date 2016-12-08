@@ -65,7 +65,7 @@ export default class StationView extends React.Component {
         <View
           style={{marginLeft: 10, flex: 1}}>
           <Text style={[styles.genericText, {fontSize: 16, color: '#AAA', fontWeight: '400', marginBottom: 4}]}>
-            Departure times aren’t avaliable.
+            No departure times avaliable.
           </Text>
           <TouchableOpacity
             onPress={this.goToSchedule}>

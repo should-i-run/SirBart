@@ -83,7 +83,7 @@ class Selector extends React.Component {
         </View>
         <TouchableOpacity onPress={this.goToDirections}>
           <Text style={[styles.genericText, styles.token]}>
-            See on Map
+            See route
           </Text>
         </TouchableOpacity>
       </View>
