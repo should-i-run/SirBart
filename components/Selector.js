@@ -10,6 +10,7 @@ import {
   Linking,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 
 import {
@@ -69,7 +70,11 @@ class Selector extends React.Component {
     tracker.trackEvent('interaction', 'go-to-directions');
     if (this.props.selectionData) {
       const {lat, lng} = this.props.selectionData.station.closestEntranceLoc;
-      Linking.openURL(`http://maps.apple.com/?daddr=${lat},${lng}&dirflg=w&t=r`);
+      const url = Platform.select({
+        android: `google.navigation:q=${lat},${lng}&mode=w`,
+        ios: `http://maps.apple.com/?daddr=${lat},${lng}&dirflg=w&t=r`,
+      });
+      Linking.openURL(url);
     }
   }
 
