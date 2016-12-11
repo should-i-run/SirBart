@@ -1,6 +1,7 @@
 /* @flow */
 import {
   StyleSheet,
+  Platform,
 } from 'react-native';
 
 import {genericText} from '../styles';
@@ -8,7 +9,6 @@ import {genericText} from '../styles';
 export default StyleSheet.create({
   wrapper: {
     height: 45,
-    zIndex: 100,
   },
   container: {
     flexDirection: 'row',
@@ -17,7 +17,8 @@ export default StyleSheet.create({
   },
   pickerContainer: {
     position: 'absolute',
-    zIndex: 100,
+    zIndex: Platform.select({ios: 100, android: 0}),
+    elevation: 5,
     top: 0,
     left: 0,
     right: 0,

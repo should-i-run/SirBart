@@ -4,3 +4,7 @@ export const genericText = {
   fontSize: 18,
   fontWeight: '200',
 };
+
+export const colors = {
+  background: '#252F39',
+};

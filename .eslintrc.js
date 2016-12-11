@@ -29,5 +29,6 @@ module.exports = {
   globals: {
     navigator: true,
     fetch: true,
+    __DEV__: true,
   },
 };

@@ -5,7 +5,6 @@ import React from 'react';
 
 import {
   ScrollView,
-  StyleSheet,
   Text,
   RefreshControl,
   View,
@@ -30,14 +29,9 @@ import {
 
 import tracker from '../native/ga';
 
-import type {Station, Trip} from '../reducers/appStore';
+import {colors} from '../styles';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#252F39',
-    paddingTop: 30,
-  },
-});
+import type {Station, Trip} from '../reducers/appStore';
 
 type State = {
   fakeRefreshing: false,
@@ -99,7 +93,8 @@ class DataContainer extends React.Component {
   render() {
     const {location, stations, locationError, trips} = this.props;
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: colors.background}}>
+        <DestinationSelector />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -108,9 +103,7 @@ class DataContainer extends React.Component {
               tintColor="#E6E6E6"
             />
           }
-          style={styles.container}
         >
-          <DestinationSelector />
           {stations && stations.map((s, i) => {
             const selectedLines = trips && trips.find(l => l.code === s.abbr);
             return (

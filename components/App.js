@@ -14,6 +14,7 @@ const store = createStore(appStore, applyMiddleware(thunkMiddleware));
 class App extends React.Component {
   componentWillMount() {
     StatusBar.setBarStyle('light-content');
+    StatusBar.setBackgroundColor('#252F39');
   }
 
   render() {
