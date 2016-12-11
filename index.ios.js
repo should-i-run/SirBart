@@ -9,6 +9,6 @@ import {
 // delete GLOBAL.XMLHttpRequest;
 // GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest;
 
-import App from './components/App';
+import App from './src/components/App';
 
 AppRegistry.registerComponent('SirBart', () => App);
