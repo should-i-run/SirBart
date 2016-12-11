@@ -14,6 +14,6 @@ export default StyleSheet.create({
     width: 350,
     height: Platform.select({ios: 200, android: 30}),
     elevation: 5,
-    color: Platform.select({ios: 'inherit', android: '#FFF'}),
+    ...(Platform.OS === 'android' ? {color: '#FFF'} : {}),
   },
 });

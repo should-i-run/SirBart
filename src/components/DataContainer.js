@@ -8,6 +8,7 @@ import {
   Text,
   RefreshControl,
   View,
+  Platform,
 } from 'react-native';
 
 import StationView from './Station';
@@ -93,7 +94,7 @@ class DataContainer extends React.Component {
   render() {
     const {location, stations, locationError, trips} = this.props;
     return (
-      <View style={{flex: 1, backgroundColor: colors.background}}>
+      <View style={{flex: 1, backgroundColor: colors.background, paddingTop: Platform.select({android: 0, ios: 30})}}>
         <DestinationSelector />
         <ScrollView
           refreshControl={

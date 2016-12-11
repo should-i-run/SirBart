@@ -2,7 +2,7 @@
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import React from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, Platform} from 'react-native';
 import thunkMiddleware from 'redux-thunk';
 import codePush from 'react-native-code-push';
 
@@ -13,8 +13,11 @@ const store = createStore(appStore, applyMiddleware(thunkMiddleware));
 
 class App extends React.Component {
   componentWillMount() {
-    StatusBar.setBarStyle('light-content');
-    StatusBar.setBackgroundColor('#252F39');
+    if (Platform.OS === 'ios') {
+      StatusBar.setBarStyle('light-content');
+    } else {
+      StatusBar.setBackgroundColor('#252F39');
+    }
   }
 
   render() {

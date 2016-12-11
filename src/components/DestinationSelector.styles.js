@@ -9,6 +9,7 @@ import {genericText} from '../styles';
 export default StyleSheet.create({
   wrapper: {
     height: 45,
+    ...(Platform.OS === 'ios' ? {zIndex: 100} : {}),
   },
   container: {
     flexDirection: 'row',
