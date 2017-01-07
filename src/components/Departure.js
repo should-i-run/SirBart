@@ -12,7 +12,7 @@ import styles from './Station.styles';
 import {showSelector, hideSelector} from '../actions/selectorActions';
 import tracker from '../native/ga';
 
-import type {Station, Estimate, Line} from '../reducers/appStore';
+import type {Station, Estimate, Line, Trip} from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
@@ -21,6 +21,7 @@ type Props = {
   station: Station,
   estimate: Estimate,
   line: Line,
+  tripForLine: ?Trip,
   showSelector: Function,
   hideSelector: Function,
   selectorShown: bool,
@@ -32,7 +33,7 @@ class Departure extends React.Component {
   props: Props;
 
   toggle = () => {
-    const {selectorShown, selectionData, selectionKind, estimate, station, line} = this.props;
+    const {selectorShown, selectionData, selectionKind, estimate, station, line, tripForLine} = this.props;
     if (selectorShown && selectionData && selectionKind === 'departure') {
       const isSelected = selectionData.estimate.minutes === estimate.minutes;
       if (isSelected) {
@@ -42,7 +43,7 @@ class Departure extends React.Component {
         return;
       }
     }
-    this.props.showSelector('departure', {station, line, estimate});
+    this.props.showSelector('departure', {station, line, estimate, tripForLine});
     tracker.trackEvent('interaction', 'show-selector-departure');
   }
 

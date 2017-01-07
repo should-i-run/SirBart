@@ -106,13 +106,13 @@ class DataContainer extends React.Component {
           }
         >
           {stations && stations.map((s, i) => {
-            const selectedLines = trips && trips.find(l => l.code === s.abbr);
+            const tripForStation = trips && trips.find(l => l.code === s.abbr);
             return (
               <StationView
                 key={i}
                 station={s}
                 location={location}
-                selectedLines={selectedLines}
+                tripForStation={tripForStation}
               />
             );
           })}

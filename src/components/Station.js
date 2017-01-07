@@ -20,7 +20,7 @@ const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 
 type Props = {
   station: Station,
-  selectedLines: ?Trip,
+  tripForStation: ?Trip,
 };
 
 export default class StationView extends React.Component {
@@ -32,11 +32,14 @@ export default class StationView extends React.Component {
   };
 
   renderLine = (line: Line, i: number) => {
-    const {destination, estimates} = line;
+    const {tripForStation} = this.props;
+    const {destination, estimates, abbreviation} = line;
     while (estimates.length < 3) {
       // $FlowFixMe
       estimates.push('blank');
     }
+
+    const tripForLine = tripForStation ? tripForStation.lines.find(l => l.abbreviation === abbreviation) : undefined;
     return (
       <View key={i} style={styles.line}>
         <Text
@@ -52,6 +55,7 @@ export default class StationView extends React.Component {
               line={line}
               estimate={estimate}
               station={this.props.station}
+              tripForLine={tripForLine}
             />))}
         </View>
       </View>
@@ -81,7 +85,7 @@ export default class StationView extends React.Component {
   }
 
   render() {
-    const {selectedLines} = this.props;
+    const {tripForStation} = this.props;
     const s = this.props.station;
     const {distance, time} = (this.props.station.walkingDirections || {});
     const isMakable = estimate => parseInt(estimate.minutes, 10) >= (time || 999);
@@ -93,8 +97,8 @@ export default class StationView extends React.Component {
       return parseInt(aMinutes, 10) - parseInt(bMinutes, 10);
     };
 
-    const selected = selectedLines ?
-      s.lines.filter(l => selectedLines.lines.includes(l.abbreviation)) :
+    const selected = tripForStation ?
+      s.lines.filter(l => tripForStation.lines.map((line) => line.abbreviation).includes(l.abbreviation)) :
       s.lines;
 
     const north = selected

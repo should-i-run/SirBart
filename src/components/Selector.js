@@ -95,7 +95,7 @@ class Selector extends React.Component {
     );
   }
 
-  renderDeparture(station: Station, line: Line, estimate: Estimate) {
+  renderDeparture(station: Station, line: Line, estimate: Estimate, tripForLine: {timeEstimate: number}) {
     const min = estimate.minutes;
     const desc = min === 'Leaving' ?
       'Leaving now' :
@@ -104,6 +104,7 @@ class Selector extends React.Component {
       <View>
         <Text style={styles.title}>{desc}</Text>
         <Text style={[styles.genericText]}>{estimate.length} cars</Text>
+        <Text style={[styles.genericText]}>Duration: {tripForLine.timeEstimate} minutes</Text>
       </View>
     );
   }
@@ -116,7 +117,7 @@ class Selector extends React.Component {
         stuff = this.renderDistance(selectionData.station);
       }
       if (selectionKind === 'departure' && selectionData.station) {
-        stuff = this.renderDeparture(selectionData.station, selectionData.line, selectionData.estimate);
+        stuff = this.renderDeparture(selectionData.station, selectionData.line, selectionData.estimate, selectionData.tripForLine);
       }
       const bottom = this.height.interpolate({
         inputRange: [0, 1],
