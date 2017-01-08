@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
 import {
   Text,
@@ -95,16 +96,30 @@ class Selector extends React.Component {
     );
   }
 
-  renderDeparture(station: Station, line: Line, estimate: Estimate, tripForLine: {timeEstimate: number}) {
+  renderDeparture(station: Station, line: Line, estimate: Estimate, tripForLine?: {timeEstimate?: string}) {
     const min = estimate.minutes;
-    const desc = min === 'Leaving' ?
-      'Leaving now' :
-      `${min} minute${parseInt(min, 10) !== 1 ? 's' : ''}`;
+    // const desc = min === 'Leaving' ?
+    //   'Leaving now' :
+    //   `${min} minute${parseInt(min, 10) !== 1 ? 's' : ''}`;
+
+    const renderArrive = (timeEstimate: string) => {
+      const minNumber = min === 'Leaving' ? 0 : min;
+      const arriveTime = moment().add((parseInt(minNumber, 10) + parseInt(timeEstimate, 10)), 'minutes');
+      return (
+        <View style={{marginLeft: 20}}>
+          <Text style={[styles.genericText]}>Duration {timeEstimate} minutes</Text>
+          <Text style={[styles.genericText]}>Arrives around {arriveTime.format('h:mm a')}</Text>
+        </View>
+      );
+    };
+
     return (
-      <View>
-        <Text style={styles.title}>{desc}</Text>
-        <Text style={[styles.genericText]}>{estimate.length} cars</Text>
-        <Text style={[styles.genericText]}>Duration: {tripForLine.timeEstimate} minutes</Text>
+      <View style={{flexDirection: 'row'}}>
+        <View>
+          {/* <Text style={styles.title}>{desc}</Text> */}
+          <Text style={[styles.genericText]}>{estimate.length} cars</Text>
+        </View>
+        {tripForLine && renderArrive(tripForLine.timeEstimate)}
       </View>
     );
   }

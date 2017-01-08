@@ -55,6 +55,7 @@ type State = {
   selectorShown: bool,
   selectionKind: ?'distance',
   selectionData: ?Object,
+  selectionKey: ?string,
   selectedDestinationCode: ?string,
   savedDestinations: string[],
   trips: ?Trip[],
@@ -69,6 +70,7 @@ const initialState: State = {
   selectorShown: false,
   selectionData: null,
   selectionKind: null,
+  selectionKey: null,
   selectedDestinationCode: null,
   savedDestinations: [],
   trips: null,
@@ -186,12 +188,14 @@ export default function(state: State = initialState, action: Object) {
         selectorShown: true,
         selectionKind: action.kind,
         selectionData: action.data,
+        selectionKey: action.selectionKey,
       };
     }
     case 'HIDE_SELECTOR': {
       return {
         ...state,
         selectorShown: false,
+        selectionKey: null,
       };
     }
     case 'DEST_SELECT': {

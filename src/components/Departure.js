@@ -17,6 +17,10 @@ import type {Station, Estimate, Line, Trip} from '../reducers/appStore';
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 
+function getKey(station: Station, line: Line, estimate: Estimate) {
+  return `${station.abbr}-${line.destination}-${estimate.minutes}`;
+}
+
 type Props = {
   station: Station,
   estimate: Estimate,
@@ -27,6 +31,7 @@ type Props = {
   selectorShown: bool,
   selectionData: ?Object,
   selectionKind: 'departure' | 'distance',
+  selectionKey: ?string,
 };
 
 class Departure extends React.Component {
@@ -43,12 +48,12 @@ class Departure extends React.Component {
         return;
       }
     }
-    this.props.showSelector('departure', {station, line, estimate, tripForLine});
+    this.props.showSelector('departure', {station, line, estimate, tripForLine}, getKey(station, line, estimate));
     tracker.trackEvent('interaction', 'show-selector-departure');
   }
 
   render = () => {
-    const {estimate, station} = this.props;
+    const {estimate, station, line, selectionKey} = this.props;
     if (estimate === 'blank') {
       return (
         <View style={styles.departure}>
@@ -70,10 +75,11 @@ class Departure extends React.Component {
         labelStyle = styles.run;
       }
     }
+    const isSelected = getKey(station, line, estimate) === selectionKey;
     return (
       <TouchableOpacity
         onPress={this.toggle}
-        style={styles.departure}>
+        style={[styles.departure, isSelected && styles.selectedDeparture]}>
         <Text style={[styles.departureTime, labelStyle]}>
           {departureTime}
         </Text>
@@ -86,6 +92,7 @@ const mapStateToProps = state => ({
   selectionData: state.selectionData,
   selectionKind: state.selectionKind,
   selectorShown: state.selectorShown,
+  selectionKey: state.selectionKey,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>

@@ -56,6 +56,9 @@ export default StyleSheet.create({
   departure: {
     marginLeft: 5,
   },
+  selectedDeparture: {
+    backgroundColor: 'red',
+  },
   line: {
     flexDirection: 'row',
     justifyContent: 'space-between',
