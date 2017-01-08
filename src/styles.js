@@ -7,4 +7,5 @@ export const genericText = {
 
 export const colors = {
   background: '#252F39',
+  darkBackground: '#19212C',
 };

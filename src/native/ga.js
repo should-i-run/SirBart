@@ -8,3 +8,4 @@ const trackerStub = {
 };
 
 export default __DEV__ ? trackerStub : tracker;
+// export default tracker;

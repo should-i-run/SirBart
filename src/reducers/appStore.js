@@ -218,7 +218,6 @@ export default function(state: State = initialState, action: Object) {
       AsyncStorage.setItem('savedDestinations', JSON.stringify([]));
       return {
         ...state,
-        // savedDestinations: state.savedDestinations.filter(d => d !== action.code),
         savedDestinations: [],
       };
     }

@@ -3,7 +3,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import {genericText} from '../styles';
+import {genericText, colors} from '../styles';
 
 export default StyleSheet.create({
   station: {
@@ -21,23 +21,24 @@ export default StyleSheet.create({
     fontSize: 14,
     marginRight: 15,
     color: '#AAA',
+    marginBottom: 10,
   },
   departureTime: {
     ...genericText,
-    width: 35,
-    textAlign: 'right',
+    width: 45,
+    textAlign: 'center',
     fontSize: 26,
+    paddingVertical: 5,
   },
   lineName: {
     ...genericText,
     width: 120,
   },
   direction: {
-    marginTop: 10,
     marginBottom: 5,
     backgroundColor: '#344453',
     paddingLeft: 10,
-    paddingBottom: 10,
+    paddingBottom: 5,
     paddingTop: 10,
     borderRadius: 5,
   },
@@ -45,7 +46,7 @@ export default StyleSheet.create({
     ...genericText,
     fontSize: 14,
     color: '#AAA',
-    marginBottom: -5,
+    marginBottom: 5,
   },
   stationMetadataContainer: {
     flexDirection: 'row',
@@ -54,16 +55,18 @@ export default StyleSheet.create({
     marginTop: 6,
   },
   departure: {
-    marginLeft: 5,
+    marginHorizontal: 0,
+    padding: 2,
   },
   selectedDeparture: {
-    backgroundColor: 'red',
+    borderRadius: 6,
+    backgroundColor: colors.darkBackground,
+    // backgroundColor: '#D6F6B5',
   },
   line: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10,
   },
   depTimeContainer: {
     flex: 1,

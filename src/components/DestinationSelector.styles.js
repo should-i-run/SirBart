@@ -4,7 +4,7 @@ import {
   Platform,
 } from 'react-native';
 
-import {genericText} from '../styles';
+import {genericText, colors} from '../styles';
 
 export default StyleSheet.create({
   wrapper: {
@@ -24,10 +24,10 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     borderRadius: 12,
-    shadowColor: '#19212C',
+    shadowColor: colors.darkBackground,
     shadowRadius: 10,
     shadowOpacity: 1,
-    backgroundColor: '#19212C',
+    backgroundColor: colors.darkBackground,
     padding: 10,
   },
   listContainer: {

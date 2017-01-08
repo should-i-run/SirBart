@@ -77,13 +77,15 @@ class Departure extends React.Component {
     }
     const isSelected = getKey(station, line, estimate) === selectionKey;
     return (
-      <TouchableOpacity
-        onPress={this.toggle}
-        style={[styles.departure, isSelected && styles.selectedDeparture]}>
-        <Text style={[styles.departureTime, labelStyle]}>
-          {departureTime}
-        </Text>
-      </TouchableOpacity>
+      <View style={isSelected && styles.selectedDeparture}>
+        <TouchableOpacity
+          onPress={this.toggle}
+          style={[styles.departure]}>
+          <Text style={[styles.departureTime, labelStyle]}>
+            {departureTime}
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }

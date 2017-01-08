@@ -3,7 +3,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import {genericText} from '../styles';
+import {genericText, colors} from '../styles';
 
 export default StyleSheet.create({
   title: {
@@ -17,12 +17,12 @@ export default StyleSheet.create({
     bottom: -120,
     left: 0,
     right: 0,
-    backgroundColor: '#19212C',
+    backgroundColor: colors.darkBackground,
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     padding: 10,
     paddingBottom: 30,
-    shadowColor: '#19212C',
+    shadowColor: colors.darkBackground,
     shadowRadius: 10,
     shadowOpacity: 1,
   },
