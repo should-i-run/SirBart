@@ -88,14 +88,8 @@ export default class StationView extends React.Component {
     const {tripForStation} = this.props;
     const s = this.props.station;
     const {distance, time} = (this.props.station.walkingDirections || {});
-    const isMakable = estimate => parseInt(estimate.minutes, 10) >= (time || 999);
-    const makableDepartureTime = (a, b) => {
-      const aBest = a.estimates.filter(isMakable)[0];
-      const aMinutes = aBest ? aBest.minutes : 999;
-      const bBest = b.estimates.filter(isMakable)[0];
-      const bMinutes = bBest ? bBest.minutes : 999;
-      return parseInt(aMinutes, 10) - parseInt(bMinutes, 10);
-    };
+
+    const lineName = (a: Line, b: Line) => a.destination.charCodeAt(0) - b.destination.charCodeAt(0);
 
     const selected = tripForStation ?
       s.lines.filter(l => tripForStation.lines.map((line) => line.abbreviation).includes(l.abbreviation)) :
@@ -103,10 +97,10 @@ export default class StationView extends React.Component {
 
     const north = selected
       .filter(d => d.estimates[0].direction === 'North')
-      .sort(makableDepartureTime);
+      .sort(lineName);
     const south = selected
       .filter(d => d.estimates[0].direction === 'South')
-      .sort(makableDepartureTime);
+      .sort(lineName);
     return (
       <View style={styles.station}>
         <StationName station={s} distance={distance} />
