@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 import {
@@ -64,7 +65,17 @@ class DestinationSelector extends React.Component {
 
   remove = () => {
     tracker.trackEvent('interaction', 'remove-destinations');
-    this.props.remove();
+    const confirmRemove = () => {
+      tracker.trackEvent('interaction', 'remove-destinations-confirm');
+      this.props.remove();
+    };
+    const cancelRemove = () => {
+      tracker.trackEvent('interaction', 'remove-destinations-cancel');
+    };
+    Alert.alert('Clear destinations', 'Are you sure you want to clear all of your saved destinations?', [
+      {text: 'Cancel', onPress: cancelRemove},
+      {text: 'Clear', onPress: confirmRemove, style: 'destructive'},
+    ]);
   };
 
   select = (code: ?string) => {
