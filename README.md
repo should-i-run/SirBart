@@ -17,3 +17,4 @@
 ### Code push
 To see releases: `code-push deployment ls SirBart`.
 Build new release for Production: `code-push release-react SirBart ios --deploymentName Production`.
+`code-push release-react SirBart android --deploymentName Production`
