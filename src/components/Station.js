@@ -117,7 +117,7 @@ export default class StationView extends React.Component {
         {!s.lines.length && this.renderNoDepartures(s)}
         {!!north.length &&
           <View style={styles.direction}>
-            <Text style={styles.directionText}>Northbound departuers</Text>
+            <Text style={styles.directionText}>Northbound departures</Text>
             {north.map(this.renderLine)}
           </View>}
         {!!south.length &&

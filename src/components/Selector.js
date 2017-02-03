@@ -89,7 +89,7 @@ class Selector extends React.Component {
         </View>
         <TouchableOpacity onPress={this.goToDirections}>
           <Text style={[styles.genericText, styles.token]}>
-            See route
+            View route
           </Text>
         </TouchableOpacity>
       </View>
@@ -98,9 +98,6 @@ class Selector extends React.Component {
 
   renderDeparture(station: Station, line: Line, estimate: Estimate, tripForLine?: {timeEstimate?: string}) {
     const min = estimate.minutes;
-    // const desc = min === 'Leaving' ?
-    //   'Leaving now' :
-    //   `${min} minute${parseInt(min, 10) !== 1 ? 's' : ''}`;
 
     const renderArrive = (timeEstimate: string) => {
       const minNumber = min === 'Leaving' ? 0 : min;
