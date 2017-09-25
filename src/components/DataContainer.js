@@ -21,7 +21,7 @@ import {
 import { loadSavedDestinations } from '../actions/destinationActions';
 
 import tracker from '../native/ga';
-import { distanceBetweenCoordinates } from 'utils/distance';
+import { distanceBetweenCoordinates } from '../utils/distance';
 
 import { colors } from '../styles';
 

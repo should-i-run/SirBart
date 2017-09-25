@@ -14,8 +14,8 @@ export function getClosestEntrance(station: Station, start: ?Location) {
       const lngDistance = Math.pow(startLoc.lng - entrance.lng, 2);
       return Math.sqrt(lngDistance + latDistance);
     };
-    // $FlowFixMe
     const sortedEntrances = station.entrances.sort(
+      // $FlowFixMe
       (a, b) => getDistance(a, start) - getDistance(b, start),
     );
     return sortedEntrances[0];
