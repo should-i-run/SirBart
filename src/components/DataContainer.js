@@ -1,14 +1,14 @@
 /* @flow */
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import React from 'react';
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import React from "react";
 
-import { ScrollView, Text, RefreshControl, View, Platform } from 'react-native';
+import { ScrollView, Text, RefreshControl, View, Platform } from "react-native";
 
-import StationView from './Station';
-import Selector from './Selector';
-import DestinationSelector from './DestinationSelector';
-import { startLocation } from '../actions/locationActions';
+import StationView from "./Station";
+import Selector from "./Selector";
+import DestinationSelector from "./DestinationSelector";
+import { startLocation } from "../actions/locationActions";
 import {
   setupDataFetching,
   stopFetchingTimes,
@@ -16,16 +16,16 @@ import {
   fetchWalkingDirections,
   fetchStations,
   refreshStations,
-} from '../actions/dataActions';
+} from "../actions/dataActions";
 
-import { loadSavedDestinations } from '../actions/destinationActions';
+import { loadSavedDestinations } from "../actions/destinationActions";
 
-import tracker from '../native/ga';
-import { distanceBetweenCoordinates } from '../utils/distance';
+import tracker from "../native/ga";
+import { distanceBetweenCoordinates } from "../utils/distance";
 
-import { colors } from '../styles';
+import { colors } from "../styles";
 
-import type { Station, Trip } from '../reducers/appStore';
+import type { Station, Trip } from "../reducers/appStore";
 
 type State = {
   fakeRefreshing: false,
@@ -80,7 +80,7 @@ class DataContainer extends React.Component {
 
     if (nextProps.stations) {
       nextProps.stations.forEach((s: Station) => {
-        if (s.walkingDirections.state === 'dirty') {
+        if (s.walkingDirections.state === "dirty") {
           this.props.fetchWalkingDirections(s);
         }
       });
@@ -93,7 +93,7 @@ class DataContainer extends React.Component {
     setTimeout(() => {
       this.setState({ fakeRefreshing: false });
     }, 800);
-    tracker.trackEvent('interaction', 'pull-to-refresh');
+    tracker.trackEvent("interaction", "pull-to-refresh");
   };
 
   render() {
@@ -110,9 +110,7 @@ class DataContainer extends React.Component {
         <ScrollView
           refreshControl={
             <RefreshControl
-              refreshing={
-                this.props.refreshingStations || this.state.fakeRefreshing
-              }
+              refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
               onRefresh={this.refreshStations}
               tintColor="#E6E6E6"
             />
@@ -120,8 +118,7 @@ class DataContainer extends React.Component {
         >
           {stations &&
             stations.map((s, i) => {
-              const tripForStation =
-                trips && trips.find(l => l.code === s.abbr);
+              const tripForStation = trips && trips.find(l => l.code === s.abbr);
               return (
                 <StationView
                   key={i}

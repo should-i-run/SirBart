@@ -1,7 +1,7 @@
 /* @flow */
 
-import type { Location } from '../actions/dataActions';
-import type { Station } from '../reducers/appStore';
+import type { Location } from "../actions/dataActions";
+import type { Station } from "../reducers/appStore";
 
 export function isSameLocation(old: Location, newLoc: Location) {
   return old.lat === newLoc.lat && old.lng === newLoc.lng;
@@ -24,12 +24,7 @@ export function getClosestEntrance(station: Station, start: ?Location) {
 }
 
 // http://www.geodatasource.com/developers/javascript
-export function distanceBetweenCoordinates(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number,
-) {
+export function distanceBetweenCoordinates(lat1: number, lon1: number, lat2: number, lon2: number) {
   const radlat1 = Math.PI * lat1 / 180;
   const radlat2 = Math.PI * lat2 / 180;
   const theta = lon1 - lon2;

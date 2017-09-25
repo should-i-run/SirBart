@@ -1,9 +1,9 @@
 /* @flow */
-import {AsyncStorage} from 'react-native';
-import {uniq} from 'lodash';
-import {getClosestEntrance, isSameLocation} from '../utils/distance';
+import { AsyncStorage } from "react-native";
+import { uniq } from "lodash";
+import { getClosestEntrance, isSameLocation } from "../utils/distance";
 
-import type {Location} from '../actions/dataActions';
+import type { Location } from "../actions/dataActions";
 
 export type Estimate = {
   direction: string,
@@ -20,7 +20,7 @@ export type Line = {
 };
 
 type WalkingDirections = {
-  state: 'dirty' | 'loading' | 'loaded',
+  state: "dirty" | "loading" | "loaded",
   distance: ?number,
   time: ?number,
 };
@@ -45,20 +45,20 @@ export type Trip = {
 };
 
 type State = {
-  stations: ?Station[],
+  stations: ?(Station[]),
   location: ?{
     lat: number,
     lng: number,
   },
-  locationError: bool,
-  refreshingStations: bool,
-  selectorShown: bool,
-  selectionKind: ?'distance',
+  locationError: boolean,
+  refreshingStations: boolean,
+  selectorShown: boolean,
+  selectionKind: ?"distance",
   selectionData: ?Object,
   selectionKey: ?string,
   selectedDestinationCode: ?string,
   savedDestinations: string[],
-  trips: ?Trip[],
+  trips: ?(Trip[]),
 };
 
 const initialState: State = {
@@ -77,7 +77,7 @@ const initialState: State = {
 };
 
 const initialWalkingDirections: WalkingDirections = {
-  state: 'dirty',
+  state: "dirty",
   distance: undefined,
   time: undefined,
 };
@@ -88,7 +88,7 @@ const mergeStations = (existing: Station, newStation: Station) => ({
 
 export default function(state: State = initialState, action: Object) {
   switch (action.type) {
-    case 'RECEIVE_LOCATION': {
+    case "RECEIVE_LOCATION": {
       if (state.location && action.location && isSameLocation(state.location, action.location)) {
         return state;
       }
@@ -96,38 +96,41 @@ export default function(state: State = initialState, action: Object) {
         ...state,
         location: action.location,
         locationError: false,
-        stations: state.stations && state.stations.map((s) => ({
-          ...s,
-          closestEntranceLoc: getClosestEntrance(s, action.location),
-          walkingDirections: {
-            ...s.walkingDirections,
-            state: 'dirty',
-          },
-        })),
+        stations:
+          state.stations &&
+          state.stations.map(s => ({
+            ...s,
+            closestEntranceLoc: getClosestEntrance(s, action.location),
+            walkingDirections: {
+              ...s.walkingDirections,
+              state: "dirty",
+            },
+          })),
       };
     }
-    case 'LOCATION_ERROR': {
+    case "LOCATION_ERROR": {
       return {
         ...state,
         locationError: true,
       };
     }
-    case 'RECEIVE_TIMES': {
-      const newStations = action.stations
-        .map(s => {
-          const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
-          if (existing) {
-            return mergeStations(existing, s);
-          }
-          return {
-            ...s,
-            walkingDirections: initialWalkingDirections,
-            closestEntranceLoc: getClosestEntrance(s, state.location),
-          };
-        });
-      const selectedDestinationCode = newStations.some(s => s.abbr === state.selectedDestinationCode) ?
-        null :
-        state.selectedDestinationCode;
+    case "RECEIVE_TIMES": {
+      const newStations = action.stations.map(s => {
+        const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
+        if (existing) {
+          return mergeStations(existing, s);
+        }
+        return {
+          ...s,
+          walkingDirections: initialWalkingDirections,
+          closestEntranceLoc: getClosestEntrance(s, state.location),
+        };
+      });
+      const selectedDestinationCode = newStations.some(
+        s => s.abbr === state.selectedDestinationCode,
+      )
+        ? null
+        : state.selectedDestinationCode;
       return {
         ...state,
         stations: newStations,
@@ -139,51 +142,55 @@ export default function(state: State = initialState, action: Object) {
       };
     }
 
-    case 'START_WALKING_DIRECTIONS': {
-      const {abbr} = action.station;
+    case "START_WALKING_DIRECTIONS": {
+      const { abbr } = action.station;
       return {
         ...state,
-        stations: state.stations && state.stations.map((s: Station) => {
-          if (s.abbr === abbr) {
-            return {
-              ...s,
-              walkingDirections: {
-                ...s.walkingDirections,
-                state: 'loading',
-              },
-            };
-          }
-          return s;
-        }),
+        stations:
+          state.stations &&
+          state.stations.map((s: Station) => {
+            if (s.abbr === abbr) {
+              return {
+                ...s,
+                walkingDirections: {
+                  ...s.walkingDirections,
+                  state: "loading",
+                },
+              };
+            }
+            return s;
+          }),
       };
     }
-    case 'RECEIVE_WALKING_DIRECTIONS': {
-      const {result, station} = action;
-      const {abbr} = station;
+    case "RECEIVE_WALKING_DIRECTIONS": {
+      const { result, station } = action;
+      const { abbr } = station;
       return {
         ...state,
-        stations: state.stations && state.stations.map((s: Station) => {
-          if (s.abbr === abbr) {
-            return {
-              ...s,
-              walkingDirections: {
-                state: 'loaded',
-                distance: result.distance,
-                time: result.time,
-              },
-            };
-          }
-          return s;
-        }),
+        stations:
+          state.stations &&
+          state.stations.map((s: Station) => {
+            if (s.abbr === abbr) {
+              return {
+                ...s,
+                walkingDirections: {
+                  state: "loaded",
+                  distance: result.distance,
+                  time: result.time,
+                },
+              };
+            }
+            return s;
+          }),
       };
     }
-    case 'START_REFRESH_STATIONS': {
+    case "START_REFRESH_STATIONS": {
       return {
         ...state,
         refreshingStations: true,
       };
     }
-    case 'SHOW_SELECTOR': {
+    case "SHOW_SELECTOR": {
       return {
         ...state,
         selectorShown: true,
@@ -192,44 +199,46 @@ export default function(state: State = initialState, action: Object) {
         selectionKey: action.selectionKey,
       };
     }
-    case 'HIDE_SELECTOR': {
+    case "HIDE_SELECTOR": {
       return {
         ...state,
         selectorShown: false,
         selectionKey: null,
       };
     }
-    case 'DEST_SELECT': {
+    case "DEST_SELECT": {
       return {
         ...state,
         selectedDestinationCode: action.code,
         trips: null,
       };
     }
-    case 'DEST_ADD': {
+    case "DEST_ADD": {
       const alreadyPresent = state.savedDestinations.some(d => d === action.code);
-      const savedDestinations = alreadyPresent ? state.savedDestinations : [...state.savedDestinations, action.code];
-      AsyncStorage.setItem('savedDestinations', JSON.stringify(savedDestinations));
+      const savedDestinations = alreadyPresent
+        ? state.savedDestinations
+        : [...state.savedDestinations, action.code];
+      AsyncStorage.setItem("savedDestinations", JSON.stringify(savedDestinations));
       return {
         ...state,
         savedDestinations,
       };
     }
-    case 'DEST_REMOVE': {
-      AsyncStorage.setItem('savedDestinations', JSON.stringify([]));
+    case "DEST_REMOVE": {
+      AsyncStorage.setItem("savedDestinations", JSON.stringify([]));
       return {
         ...state,
         savedDestinations: [],
       };
     }
-    case 'DEST_LOAD': {
+    case "DEST_LOAD": {
       return {
         ...state,
         savedDestinations: action.destinations || [],
       };
     }
 
-    case 'TRIPS_LOAD': {
+    case "TRIPS_LOAD": {
       const trips = action.trips.map(tripsForStation => {
         let code;
         const lines = tripsForStation.map(t => {

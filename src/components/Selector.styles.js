@@ -1,18 +1,16 @@
 /* @flow */
-import {
-  StyleSheet,
-} from 'react-native';
+import { StyleSheet } from "react-native";
 
-import {genericText, colors} from '../styles';
+import { genericText, colors } from "../styles";
 
 export default StyleSheet.create({
   title: {
     ...genericText,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   genericText,
   selector: {
-    position: 'absolute',
+    position: "absolute",
     height: 120,
     bottom: -120,
     left: 0,
@@ -27,9 +25,9 @@ export default StyleSheet.create({
     shadowOpacity: 1,
   },
   closeContainer: {
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
     right: 0,
     top: 0,
     height: 40,
@@ -40,18 +38,18 @@ export default StyleSheet.create({
     padding: 5,
     borderRadius: 3,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#FFF',
+    borderColor: "#FFF",
     height: 35,
   },
   leftRight: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   stationContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     flex: 1,
   },
 });

@@ -8,7 +8,7 @@ export const locationOptions = {
 
 function receiveLocation(location) {
   return {
-    type: 'RECEIVE_LOCATION',
+    type: "RECEIVE_LOCATION",
     location: {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
@@ -18,19 +18,21 @@ function receiveLocation(location) {
 
 export function locationError() {
   return {
-    type: 'LOCATION_ERROR',
+    type: "LOCATION_ERROR",
   };
 }
 
 export function startLocation() {
   return (dispatch: Function) => {
-    navigator.geolocation.watchPosition((loc) => {
-      dispatch(receiveLocation(loc));
-    },
-    () => dispatch(locationError()),
+    navigator.geolocation.watchPosition(
+      loc => {
+        dispatch(receiveLocation(loc));
+      },
+      () => dispatch(locationError()),
       {
         ...locationOptions,
         distanceFilter: 20,
-      });
+      },
+    );
   };
 }
