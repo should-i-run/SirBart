@@ -49,6 +49,12 @@ export default StyleSheet.create({
     borderColor: '#FFF',
     height: 35,
   },
+  disabled: {
+    borderColor: '#AAA',
+  },
+  disabledText: {
+    color: '#999',
+  },
   clearToken: {
     marginRight: 8,
     padding: 5,

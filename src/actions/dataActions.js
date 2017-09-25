@@ -126,32 +126,32 @@ export function fetchWalkingDirections(station: Station) {
     if (location) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
-      if (WalkingDirectionsManager) {
-        WalkingDirectionsManager.getWalkingDirectionsBetween(
-          location.lat,
-          location.lng,
-          closestEntrance.lat,
-          closestEntrance.lng,
-        ).then(result => {
-          dispatch(receiveWalkingDirections(station, result));
+      // if (WalkingDirectionsManager) {
+      //   WalkingDirectionsManager.getWalkingDirectionsBetween(
+      //     location.lat,
+      //     location.lng,
+      //     closestEntrance.lat,
+      //     closestEntrance.lng,
+      //   ).then(result => {
+      //     dispatch(receiveWalkingDirections(station, result));
+      //   });
+      // } else {
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
+      fetch(url)
+        .then(response => response.json())
+        .then(result => {
+          const leg = result.routes[0].legs[0];
+          const directions = {
+            distance: leg.distance.value,
+            time: parseInt(leg.duration.value / 60, 10),
+          };
+          dispatch(receiveWalkingDirections(station, directions));
+        })
+        .catch(error => {
+          console.warn(error);
+          tracker.trackEvent('google-directions-api', 'fetch walking directions error');
         });
-      } else {
-        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
-        fetch(url)
-          .then(response => response.json())
-          .then(result => {
-            const leg = result.routes[0].legs[0];
-            const directions = {
-              distance: leg.distance.value,
-              time: parseInt(leg.duration.value / 60, 10),
-            };
-            dispatch(receiveWalkingDirections(station, directions));
-          })
-          .catch(error => {
-            console.warn(error);
-            tracker.trackEvent('google-directions-api', 'fetch walking directions error');
-          });
-      }
+      // }
     }
   };
 }

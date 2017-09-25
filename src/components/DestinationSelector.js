@@ -89,14 +89,15 @@ class DestinationSelector extends React.Component {
 
   renderDest = (code: string) => {
     const { stations } = this.props;
+    const disabled = !stations || stations.some(s => s.abbr === code);
     return (
       <TouchableOpacity
         key={code}
-        style={styles.destToken}
-        disabled={!stations || stations.some(s => s.abbr === code)}
+        style={[styles.destToken, disabled && styles.disabled]}
+        disabled={disabled}
         onPress={() => this.select(code)}
       >
-        <Text numberOfLines={1} style={styles.label}>
+        <Text numberOfLines={1} style={[styles.label, disabled && styles.disabledText]}>
           {stationNames[code]}
         </Text>
       </TouchableOpacity>
