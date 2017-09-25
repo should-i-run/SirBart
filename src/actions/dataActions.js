@@ -1,5 +1,6 @@
 /* @flow */
 import { NativeModules } from 'react-native';
+import { throttle } from 'lodash';
 
 import type { Station } from '../reducers/appStore';
 import tracker from '../native/ga';
@@ -25,6 +26,27 @@ function startRefreshStations() {
   };
 }
 
+function receiveAdvs(advs) {
+  return {
+    type: 'RECEIVE_ADVS',
+    advs,
+  };
+}
+
+const fetchAdvs = throttle(dispatch => {
+  fetch('https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y', {
+    method: 'GET',
+  })
+    .then(response => response.json())
+    .then(data => {
+      dispatch(receiveAdvs(data.root.bsa));
+    })
+    .catch(error => {
+      console.warn(error);
+      tracker.trackEvent('api', 'fetchAdvs error');
+    });
+}, 1000 * 60);
+
 function fetchData(dispatch) {
   if (!location) {
     return;
@@ -47,6 +69,7 @@ function fetchData(dispatch) {
       console.warn(error);
       tracker.trackEvent('api', 'fetchData stations error');
     });
+  fetchAdvs(dispatch);
 }
 
 export function setupDataFetching() {

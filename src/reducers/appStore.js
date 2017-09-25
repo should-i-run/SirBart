@@ -59,6 +59,7 @@ type State = {
   selectedDestinationCode: ?string,
   savedDestinations: string[],
   trips: ?(Trip[]),
+  advisories: ?Object,
 };
 
 const initialState: State = {
@@ -74,6 +75,7 @@ const initialState: State = {
   selectedDestinationCode: null,
   savedDestinations: [],
   trips: null,
+  advisories: null,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -257,6 +259,12 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         trips,
+      };
+    }
+    case 'RECEIVE_ADVS': {
+      return {
+        ...state,
+        advisories: action.advs,
       };
     }
     default:

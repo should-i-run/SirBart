@@ -5,6 +5,7 @@ import React from 'react';
 
 import { ScrollView, Text, RefreshControl, View, Platform } from 'react-native';
 
+import Advisories from './Advisories';
 import StationView from './Station';
 import Selector from './Selector';
 import DestinationSelector from './DestinationSelector';
@@ -34,6 +35,7 @@ type State = {
 type Props = {
   stations: ?Object,
   location: ?Object,
+  advisories: ?*,
   locationError: boolean,
   trips: ?(Trip[]),
   startLocation: Function,
@@ -97,7 +99,7 @@ class DataContainer extends React.Component {
   };
 
   render() {
-    const { location, stations, locationError, trips } = this.props;
+    const { location, stations, locationError, trips, advisories } = this.props;
     return (
       <View
         style={{
@@ -116,6 +118,7 @@ class DataContainer extends React.Component {
             />
           }
         >
+          <Advisories advisories={advisories} />
           {stations &&
             stations.map((s, i) => {
               const tripForStation = trips && trips.find(l => l.code === s.abbr);
@@ -141,6 +144,7 @@ const mapStateToProps = state => ({
   stations: state.stations,
   refreshingStations: state.refreshingStations,
   trips: state.trips,
+  advisories: state.advisories,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>
