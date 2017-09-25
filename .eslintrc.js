@@ -12,19 +12,16 @@ module.exports = {
     'react/jsx-closing-bracket-location': 0,
     'max-len': 0,
     'class-methods-use-this': 0,
+    'import/prefer-default-export': 0,
 
     // change airbnb rules
-    'object-curly-spacing': [2, 'never'],
-    'react/sort-comp': [2, {
-      order: [
-        'props',
-        'state',
-        'static-methods',
-        'lifecycle',
-        'everything-else',
-        'render'
-      ],
-    }],
+    'react/sort-comp': [
+      2,
+      {
+        order: ['props', 'state', 'static-methods', 'lifecycle', 'everything-else', 'render'],
+      },
+    ],
+    'react-a11y/anchor-has-content': 0,
   },
   globals: {
     navigator: true,

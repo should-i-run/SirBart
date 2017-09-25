@@ -1,7 +1,7 @@
 /* @flow */
 
-import type { Location } from "../actions/dataActions";
-import type { Station } from "../reducers/appStore";
+import type { Location } from '../actions/dataActions';
+import type { Station } from '../reducers/appStore';
 
 export function isSameLocation(old: Location, newLoc: Location) {
   return old.lat === newLoc.lat && old.lng === newLoc.lng;
