@@ -1,34 +1,34 @@
 /* @flow */
-import { AsyncStorage } from "react-native";
+import { AsyncStorage } from 'react-native';
 
-import tracker from "../native/ga";
+import tracker from '../native/ga';
 
-const URL = "https://tranquil-harbor-8717.herokuapp.com/bart/directions";
+const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart/directions';
 
 export function destinationAdd(code: string) {
   return {
-    type: "DEST_ADD",
+    type: 'DEST_ADD',
     code,
   };
 }
 
 export function destinationRemove(code: string) {
   return {
-    type: "DEST_REMOVE",
+    type: 'DEST_REMOVE',
     code,
   };
 }
 
 function setDestinations(destinations: string[]) {
   return {
-    type: "DEST_LOAD",
+    type: 'DEST_LOAD',
     destinations,
   };
 }
 
 export function loadSavedDestinations() {
   return (dispatch: Function) => {
-    AsyncStorage.getItem("savedDestinations").then(destinations => {
+    AsyncStorage.getItem('savedDestinations').then(destinations => {
       let dests;
       try {
         dests = JSON.parse(destinations);
@@ -42,17 +42,17 @@ export function loadSavedDestinations() {
 
 function loadTrips(trips: Object[]) {
   return {
-    type: "TRIPS_LOAD",
+    type: 'TRIPS_LOAD',
     trips,
   };
 }
 
 function fetchData(trips: Object[], dispatch) {
   fetch(URL, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(trips),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   })
     .then(response => response.json())
@@ -61,13 +61,13 @@ function fetchData(trips: Object[], dispatch) {
     })
     .catch(error => {
       console.warn(error);
-      tracker.trackEvent("api", "fetchTrips error");
+      tracker.trackEvent('api', 'fetchTrips error');
     });
 }
 
 export function selectDestinationAction(code: ?string) {
   return {
-    type: "DEST_SELECT",
+    type: 'DEST_SELECT',
     code,
   };
 }

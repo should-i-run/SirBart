@@ -1,14 +1,14 @@
 /* @flow */
-import React from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { Text, View, TouchableOpacity } from "react-native";
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Text, View, TouchableOpacity } from 'react-native';
 
-import styles from "./Station.styles";
-import { showSelector, hideSelector } from "../actions/selectorActions";
-import tracker from "../native/ga";
+import styles from './Station.styles';
+import { showSelector, hideSelector } from '../actions/selectorActions';
+import tracker from '../native/ga';
 
-import type { Station, Estimate, Line, Trip } from "../reducers/appStore";
+import type { Station, Estimate, Line, Trip } from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
@@ -26,7 +26,7 @@ type Props = {
   hideSelector: Function,
   selectorShown: boolean,
   selectionData: ?Object,
-  selectionKind: "departure" | "distance",
+  selectionKind: 'departure' | 'distance',
   selectionKey: ?string,
 };
 
@@ -43,26 +43,26 @@ class Departure extends React.Component {
       line,
       tripForLine,
     } = this.props;
-    if (selectorShown && selectionData && selectionKind === "departure") {
+    if (selectorShown && selectionData && selectionKind === 'departure') {
       const isSelected = selectionData.estimate.minutes === estimate.minutes;
       if (isSelected) {
         this.props.hideSelector();
-        tracker.trackEvent("interaction", "hide-selector-departure");
+        tracker.trackEvent('interaction', 'hide-selector-departure');
 
         return;
       }
     }
     this.props.showSelector(
-      "departure",
+      'departure',
       { station, line, estimate, tripForLine },
       getKey(station, line, estimate),
     );
-    tracker.trackEvent("interaction", "show-selector-departure");
+    tracker.trackEvent('interaction', 'show-selector-departure');
   };
 
   render = () => {
     const { estimate, station, line, selectionKey } = this.props;
-    if (estimate === "blank") {
+    if (estimate === 'blank') {
       return (
         <View style={styles.departure}>
           <Text style={styles.departureTime}> </Text>
@@ -71,10 +71,10 @@ class Departure extends React.Component {
     }
     const { walkingDirections } = station;
     let labelStyle = styles.missed;
-    const departureTime = estimate.minutes === "Leaving" ? 0 : parseInt(estimate.minutes, 10);
+    const departureTime = estimate.minutes === 'Leaving' ? 0 : parseInt(estimate.minutes, 10);
 
     const { distance, time } = walkingDirections || {};
-    if (distance && typeof time === "number") {
+    if (distance && typeof time === 'number') {
       if (departureTime >= time) {
         labelStyle = styles.walk;
       } else if (departureTime >= getRunningTime(distance)) {

@@ -1,23 +1,23 @@
 /* @flow */
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
-import moment from "moment";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
-import { Text, Animated, Linking, TouchableOpacity, View, Platform } from "react-native";
+import { Text, Animated, Linking, TouchableOpacity, View, Platform } from 'react-native';
 
-import { hideSelector } from "../actions/selectorActions";
-import tracker from "../native/ga";
+import { hideSelector } from '../actions/selectorActions';
+import tracker from '../native/ga';
 
-import styles from "./Selector.styles";
+import styles from './Selector.styles';
 
-import type { Station, Line, Estimate } from "../reducers/appStore";
+import type { Station, Line, Estimate } from '../reducers/appStore';
 
 type Props = {
   selectorShown: boolean,
   hideSelector: Function,
-  selectionKind: "distance" | "departure",
+  selectionKind: 'distance' | 'departure',
   selectionData: ?Object,
 };
 
@@ -49,7 +49,7 @@ class Selector extends React.Component {
   };
 
   close = () => {
-    tracker.trackEvent("interaction", "close-selector");
+    tracker.trackEvent('interaction', 'close-selector');
     this.height.setValue(1);
     Animated.spring(this.height, {
       toValue: 0,
@@ -59,7 +59,7 @@ class Selector extends React.Component {
   };
 
   goToDirections = () => {
-    tracker.trackEvent("interaction", "go-to-directions");
+    tracker.trackEvent('interaction', 'go-to-directions');
     if (this.props.selectionData) {
       const { lat, lng } = this.props.selectionData.station.closestEntranceLoc;
       const url = Platform.select({
@@ -79,7 +79,7 @@ class Selector extends React.Component {
             {station.name}
           </Text>
           <Text numberOfLines={1} style={[styles.title, { flex: 1, marginLeft: 10 }]}>
-            {typeof distance === "number" ? distance.toLocaleString() : "..."} meters
+            {typeof distance === 'number' ? distance.toLocaleString() : '...'} meters
           </Text>
         </View>
         <TouchableOpacity onPress={this.goToDirections}>
@@ -98,21 +98,21 @@ class Selector extends React.Component {
     const min = estimate.minutes;
 
     const renderArrive = (timeEstimate: string) => {
-      const minNumber = min === "Leaving" ? 0 : min;
+      const minNumber = min === 'Leaving' ? 0 : min;
       const arriveTime = moment().add(
         parseInt(minNumber, 10) + parseInt(timeEstimate, 10),
-        "minutes",
+        'minutes',
       );
       return (
         <View style={{ marginLeft: 20 }}>
           <Text style={[styles.genericText]}>Duration {timeEstimate} minutes</Text>
-          <Text style={[styles.genericText]}>Arrives around {arriveTime.format("h:mm a")}</Text>
+          <Text style={[styles.genericText]}>Arrives around {arriveTime.format('h:mm a')}</Text>
         </View>
       );
     };
 
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: 'row' }}>
         <View>
           {/* <Text style={styles.title}>{desc}</Text> */}
           <Text style={[styles.genericText]}>{estimate.length} cars</Text>
@@ -126,10 +126,10 @@ class Selector extends React.Component {
     const { selectorShown, selectionData, selectionKind } = this.props;
     if ((selectorShown || this.state.closing) && selectionData && selectionKind) {
       let stuff;
-      if (selectionKind === "distance" && selectionData.station) {
+      if (selectionKind === 'distance' && selectionData.station) {
         stuff = this.renderDistance(selectionData.station);
       }
-      if (selectionKind === "departure" && selectionData.station) {
+      if (selectionKind === 'departure' && selectionData.station) {
         stuff = this.renderDeparture(
           selectionData.station,
           selectionData.line,

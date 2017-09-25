@@ -2,7 +2,7 @@
 
 export function showSelector(kind: string, data: Object, selectionKey?: string) {
   return {
-    type: "SHOW_SELECTOR",
+    type: 'SHOW_SELECTOR',
     kind,
     data,
     selectionKey,
@@ -10,6 +10,6 @@ export function showSelector(kind: string, data: Object, selectionKey?: string) 
 }
 export function hideSelector() {
   return {
-    type: "HIDE_SELECTOR",
+    type: 'HIDE_SELECTOR',
   };
 }

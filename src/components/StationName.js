@@ -1,14 +1,14 @@
 /* @flow */
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import { showSelector, hideSelector } from "../actions/selectorActions";
-import tracker from "../native/ga";
+import { showSelector, hideSelector } from '../actions/selectorActions';
+import tracker from '../native/ga';
 
-import type { Station } from "../reducers/appStore";
-import styles from "./StationName.styles";
+import type { Station } from '../reducers/appStore';
+import styles from './StationName.styles';
 
 type Props = {
   station: Station,
@@ -17,7 +17,7 @@ type Props = {
   hideSelector: Function,
   selectorShown: boolean,
   selectionData: ?Object,
-  selectionKind: "distance" | "departure",
+  selectionKind: 'distance' | 'departure',
 };
 
 class StationView extends React.Component {
@@ -25,16 +25,16 @@ class StationView extends React.Component {
 
   goToDirections = () => {
     const { selectorShown, selectionData, selectionKind, station } = this.props;
-    if (selectorShown && selectionData && selectionKind === "distance") {
+    if (selectorShown && selectionData && selectionKind === 'distance') {
       const isSelected = selectionData.station.abbr === station.abbr;
       if (isSelected) {
         this.props.hideSelector();
-        tracker.trackEvent("interaction", "hide-selector-station");
+        tracker.trackEvent('interaction', 'hide-selector-station');
         return;
       }
     }
-    this.props.showSelector("distance", { station: this.props.station });
-    tracker.trackEvent("interaction", "show-selector-station");
+    this.props.showSelector('distance', { station: this.props.station });
+    tracker.trackEvent('interaction', 'show-selector-station');
   };
 
   render() {
@@ -48,7 +48,7 @@ class StationView extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity onPress={this.goToDirections} style={[styles.stationDistance]}>
           <Text style={styles.stationDistanceText} numberOfLines={1}>
-            {typeof distance === "number" ? distance.toLocaleString() : "..."} meters
+            {typeof distance === 'number' ? distance.toLocaleString() : '...'} meters
           </Text>
         </TouchableOpacity>
       </View>

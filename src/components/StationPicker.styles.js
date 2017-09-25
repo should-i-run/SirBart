@@ -1,7 +1,7 @@
 /* @flow */
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform } from 'react-native';
 
-import { genericText } from "../styles";
+import { genericText } from '../styles';
 
 export default StyleSheet.create({
   item: {
@@ -11,6 +11,6 @@ export default StyleSheet.create({
     width: 350,
     height: Platform.select({ ios: 200, android: 30 }),
     elevation: 5,
-    ...(Platform.OS === "android" ? { color: "#FFF" } : {}),
+    ...(Platform.OS === 'android' ? { color: '#FFF' } : {}),
   },
 });

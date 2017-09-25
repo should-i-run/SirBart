@@ -1,25 +1,25 @@
 /* @flow */
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
-import invariant from "invariant";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import invariant from 'invariant';
 
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 
 import {
   selectDestination,
   destinationAdd,
   destinationRemove,
-} from "../actions/destinationActions";
-import type { Station } from "../reducers/appStore";
+} from '../actions/destinationActions';
+import type { Station } from '../reducers/appStore';
 
-import StationPicker from "./StationPicker";
-import { stationNames } from "../utils/stations";
+import StationPicker from './StationPicker';
+import { stationNames } from '../utils/stations';
 
-import tracker from "../native/ga";
+import tracker from '../native/ga';
 
-import styles from "./DestinationSelector.styles";
+import styles from './DestinationSelector.styles';
 
 type Props = {
   savedDestinations: string[],
@@ -33,7 +33,7 @@ type Props = {
 
 class DestinationSelector extends React.Component {
   props: Props;
-  state = { adding: false, code: "EMBR" };
+  state = { adding: false, code: 'EMBR' };
 
   componentDidUpdate(prevProps: Props, prevState: Object) {
     const { savedDestinations, stations, selectedDestinationCode } = this.props;
@@ -42,37 +42,37 @@ class DestinationSelector extends React.Component {
     );
     const newDests = savedDestinations.filter(d => !stations || !stations.some(s => s.abbr === d));
     if (newDests.length !== oldDests.length && newDests.length === 1 && !selectedDestinationCode) {
-      tracker.trackEvent("auto", "auto-select-destination");
+      tracker.trackEvent('auto', 'auto-select-destination');
       this.select(newDests[0]);
     }
     if (!prevState.adding && this.state.adding) {
-      tracker.trackScreenView("destination-picker");
-      tracker.trackEvent("interaction", "destination-picker-open");
+      tracker.trackScreenView('destination-picker');
+      tracker.trackEvent('interaction', 'destination-picker-open');
     } else if (prevState.adding && !this.state.adding) {
-      tracker.trackEvent("interaction", "destination-picker-close");
+      tracker.trackEvent('interaction', 'destination-picker-close');
     }
   }
 
   add = code => {
-    tracker.trackEvent("interaction", "add-destination");
+    tracker.trackEvent('interaction', 'add-destination');
     this.props.add(code);
   };
 
   remove = () => {
-    tracker.trackEvent("interaction", "remove-destinations");
+    tracker.trackEvent('interaction', 'remove-destinations');
     const confirmRemove = () => {
-      tracker.trackEvent("interaction", "remove-destinations-confirm");
+      tracker.trackEvent('interaction', 'remove-destinations-confirm');
       this.props.remove();
     };
     const cancelRemove = () => {
-      tracker.trackEvent("interaction", "remove-destinations-cancel");
+      tracker.trackEvent('interaction', 'remove-destinations-cancel');
     };
     Alert.alert(
-      "Clear destinations",
-      "Are you sure you want to clear all of your saved destinations?",
+      'Clear destinations',
+      'Are you sure you want to clear all of your saved destinations?',
       [
-        { text: "Cancel", onPress: cancelRemove },
-        { text: "Clear", onPress: confirmRemove, style: "destructive" },
+        { text: 'Cancel', onPress: cancelRemove },
+        { text: 'Clear', onPress: confirmRemove, style: 'destructive' },
       ],
     );
   };
@@ -81,7 +81,7 @@ class DestinationSelector extends React.Component {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
       if (!stationCodes.includes(code)) {
-        tracker.trackEvent("interaction", "select-destination");
+        tracker.trackEvent('interaction', 'select-destination');
         this.props.select(code, stationCodes);
       }
     }
@@ -105,7 +105,7 @@ class DestinationSelector extends React.Component {
 
   renderSelected() {
     const { selectedDestinationCode, trips } = this.props;
-    invariant(selectedDestinationCode, "renderSelected called without a selectedDestinationCode");
+    invariant(selectedDestinationCode, 'renderSelected called without a selectedDestinationCode');
     return (
       <View style={[styles.container, styles.leftRight]}>
         <View style={[styles.leftRight, { flex: 1 }]}>
@@ -148,14 +148,14 @@ class DestinationSelector extends React.Component {
     return (
       <View style={styles.pickerContainer}>
         <View style={styles.leftRight}>
-          <TouchableOpacity onPress={() => this.setState({ adding: false, code: "EMBR" })}>
+          <TouchableOpacity onPress={() => this.setState({ adding: false, code: 'EMBR' })}>
             <Text style={styles.genericText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               this.add(this.state.code);
               this.select(this.state.code);
-              this.setState({ adding: false, code: "EMBR" });
+              this.setState({ adding: false, code: 'EMBR' });
             }}
           >
             <Text style={[styles.genericText, { height: 40 }]}>Save</Text>

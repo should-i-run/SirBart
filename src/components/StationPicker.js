@@ -1,11 +1,11 @@
 /* @flow */
-import React from "react";
+import React from 'react';
 
-import { Picker } from "react-native";
+import { Picker } from 'react-native';
 
-import { stationNames } from "../utils/stations";
+import { stationNames } from '../utils/stations';
 
-import styles from "./StationPicker.styles";
+import styles from './StationPicker.styles';
 
 type Props = {
   onSelect: Function,

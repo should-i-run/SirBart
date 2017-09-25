@@ -1,9 +1,9 @@
 /* @flow */
-import { AsyncStorage } from "react-native";
-import { uniq } from "lodash";
-import { getClosestEntrance, isSameLocation } from "../utils/distance";
+import { AsyncStorage } from 'react-native';
+import { uniq } from 'lodash';
+import { getClosestEntrance, isSameLocation } from '../utils/distance';
 
-import type { Location } from "../actions/dataActions";
+import type { Location } from '../actions/dataActions';
 
 export type Estimate = {
   direction: string,
@@ -20,7 +20,7 @@ export type Line = {
 };
 
 type WalkingDirections = {
-  state: "dirty" | "loading" | "loaded",
+  state: 'dirty' | 'loading' | 'loaded',
   distance: ?number,
   time: ?number,
 };
@@ -53,7 +53,7 @@ type State = {
   locationError: boolean,
   refreshingStations: boolean,
   selectorShown: boolean,
-  selectionKind: ?"distance",
+  selectionKind: ?'distance',
   selectionData: ?Object,
   selectionKey: ?string,
   selectedDestinationCode: ?string,
@@ -77,7 +77,7 @@ const initialState: State = {
 };
 
 const initialWalkingDirections: WalkingDirections = {
-  state: "dirty",
+  state: 'dirty',
   distance: undefined,
   time: undefined,
 };
@@ -88,7 +88,7 @@ const mergeStations = (existing: Station, newStation: Station) => ({
 
 export default function(state: State = initialState, action: Object) {
   switch (action.type) {
-    case "RECEIVE_LOCATION": {
+    case 'RECEIVE_LOCATION': {
       if (state.location && action.location && isSameLocation(state.location, action.location)) {
         return state;
       }
@@ -103,18 +103,18 @@ export default function(state: State = initialState, action: Object) {
             closestEntranceLoc: getClosestEntrance(s, action.location),
             walkingDirections: {
               ...s.walkingDirections,
-              state: "dirty",
+              state: 'dirty',
             },
           })),
       };
     }
-    case "LOCATION_ERROR": {
+    case 'LOCATION_ERROR': {
       return {
         ...state,
         locationError: true,
       };
     }
-    case "RECEIVE_TIMES": {
+    case 'RECEIVE_TIMES': {
       const newStations = action.stations.map(s => {
         const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
         if (existing) {
@@ -142,7 +142,7 @@ export default function(state: State = initialState, action: Object) {
       };
     }
 
-    case "START_WALKING_DIRECTIONS": {
+    case 'START_WALKING_DIRECTIONS': {
       const { abbr } = action.station;
       return {
         ...state,
@@ -154,7 +154,7 @@ export default function(state: State = initialState, action: Object) {
                 ...s,
                 walkingDirections: {
                   ...s.walkingDirections,
-                  state: "loading",
+                  state: 'loading',
                 },
               };
             }
@@ -162,7 +162,7 @@ export default function(state: State = initialState, action: Object) {
           }),
       };
     }
-    case "RECEIVE_WALKING_DIRECTIONS": {
+    case 'RECEIVE_WALKING_DIRECTIONS': {
       const { result, station } = action;
       const { abbr } = station;
       return {
@@ -174,7 +174,7 @@ export default function(state: State = initialState, action: Object) {
               return {
                 ...s,
                 walkingDirections: {
-                  state: "loaded",
+                  state: 'loaded',
                   distance: result.distance,
                   time: result.time,
                 },
@@ -184,13 +184,13 @@ export default function(state: State = initialState, action: Object) {
           }),
       };
     }
-    case "START_REFRESH_STATIONS": {
+    case 'START_REFRESH_STATIONS': {
       return {
         ...state,
         refreshingStations: true,
       };
     }
-    case "SHOW_SELECTOR": {
+    case 'SHOW_SELECTOR': {
       return {
         ...state,
         selectorShown: true,
@@ -199,46 +199,46 @@ export default function(state: State = initialState, action: Object) {
         selectionKey: action.selectionKey,
       };
     }
-    case "HIDE_SELECTOR": {
+    case 'HIDE_SELECTOR': {
       return {
         ...state,
         selectorShown: false,
         selectionKey: null,
       };
     }
-    case "DEST_SELECT": {
+    case 'DEST_SELECT': {
       return {
         ...state,
         selectedDestinationCode: action.code,
         trips: null,
       };
     }
-    case "DEST_ADD": {
+    case 'DEST_ADD': {
       const alreadyPresent = state.savedDestinations.some(d => d === action.code);
       const savedDestinations = alreadyPresent
         ? state.savedDestinations
         : [...state.savedDestinations, action.code];
-      AsyncStorage.setItem("savedDestinations", JSON.stringify(savedDestinations));
+      AsyncStorage.setItem('savedDestinations', JSON.stringify(savedDestinations));
       return {
         ...state,
         savedDestinations,
       };
     }
-    case "DEST_REMOVE": {
-      AsyncStorage.setItem("savedDestinations", JSON.stringify([]));
+    case 'DEST_REMOVE': {
+      AsyncStorage.setItem('savedDestinations', JSON.stringify([]));
       return {
         ...state,
         savedDestinations: [],
       };
     }
-    case "DEST_LOAD": {
+    case 'DEST_LOAD': {
       return {
         ...state,
         savedDestinations: action.destinations || [],
       };
     }
 
-    case "TRIPS_LOAD": {
+    case 'TRIPS_LOAD': {
       const trips = action.trips.map(tripsForStation => {
         let code;
         const lines = tripsForStation.map(t => {

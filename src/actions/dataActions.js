@@ -1,12 +1,12 @@
 /* @flow */
-import { NativeModules } from "react-native";
+import { NativeModules } from 'react-native';
 
-import type { Station } from "../reducers/appStore";
-import tracker from "../native/ga";
+import type { Station } from '../reducers/appStore';
+import tracker from '../native/ga';
 
 const { WalkingDirectionsManager } = NativeModules;
 
-const URL = "https://tranquil-harbor-8717.herokuapp.com/bart";
+const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let interval;
 
 export type Location = { lat: number, lng: number };
@@ -14,14 +14,14 @@ let location: ?Location;
 
 function receiveStations(stations) {
   return {
-    type: "RECEIVE_TIMES",
+    type: 'RECEIVE_TIMES',
     stations,
   };
 }
 
 function startRefreshStations() {
   return {
-    type: "START_REFRESH_STATIONS",
+    type: 'START_REFRESH_STATIONS',
   };
 }
 
@@ -30,13 +30,13 @@ function fetchData(dispatch) {
     return;
   }
   fetch(URL, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({
       lat: location.lat,
       lng: location.lng,
     }),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   })
     .then(response => response.json())
@@ -45,7 +45,7 @@ function fetchData(dispatch) {
     })
     .catch(error => {
       console.warn(error);
-      tracker.trackEvent("api", "fetchData stations error");
+      tracker.trackEvent('api', 'fetchData stations error');
     });
 }
 
@@ -86,13 +86,13 @@ export function hackilySetLoc(loc: ?Location) {
 
 function startWalkingDirections(station) {
   return {
-    type: "START_WALKING_DIRECTIONS",
+    type: 'START_WALKING_DIRECTIONS',
     station,
   };
 }
 function receiveWalkingDirections(station: Station, result: Object) {
   return {
-    type: "RECEIVE_WALKING_DIRECTIONS",
+    type: 'RECEIVE_WALKING_DIRECTIONS',
     station,
     result,
   };
@@ -126,7 +126,7 @@ export function fetchWalkingDirections(station: Station) {
           })
           .catch(error => {
             console.warn(error);
-            tracker.trackEvent("google-directions-api", "fetch walking directions error");
+            tracker.trackEvent('google-directions-api', 'fetch walking directions error');
           });
       }
     }

@@ -8,7 +8,7 @@ export const locationOptions = {
 
 function receiveLocation(location) {
   return {
-    type: "RECEIVE_LOCATION",
+    type: 'RECEIVE_LOCATION',
     location: {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
@@ -18,7 +18,7 @@ function receiveLocation(location) {
 
 export function locationError() {
   return {
-    type: "LOCATION_ERROR",
+    type: 'LOCATION_ERROR',
   };
 }
 

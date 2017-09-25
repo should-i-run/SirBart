@@ -1,13 +1,13 @@
 /* @flow */
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-import { genericText } from "../styles";
+import { genericText } from '../styles';
 
 export default StyleSheet.create({
   stationNameContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   stationName: {
     flex: 1,
@@ -17,9 +17,9 @@ export default StyleSheet.create({
   },
   stationDistanceText: {
     ...genericText,
-    color: "#AAA",
+    color: '#AAA',
     fontSize: 20,
-    textAlign: "right",
+    textAlign: 'right',
     lineHeight: 26,
   },
   stationNameText: {

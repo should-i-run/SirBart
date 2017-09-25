@@ -1,13 +1,13 @@
 /* @flow */
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-import { genericText, colors } from "../styles";
+import { genericText, colors } from '../styles';
 
 export default StyleSheet.create({
   station: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     padding: 10,
     paddingTop: 10,
   },
@@ -18,13 +18,13 @@ export default StyleSheet.create({
     ...genericText,
     fontSize: 14,
     marginRight: 15,
-    color: "#AAA",
+    color: '#AAA',
     marginBottom: 10,
   },
   departureTime: {
     ...genericText,
     width: 45,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 26,
     paddingVertical: 5,
   },
@@ -34,7 +34,7 @@ export default StyleSheet.create({
   },
   direction: {
     marginBottom: 5,
-    backgroundColor: "#344453",
+    backgroundColor: '#344453',
     paddingLeft: 10,
     paddingBottom: 5,
     paddingTop: 10,
@@ -43,12 +43,12 @@ export default StyleSheet.create({
   directionText: {
     ...genericText,
     fontSize: 14,
-    color: "#AAA",
+    color: '#AAA',
     marginBottom: 5,
   },
   stationMetadataContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     paddingLeft: 10,
     marginTop: 6,
   },
@@ -62,22 +62,22 @@ export default StyleSheet.create({
     // backgroundColor: '#D6F6B5',
   },
   line: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   depTimeContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   missed: {
-    color: "#999",
+    color: '#999',
   },
   run: {
-    color: "#FC5B3F",
+    color: '#FC5B3F',
   },
   walk: {
-    color: "#6FD57F",
+    color: '#6FD57F',
   },
 });
