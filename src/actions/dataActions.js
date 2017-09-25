@@ -68,6 +68,7 @@ function fetchData(dispatch) {
     .catch(error => {
       console.warn(error);
       tracker.trackEvent('api', 'fetchData stations error');
+      fetchData(dispatch);
     });
   fetchAdvs(dispatch);
 }
