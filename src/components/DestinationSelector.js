@@ -111,12 +111,12 @@ class DestinationSelector extends React.Component {
       <View style={[styles.container, styles.leftRight]}>
         <View style={[styles.leftRight, { flex: 1 }]}>
           <Text style={styles.label} key={selectedDestinationCode}>
-            Trains to
+            Showing trains to
             {` ${stationNames[selectedDestinationCode]}`}
           </Text>
           {!trips && <ActivityIndicator style={{ marginRight: 10 }} />}
         </View>
-        <TouchableOpacity style={[styles.clearToken]} onPress={() => this.select(null)}>
+        <TouchableOpacity style={[styles.destToken]} onPress={() => this.select(null)}>
           <Text style={[styles.genericText, { fontSize: 14 }]}>Clear</Text>
         </TouchableOpacity>
       </View>
@@ -127,11 +127,11 @@ class DestinationSelector extends React.Component {
     const { savedDestinations } = this.props;
     return (
       <View style={[styles.container, styles.leftRight]} horizontal>
-        <ScrollView style={{ height: 40 }} horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView style={{ height: 35 }} horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.listContainer}>
             {savedDestinations.map(this.renderDest)}
             <TouchableOpacity
-              style={styles.container}
+              style={[styles.container, { height: 35 }]}
               onPress={() => this.setState({ adding: true })}
             >
               <Icon name="plus-square" size={20} color="#E6E6E6" />
@@ -147,31 +147,39 @@ class DestinationSelector extends React.Component {
 
   renderPicker() {
     return (
-      <View style={styles.pickerContainer}>
-        <View style={styles.leftRight}>
-          <TouchableOpacity onPress={() => this.setState({ adding: false, code: 'EMBR' })}>
-            <Text style={styles.genericText}>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.add(this.state.code);
-              this.select(this.state.code);
-              this.setState({ adding: false, code: 'EMBR' });
-            }}
-          >
-            <Text style={[styles.genericText, { height: 40 }]}>Save</Text>
-          </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={styles.pickerContainer}>
+          <View style={styles.leftRight}>
+            <TouchableOpacity onPress={() => this.setState({ adding: false, code: 'EMBR' })}>
+              <Text style={styles.genericText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.add(this.state.code);
+                this.select(this.state.code);
+                this.setState({ adding: false, code: 'EMBR' });
+              }}
+            >
+              <Text style={[styles.genericText, { height: 40 }]}>Save</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.picker}>
+            <StationPicker
+              selectedValue={this.state.code}
+              onSelect={code => this.setState({ code })}
+            />
+          </View>
         </View>
-        <StationPicker selectedValue={this.state.code} onSelect={code => this.setState({ code })} />
       </View>
     );
   }
 
   renderEmpty() {
     return (
-      <TouchableOpacity style={styles.container} onPress={() => this.setState({ adding: true })}>
-        <Text style={styles.label}>Add a destination</Text>
-        <Icon style={{ marginLeft: 10 }} name="plus-square" size={20} color="#E6E6E6" />
+      <TouchableOpacity style={[styles.container]} onPress={() => this.setState({ adding: true })}>
+        <View style={[styles.destToken]}>
+          <Text style={[styles.label, { fontSize: 18 }]}>Where to?</Text>
+        </View>
       </TouchableOpacity>
     );
   }

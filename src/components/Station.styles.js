@@ -34,7 +34,7 @@ export default StyleSheet.create({
   },
   direction: {
     marginBottom: 5,
-    backgroundColor: '#344453',
+    backgroundColor: colors.lightBackground,
     paddingLeft: 10,
     paddingBottom: 5,
     paddingTop: 10,

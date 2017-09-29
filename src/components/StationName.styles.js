@@ -8,6 +8,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    marginLeft: 8,
   },
   stationName: {
     flex: 1,

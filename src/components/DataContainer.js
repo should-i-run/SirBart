@@ -105,7 +105,7 @@ class DataContainer extends React.Component {
         style={{
           flex: 1,
           backgroundColor: colors.background,
-          paddingTop: Platform.select({ android: 0, ios: 30 }),
+          paddingTop: Platform.select({ android: 0, ios: 25 }),
         }}
       >
         <DestinationSelector />

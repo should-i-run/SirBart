@@ -30,7 +30,10 @@ export default class StationView extends React.Component {
 
   render() {
     const { advisories } = this.props;
-    if (!advisories) {
+    if (
+      !advisories ||
+      advisories.some(a => a.description['#cdata-section'] === 'No delays reported.')
+    ) {
       return null;
     }
     return (

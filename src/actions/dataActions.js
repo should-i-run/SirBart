@@ -1,11 +1,11 @@
 /* @flow */
-import { NativeModules } from 'react-native';
+// import { NativeModules } from 'react-native';
 import { throttle } from 'lodash';
 
 import type { Station } from '../reducers/appStore';
 import tracker from '../native/ga';
 
-const { WalkingDirectionsManager } = NativeModules;
+// const { WalkingDirectionsManager } = NativeModules;
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let interval;
@@ -47,7 +47,7 @@ const fetchAdvs = throttle(dispatch => {
     });
 }, 1000 * 60);
 
-function fetchData(dispatch) {
+const fetchData = dispatch => {
   if (!location) {
     return;
   }
@@ -71,7 +71,7 @@ function fetchData(dispatch) {
       fetchData(dispatch);
     });
   fetchAdvs(dispatch);
-}
+};
 
 export function setupDataFetching() {
   return (dispatch: Function) => {
