@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import moment from 'moment';
 
 import { Text, Animated, Linking, TouchableOpacity, View, Platform } from 'react-native';
 
@@ -13,6 +12,18 @@ import tracker from '../native/ga';
 import styles from './Selector.styles';
 
 import type { Station, Line, Estimate } from '../reducers/appStore';
+
+// https://stackoverflow.com/a/8888498
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  const strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
 
 type Props = {
   selectorShown: boolean,
@@ -99,14 +110,13 @@ class Selector extends React.Component {
 
     const renderArrive = (timeEstimate: string) => {
       const minNumber = min === 'Leaving' ? 0 : min;
-      const arriveTime = moment().add(
-        parseInt(minNumber, 10) + parseInt(timeEstimate, 10),
-        'minutes',
-      );
+      const now = new Date().getTime();
+      const minutesToAdd = (parseInt(minNumber, 10) + parseInt(timeEstimate, 10)) * 1000 * 60;
+      const time = new Date(now + minutesToAdd);
       return (
         <View style={{ marginLeft: 20 }}>
           <Text style={[styles.genericText]}>Duration {timeEstimate} minutes</Text>
-          <Text style={[styles.genericText]}>Arrives around {arriveTime.format('h:mm a')}</Text>
+          <Text style={[styles.genericText]}>Arrives around {formatAMPM(time)}</Text>
         </View>
       );
     };
