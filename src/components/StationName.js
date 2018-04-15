@@ -20,9 +20,7 @@ type Props = {
   selectionKind: 'distance' | 'departure',
 };
 
-class StationView extends React.Component {
-  props: Props;
-
+class StationView extends React.Component<Props> {
   goToDirections = () => {
     const { selectorShown, selectionData, selectionKind, station } = this.props;
     if (selectorShown && selectionData && selectionKind === 'distance') {

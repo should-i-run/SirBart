@@ -29,7 +29,7 @@ import { colors } from '../styles';
 import type { Station, Trip } from '../reducers/appStore';
 
 type State = {
-  fakeRefreshing: false,
+  fakeRefreshing: boolean,
 };
 
 type Props = {
@@ -47,10 +47,7 @@ type Props = {
   loadSavedDestinations: Function,
 };
 
-class DataContainer extends React.Component {
-  props: Props;
-  state: State;
-
+class DataContainer extends React.Component<Props, State> {
   state = {
     fakeRefreshing: false,
   };
@@ -120,11 +117,11 @@ class DataContainer extends React.Component {
         >
           <Advisories advisories={advisories} />
           {stations &&
-            stations.map((s, i) => {
+            stations.map(s => {
               const tripForStation = trips && trips.find(l => l.code === s.abbr);
               return (
                 <StationView
-                  key={i}
+                  key={s.abbr}
                   station={s}
                   location={location}
                   tripForStation={tripForStation}

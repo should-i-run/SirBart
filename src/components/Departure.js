@@ -30,9 +30,7 @@ type Props = {
   selectionKey: ?string,
 };
 
-class Departure extends React.Component {
-  props: Props;
-
+class Departure extends React.Component<Props> {
   toggle = () => {
     const {
       selectorShown,

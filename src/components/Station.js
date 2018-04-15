@@ -18,9 +18,7 @@ type Props = {
   tripForStation: ?Trip,
 };
 
-export default class StationView extends React.Component {
-  props: Props;
-
+export default class StationView extends React.Component<Props> {
   goToSchedule = () => {
     tracker.trackEvent('interaction', 'go-to-schedule');
     Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`);
@@ -43,9 +41,9 @@ export default class StationView extends React.Component {
           {destination}
         </Text>
         <View style={styles.depTimeContainer}>
-          {estimates.map((estimate, eIndex) => (
+          {estimates.map(estimate => (
             <Departure
-              key={eIndex}
+              key={estimate.minutes}
               line={line}
               estimate={estimate}
               station={this.props.station}
@@ -112,7 +110,7 @@ export default class StationView extends React.Component {
             <Text style={styles.walk}> {typeof time === 'number' ? time || 1 : '...'} min</Text>
           </Text>
         </View>
-        {!s.lines.length && this.renderNoDepartures(s)}
+        {!s.lines.length && this.renderNoDepartures()}
         {!!north.length && (
           <View style={styles.direction}>
             <Text style={styles.directionText}>Northbound departures</Text>

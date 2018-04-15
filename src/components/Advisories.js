@@ -20,9 +20,7 @@ type Props = {
   advisories: ?(Advisory[]),
 };
 
-export default class StationView extends React.Component {
-  props: Props;
-
+export default class StationView extends React.Component<Props> {
   goToAdvisories = () => {
     tracker.trackEvent('interaction', 'go-to-advisories');
     Linking.openURL('http://m.bart.gov/schedules/advisories');

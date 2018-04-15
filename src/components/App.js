@@ -11,7 +11,7 @@ import appStore from '../reducers/appStore';
 
 const store = createStore(appStore, applyMiddleware(thunkMiddleware));
 
-class App extends React.Component {
+class App extends React.Component<*> {
   componentWillMount() {
     if (Platform.OS === 'ios') {
       StatusBar.setBarStyle('light-content');

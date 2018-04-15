@@ -31,8 +31,12 @@ type Props = {
   select: Function,
 };
 
-class DestinationSelector extends React.Component {
-  props: Props;
+type State = {
+  adding: boolean,
+  code: string,
+};
+
+class DestinationSelector extends React.Component<Props, State> {
   state = { adding: false, code: 'EMBR' };
 
   componentDidUpdate(prevProps: Props, prevState: Object) {

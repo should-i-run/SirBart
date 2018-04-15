@@ -18,10 +18,10 @@ function formatAMPM(date) {
   let hours = date.getHours();
   let minutes = date.getMinutes();
   const ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  const strTime = hours + ':' + minutes + ' ' + ampm;
+  hours %= 12;
+  hours = hours || 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  const strTime = `${hours}:${minutes} ${ampm}`;
   return strTime;
 }
 
@@ -32,10 +32,11 @@ type Props = {
   selectionData: ?Object,
 };
 
-class Selector extends React.Component {
-  props: Props;
-  state: { closing: boolean };
+type State = {
+  closing: boolean,
+};
 
+class Selector extends React.Component<Props, State> {
   state = { closing: false };
 
   componentWillReceiveProps(nextProps: Props) {
@@ -127,7 +128,7 @@ class Selector extends React.Component {
           {/* <Text style={styles.title}>{desc}</Text> */}
           <Text style={[styles.genericText]}>{estimate.length} cars</Text>
         </View>
-        {tripForLine && renderArrive(tripForLine.timeEstimate)}
+        {tripForLine && renderArrive(tripForLine.timeEstimate || '')}
       </View>
     );
   }

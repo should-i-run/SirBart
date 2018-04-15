@@ -12,9 +12,7 @@ type Props = {
   selectedValue: string,
 };
 
-class StationPicker extends React.Component {
-  props: Props;
-
+class StationPicker extends React.Component<Props> {
   render() {
     return (
       <Picker
