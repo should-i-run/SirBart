@@ -47,6 +47,13 @@ function loadTrips(trips: Object[]) {
   };
 }
 
+export function selectDestinationAction(code: ?string) {
+  return {
+    type: 'DEST_SELECT',
+    code,
+  };
+}
+
 function fetchData(trips: Object[], dispatch) {
   fetch(URL, {
     method: 'POST',
@@ -62,16 +69,10 @@ function fetchData(trips: Object[], dispatch) {
     .catch(error => {
       console.warn(error);
       tracker.trackEvent('api', 'fetchTrips error');
+      dispatch(selectDestinationAction(null));
     });
 }
 
-export function selectDestinationAction(code: ?string) {
-  return {
-    type: 'DEST_SELECT',
-    code,
-  };
-}
-//
 export function selectDestination(endCode?: string, stationCodes?: string[]) {
   if (endCode && stationCodes) {
     const trips = stationCodes.map(c => ({ startCode: c, endCode }));

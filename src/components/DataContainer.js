@@ -19,7 +19,7 @@ import {
   refreshStations,
 } from '../actions/dataActions';
 
-import { loadSavedDestinations } from '../actions/destinationActions';
+import { loadSavedDestinations, selectDestination } from '../actions/destinationActions';
 
 import tracker from '../native/ga';
 import { distanceBetweenCoordinates } from '../utils/distance';
@@ -33,7 +33,7 @@ type State = {
 };
 
 type Props = {
-  stations: ?Object,
+  stations: ?(Station[]),
   location: ?Object,
   advisories: ?*,
   locationError: boolean,
@@ -45,6 +45,8 @@ type Props = {
   refreshStations: Function,
   fetchStations: Function,
   loadSavedDestinations: Function,
+  selectedDestinationCode: ?string,
+  selectDestination: Function,
 };
 
 class DataContainer extends React.Component<Props, State> {
@@ -52,7 +54,7 @@ class DataContainer extends React.Component<Props, State> {
     fakeRefreshing: false,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.startLocation();
     this.props.fetchStations();
     this.props.setupDataFetching();
@@ -60,7 +62,7 @@ class DataContainer extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { location } = this.props;
+    const { location, selectedDestinationCode } = this.props;
     hackilySetLoc(nextProps.location);
     if (!this.props.location && nextProps.location) {
       this.props.fetchStations();
@@ -83,6 +85,19 @@ class DataContainer extends React.Component<Props, State> {
           this.props.fetchWalkingDirections(s);
         }
       });
+    }
+
+    if (this.props.stations && nextProps.stations && selectedDestinationCode) {
+      const stationsHaveChanged =
+        !this.props.stations.every(s => nextProps.stations.some(n => n.abbr === s.abbr)) &&
+        this.props.stations.length === nextProps.stations.length;
+      if (stationsHaveChanged) {
+        const stationCodes = nextProps.stations.map((s: Station) => s.abbr);
+        if (!stationCodes.includes(selectedDestinationCode)) {
+          tracker.trackEvent('interaction', 'select-destination');
+          this.props.selectDestination(selectedDestinationCode, stationCodes);
+        }
+      }
     }
   }
 
@@ -142,6 +157,7 @@ const mapStateToProps = state => ({
   refreshingStations: state.refreshingStations,
   trips: state.trips,
   advisories: state.advisories,
+  selectedDestinationCode: state.selectedDestinationCode,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>
@@ -154,6 +170,7 @@ const mapDispatchToProps = (dispatch: Function) =>
       refreshStations,
       fetchStations,
       loadSavedDestinations,
+      selectDestination,
     },
     dispatch,
   );

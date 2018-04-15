@@ -1,6 +1,6 @@
 /* @flow */
 import { AsyncStorage } from 'react-native';
-import { uniq } from 'lodash';
+import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';
 
 import type { Location } from '../actions/dataActions';
@@ -29,7 +29,7 @@ export type Station = {
   abbr: string,
   name: string,
   lines: Line[],
-  entrances: Location[],
+  entrances: ?(Location[]),
   gtfs_latitude: number,
   gtfs_longitude: number,
   closestEntranceLoc: Location,
@@ -253,7 +253,7 @@ export default function(state: State = initialState, action: Object) {
         });
         return {
           code,
-          lines: uniq(lines),
+          lines: uniqBy(lines, 'abbreviation'),
         };
       });
       return {

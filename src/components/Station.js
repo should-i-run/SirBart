@@ -43,7 +43,7 @@ export default class StationView extends React.Component<Props> {
         <View style={styles.depTimeContainer}>
           {estimates.map(estimate => (
             <Departure
-              key={estimate.minutes}
+              key={estimate.minutes + estimate.hexcolor}
               line={line}
               estimate={estimate}
               station={this.props.station}

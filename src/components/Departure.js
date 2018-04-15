@@ -63,7 +63,7 @@ class Departure extends React.Component<Props> {
     if (estimate === 'blank') {
       return (
         <View style={styles.departure}>
-          <Text style={styles.departureTime}> </Text>
+          <Text style={styles.departureTime} />
         </View>
       );
     }

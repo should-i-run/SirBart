@@ -8,7 +8,7 @@ export function isSameLocation(old: Location, newLoc: Location) {
 }
 
 export function getClosestEntrance(station: Station, start: ?Location) {
-  if (start && station.entrances.length) {
+  if (start && station.entrances && station.entrances.length) {
     const getDistance = (entrance: Location, startLoc: Location) => {
       const latDistance = Math.pow(startLoc.lat - entrance.lat, 2);
       const lngDistance = Math.pow(startLoc.lng - entrance.lng, 2);
