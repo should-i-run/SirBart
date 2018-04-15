@@ -9,4 +9,5 @@ export const colors = {
   darkBackground: '#10131a',
   background: '#19212C',
   lightBackground: '#232E3D',
+  disabledText: '#999',
 };

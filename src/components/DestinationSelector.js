@@ -5,20 +5,19 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import invariant from 'invariant';
 
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
+import tracker from '../native/ga';
 
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
+import { colors } from '../styles';
 import {
   selectDestination,
   destinationAdd,
   destinationRemove,
 } from '../actions/destinationActions';
 import type { Station } from '../reducers/appStore';
-
 import StationPicker from './StationPicker';
 import PulseView from './PulseView';
 import { stationNames } from '../utils/stations';
-
-import tracker from '../native/ga';
 
 import styles from './DestinationSelector.styles';
 
@@ -104,7 +103,7 @@ class DestinationSelector extends React.Component<Props, State> {
     }
   };
 
-  renderLabelIcon = (label: ?string) => {
+  renderLabelIcon = (label: ?string, disabled?: boolean) => {
     if (!label) {
       return null;
     }
@@ -113,7 +112,7 @@ class DestinationSelector extends React.Component<Props, State> {
         <Icon
           name={label === 'work' ? 'building' : 'home'}
           size={20}
-          color="#E6E6E6"
+          color={disabled ? colors.disabledText : '#E6E6E6'}
           style={{ paddingRight: 5 }}
         />{' '}
       </Text>
@@ -143,7 +142,7 @@ class DestinationSelector extends React.Component<Props, State> {
         onPress={() => this.select(code)}
       >
         <Text numberOfLines={1} style={[styles.label, disabled && styles.disabledText]}>
-          {this.renderLabelIcon(label)}
+          {this.renderLabelIcon(label, disabled)}
           {stationNames[code]}
         </Text>
       </TouchableOpacity>

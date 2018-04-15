@@ -71,6 +71,6 @@ export default StyleSheet.create({
     borderColor: '#AAA',
   },
   disabledText: {
-    color: '#999',
+    color: colors.disabledText,
   },
 });

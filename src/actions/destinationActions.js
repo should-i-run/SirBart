@@ -80,10 +80,12 @@ function fetchData(trips: Object[], dispatch) {
 export function selectDestination(endCode?: string, stationCodes?: string[]) {
   if (endCode && stationCodes) {
     const trips = stationCodes.map(c => ({ startCode: c, endCode }));
-    return (dispatch: Function) => {
-      dispatch(selectDestinationAction(endCode));
-      fetchData(trips, dispatch);
-    };
+    if (!stationCodes.includes(endCode)) {
+      return (dispatch: Function) => {
+        dispatch(selectDestinationAction(endCode));
+        fetchData(trips, dispatch);
+      };
+    }
   }
   return selectDestinationAction(null);
 }
