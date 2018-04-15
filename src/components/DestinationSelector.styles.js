@@ -1,24 +1,25 @@
 /* @flow */
-import {
-  StyleSheet,
-  Platform,
-} from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
-import {genericText, colors} from '../styles';
+import { genericText, colors } from '../styles';
 
 export default StyleSheet.create({
   wrapper: {
-    height: 45,
-    ...(Platform.OS === 'ios' ? {zIndex: 100} : {}),
+    ...(Platform.OS === 'ios' ? { zIndex: 100 } : {}),
+    alignItems: 'stretch',
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
+    backgroundColor: colors.darkBackground,
+    marginHorizontal: 10,
+    borderRadius: 5,
+    height: 55,
   },
   pickerContainer: {
     position: 'absolute',
-    zIndex: Platform.select({ios: 100, android: 0}),
+    zIndex: Platform.select({ ios: 100, android: 0 }),
     elevation: 5,
     top: 0,
     left: 0,
@@ -29,6 +30,9 @@ export default StyleSheet.create({
     shadowOpacity: 1,
     backgroundColor: colors.darkBackground,
     padding: 10,
+  },
+  picker: {
+    alignItems: 'center',
   },
   listContainer: {
     flexDirection: 'row',
@@ -47,18 +51,17 @@ export default StyleSheet.create({
     marginRight: 8,
     maxWidth: 140,
     padding: 6,
-    borderRadius: 2,
+    borderRadius: 4,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#FFF',
     height: 35,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  clearToken: {
-    marginRight: 8,
-    padding: 5,
-    borderRadius: 2,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#FFF',
-    height: 30,
-    width: 45,
+  disabled: {
+    borderColor: '#AAA',
+  },
+  disabledText: {
+    color: '#999',
   },
 });

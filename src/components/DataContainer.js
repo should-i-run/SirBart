@@ -5,6 +5,7 @@ import React from 'react';
 
 import { ScrollView, Text, RefreshControl, View, Platform } from 'react-native';
 
+import Advisories from './Advisories';
 import StationView from './Station';
 import Selector from './Selector';
 import DestinationSelector from './DestinationSelector';
@@ -18,22 +19,23 @@ import {
   refreshStations,
 } from '../actions/dataActions';
 
-import { loadSavedDestinations } from '../actions/destinationActions';
+import { loadSavedDestinations, selectDestination } from '../actions/destinationActions';
 
 import tracker from '../native/ga';
-import { distanceBetweenCoordinates } from 'utils/distance';
+import { distanceBetweenCoordinates } from '../utils/distance';
 
 import { colors } from '../styles';
 
 import type { Station, Trip } from '../reducers/appStore';
 
 type State = {
-  fakeRefreshing: false,
+  fakeRefreshing: boolean,
 };
 
 type Props = {
-  stations: ?Object,
+  stations: ?(Station[]),
   location: ?Object,
+  advisories: ?*,
   locationError: boolean,
   trips: ?(Trip[]),
   startLocation: Function,
@@ -43,17 +45,16 @@ type Props = {
   refreshStations: Function,
   fetchStations: Function,
   loadSavedDestinations: Function,
+  selectedDestinationCode: ?string,
+  selectDestination: Function,
 };
 
-class DataContainer extends React.Component {
-  props: Props;
-  state: State;
-
+class DataContainer extends React.Component<Props, State> {
   state = {
     fakeRefreshing: false,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.startLocation();
     this.props.fetchStations();
     this.props.setupDataFetching();
@@ -61,7 +62,7 @@ class DataContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { location } = this.props;
+    const { location, selectedDestinationCode } = this.props;
     hackilySetLoc(nextProps.location);
     if (!this.props.location && nextProps.location) {
       this.props.fetchStations();
@@ -85,6 +86,19 @@ class DataContainer extends React.Component {
         }
       });
     }
+
+    if (this.props.stations && nextProps.stations && selectedDestinationCode) {
+      const stationsHaveChanged =
+        !this.props.stations.every(s => nextProps.stations.some(n => n.abbr === s.abbr)) &&
+        this.props.stations.length === nextProps.stations.length;
+      if (stationsHaveChanged) {
+        const stationCodes = nextProps.stations.map((s: Station) => s.abbr);
+        if (!stationCodes.includes(selectedDestinationCode)) {
+          tracker.trackEvent('interaction', 'select-destination');
+          this.props.selectDestination(selectedDestinationCode, stationCodes);
+        }
+      }
+    }
   }
 
   refreshStations = () => {
@@ -97,34 +111,32 @@ class DataContainer extends React.Component {
   };
 
   render() {
-    const { location, stations, locationError, trips } = this.props;
+    const { location, stations, locationError, trips, advisories } = this.props;
     return (
       <View
         style={{
           flex: 1,
           backgroundColor: colors.background,
-          paddingTop: Platform.select({ android: 0, ios: 30 }),
+          paddingTop: Platform.select({ android: 0, ios: 25 }),
         }}
       >
         <DestinationSelector />
         <ScrollView
           refreshControl={
             <RefreshControl
-              refreshing={
-                this.props.refreshingStations || this.state.fakeRefreshing
-              }
+              refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
               onRefresh={this.refreshStations}
               tintColor="#E6E6E6"
             />
           }
         >
+          <Advisories advisories={advisories} />
           {stations &&
-            stations.map((s, i) => {
-              const tripForStation =
-                trips && trips.find(l => l.code === s.abbr);
+            stations.map(s => {
+              const tripForStation = trips && trips.find(l => l.code === s.abbr);
               return (
                 <StationView
-                  key={i}
+                  key={s.abbr}
                   station={s}
                   location={location}
                   tripForStation={tripForStation}
@@ -144,6 +156,8 @@ const mapStateToProps = state => ({
   stations: state.stations,
   refreshingStations: state.refreshingStations,
   trips: state.trips,
+  advisories: state.advisories,
+  selectedDestinationCode: state.selectedDestinationCode,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>
@@ -156,6 +170,7 @@ const mapDispatchToProps = (dispatch: Function) =>
       refreshStations,
       fetchStations,
       loadSavedDestinations,
+      selectDestination,
     },
     dispatch,
   );

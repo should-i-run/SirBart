@@ -1,5 +1,5 @@
 /* @flow */
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 import tracker from '../native/ga';
 
@@ -28,16 +28,15 @@ function setDestinations(destinations: string[]) {
 
 export function loadSavedDestinations() {
   return (dispatch: Function) => {
-    AsyncStorage.getItem('savedDestinations')
-      .then(destinations => {
-        let dests;
-        try {
-          dests = JSON.parse(destinations);
-        } catch (e) {
-          dests = [];
-        }
-        dispatch(setDestinations(dests));
-      });
+    AsyncStorage.getItem('savedDestinations').then(destinations => {
+      let dests;
+      try {
+        dests = JSON.parse(destinations);
+      } catch (e) {
+        dests = [];
+      }
+      dispatch(setDestinations(dests));
+    });
   };
 }
 
@@ -45,6 +44,13 @@ function loadTrips(trips: Object[]) {
   return {
     type: 'TRIPS_LOAD',
     trips,
+  };
+}
+
+export function selectDestinationAction(code: ?string) {
+  return {
+    type: 'DEST_SELECT',
+    code,
   };
 }
 
@@ -56,26 +62,20 @@ function fetchData(trips: Object[], dispatch) {
       'Content-Type': 'application/json',
     },
   })
-  .then((response) => response.json())
-  .then(data => {
-    dispatch(loadTrips(data));
-  })
-  .catch((error) => {
-    console.warn(error);
-    tracker.trackEvent('api', 'fetchTrips error');
-  });
+    .then(response => response.json())
+    .then(data => {
+      dispatch(loadTrips(data));
+    })
+    .catch(error => {
+      console.warn(error);
+      tracker.trackEvent('api', 'fetchTrips error');
+      dispatch(selectDestinationAction(null));
+    });
 }
 
-export function selectDestinationAction(code: ?string) {
-  return {
-    type: 'DEST_SELECT',
-    code,
-  };
-}
-//
 export function selectDestination(endCode?: string, stationCodes?: string[]) {
   if (endCode && stationCodes) {
-    const trips = stationCodes.map(c => ({startCode: c, endCode}));
+    const trips = stationCodes.map(c => ({ startCode: c, endCode }));
     return (dispatch: Function) => {
       dispatch(selectDestinationAction(endCode));
       fetchData(trips, dispatch);

@@ -1,9 +1,7 @@
 /* @flow */
-import {
-  StyleSheet,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {genericText, colors} from '../styles';
+import { genericText, colors } from '../styles';
 
 export default StyleSheet.create({
   station: {
@@ -36,7 +34,7 @@ export default StyleSheet.create({
   },
   direction: {
     marginBottom: 5,
-    backgroundColor: '#344453',
+    backgroundColor: colors.lightBackground,
     paddingLeft: 10,
     paddingBottom: 5,
     paddingTop: 10,

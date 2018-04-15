@@ -1,15 +1,14 @@
 /* @flow */
-import {
-  StyleSheet,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {genericText} from '../styles';
+import { genericText } from '../styles';
 
 export default StyleSheet.create({
   stationNameContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    marginLeft: 8,
   },
   stationName: {
     flex: 1,

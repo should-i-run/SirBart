@@ -45,4 +45,5 @@ export const stationNames = {
   WCRK: 'Walnut Creek',
   WDUB: 'West Dublin',
   WOAK: 'West Oakland',
+  WARM: 'Warm Springs / South Freemont',
 };

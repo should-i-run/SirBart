@@ -1,15 +1,16 @@
 /* @flow */
-import {NativeModules} from 'react-native';
+// import { NativeModules } from 'react-native';
+import { throttle } from 'lodash';
 
-import type {Station} from '../reducers/appStore';
+import type { Station } from '../reducers/appStore';
 import tracker from '../native/ga';
 
-const {WalkingDirectionsManager} = NativeModules;
+// const { WalkingDirectionsManager } = NativeModules;
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let interval;
 
-export type Location = {lat: number, lng: number};
+export type Location = { lat: number, lng: number };
 let location: ?Location;
 
 function receiveStations(stations) {
@@ -25,7 +26,28 @@ function startRefreshStations() {
   };
 }
 
-function fetchData(dispatch) {
+function receiveAdvs(advs) {
+  return {
+    type: 'RECEIVE_ADVS',
+    advs,
+  };
+}
+
+const fetchAdvs = throttle(dispatch => {
+  fetch('https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y', {
+    method: 'GET',
+  })
+    .then(response => response.json())
+    .then(data => {
+      dispatch(receiveAdvs(data.root.bsa));
+    })
+    .catch(error => {
+      console.warn(error);
+      tracker.trackEvent('api', 'fetchAdvs error');
+    });
+}, 1000 * 60);
+
+const fetchData = dispatch => {
   if (!location) {
     return;
   }
@@ -39,15 +61,17 @@ function fetchData(dispatch) {
       'Content-Type': 'application/json',
     },
   })
-  .then((response) => response.json())
-  .then(data => {
-    dispatch(receiveStations(data));
-  })
-  .catch((error) => {
-    console.warn(error);
-    tracker.trackEvent('api', 'fetchData stations error');
-  });
-}
+    .then(response => response.json())
+    .then(data => {
+      dispatch(receiveStations(data));
+    })
+    .catch(error => {
+      console.warn(error);
+      tracker.trackEvent('api', 'fetchData stations error');
+      fetchData(dispatch);
+    });
+  fetchAdvs(dispatch);
+};
 
 export function setupDataFetching() {
   return (dispatch: Function) => {
@@ -103,32 +127,36 @@ export function fetchWalkingDirections(station: Station) {
     if (location) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
-      if (WalkingDirectionsManager) {
-        WalkingDirectionsManager.getWalkingDirectionsBetween(
-          location.lat,
-          location.lng,
-          closestEntrance.lat,
-          closestEntrance.lng)
-          .then((result) => {
-            dispatch(receiveWalkingDirections(station, result));
-          });
-      } else {
-        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
-        fetch(url)
-          .then((response) => response.json())
-          .then(result => {
-            const leg = result.routes[0].legs[0];
-            const directions = {
-              distance: leg.distance.value,
-              time: parseInt((leg.duration.value / 60), 10),
-            };
-            dispatch(receiveWalkingDirections(station, directions));
-          })
-          .catch((error) => {
-            console.warn(error);
-            tracker.trackEvent('google-directions-api', 'fetch walking directions error');
-          });
-      }
+      // if (WalkingDirectionsManager) {
+      //   WalkingDirectionsManager.getWalkingDirectionsBetween(
+      //     location.lat,
+      //     location.lng,
+      //     closestEntrance.lat,
+      //     closestEntrance.lng,
+      //   ).then(result => {
+      //     dispatch(receiveWalkingDirections(station, result));
+      //   });
+      // } else {
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${
+        location.lng
+      }&destination=${closestEntrance.lat},${
+        closestEntrance.lng
+      }&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
+      fetch(url)
+        .then(response => response.json())
+        .then(result => {
+          const leg = result.routes[0].legs[0];
+          const directions = {
+            distance: leg.distance.value,
+            time: parseInt(leg.duration.value / 60, 10),
+          };
+          dispatch(receiveWalkingDirections(station, directions));
+        })
+        .catch(error => {
+          console.warn(error);
+          tracker.trackEvent('google-directions-api', 'fetch walking directions error');
+        });
+      // }
     }
   };
 }

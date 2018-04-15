@@ -1,9 +1,7 @@
 /* @flow */
-import {
-  StyleSheet,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {genericText, colors} from '../styles';
+import { genericText, colors } from '../styles';
 
 export default StyleSheet.create({
   title: {

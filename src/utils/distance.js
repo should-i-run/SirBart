@@ -8,14 +8,14 @@ export function isSameLocation(old: Location, newLoc: Location) {
 }
 
 export function getClosestEntrance(station: Station, start: ?Location) {
-  if (start && station.entrances.length) {
+  if (start && station.entrances && station.entrances.length) {
     const getDistance = (entrance: Location, startLoc: Location) => {
       const latDistance = Math.pow(startLoc.lat - entrance.lat, 2);
       const lngDistance = Math.pow(startLoc.lng - entrance.lng, 2);
       return Math.sqrt(lngDistance + latDistance);
     };
-    // $FlowFixMe
     const sortedEntrances = station.entrances.sort(
+      // $FlowFixMe
       (a, b) => getDistance(a, start) - getDistance(b, start),
     );
     return sortedEntrances[0];
@@ -24,12 +24,7 @@ export function getClosestEntrance(station: Station, start: ?Location) {
 }
 
 // http://www.geodatasource.com/developers/javascript
-export function distanceBetweenCoordinates(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number,
-) {
+export function distanceBetweenCoordinates(lat1: number, lon1: number, lat2: number, lon2: number) {
   const radlat1 = Math.PI * lat1 / 180;
   const radlat2 = Math.PI * lat2 / 180;
   const theta = lon1 - lon2;

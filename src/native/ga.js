@@ -1,4 +1,4 @@
-import {GoogleAnalyticsTracker} from 'react-native-google-analytics-bridge';
+import { GoogleAnalyticsTracker } from 'react-native-google-analytics-bridge';
 
 const tracker = new GoogleAnalyticsTracker('UA-54111913-2');
 
@@ -7,5 +7,5 @@ const trackerStub = {
   trackScreenView: () => {},
 };
 
-export default __DEV__ ? trackerStub : tracker;
+export default (__DEV__ ? trackerStub : tracker);
 // export default trackerStub;

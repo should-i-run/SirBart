@@ -24,13 +24,15 @@ export function locationError() {
 
 export function startLocation() {
   return (dispatch: Function) => {
-    navigator.geolocation.watchPosition((loc) => {
-      dispatch(receiveLocation(loc));
-    },
-    () => dispatch(locationError()),
+    navigator.geolocation.watchPosition(
+      loc => {
+        dispatch(receiveLocation(loc));
+      },
+      () => dispatch(locationError()),
       {
         ...locationOptions,
         distanceFilter: 20,
-      });
+      },
+    );
   };
 }

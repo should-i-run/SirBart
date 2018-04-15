@@ -1,9 +1,9 @@
 /* @flow */
-import {AsyncStorage} from 'react-native';
-import {uniq} from 'lodash';
-import {getClosestEntrance, isSameLocation} from '../utils/distance';
+import { AsyncStorage } from 'react-native';
+import { uniqBy } from 'lodash';
+import { getClosestEntrance, isSameLocation } from '../utils/distance';
 
-import type {Location} from '../actions/dataActions';
+import type { Location } from '../actions/dataActions';
 
 export type Estimate = {
   direction: string,
@@ -29,7 +29,7 @@ export type Station = {
   abbr: string,
   name: string,
   lines: Line[],
-  entrances: Location[],
+  entrances: ?(Location[]),
   gtfs_latitude: number,
   gtfs_longitude: number,
   closestEntranceLoc: Location,
@@ -45,20 +45,21 @@ export type Trip = {
 };
 
 type State = {
-  stations: ?Station[],
+  stations: ?(Station[]),
   location: ?{
     lat: number,
     lng: number,
   },
-  locationError: bool,
-  refreshingStations: bool,
-  selectorShown: bool,
+  locationError: boolean,
+  refreshingStations: boolean,
+  selectorShown: boolean,
   selectionKind: ?'distance',
   selectionData: ?Object,
   selectionKey: ?string,
   selectedDestinationCode: ?string,
   savedDestinations: string[],
-  trips: ?Trip[],
+  trips: ?(Trip[]),
+  advisories: ?Object,
 };
 
 const initialState: State = {
@@ -74,6 +75,7 @@ const initialState: State = {
   selectedDestinationCode: null,
   savedDestinations: [],
   trips: null,
+  advisories: null,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -96,14 +98,16 @@ export default function(state: State = initialState, action: Object) {
         ...state,
         location: action.location,
         locationError: false,
-        stations: state.stations && state.stations.map((s) => ({
-          ...s,
-          closestEntranceLoc: getClosestEntrance(s, action.location),
-          walkingDirections: {
-            ...s.walkingDirections,
-            state: 'dirty',
-          },
-        })),
+        stations:
+          state.stations &&
+          state.stations.map(s => ({
+            ...s,
+            closestEntranceLoc: getClosestEntrance(s, action.location),
+            walkingDirections: {
+              ...s.walkingDirections,
+              state: 'dirty',
+            },
+          })),
       };
     }
     case 'LOCATION_ERROR': {
@@ -113,21 +117,22 @@ export default function(state: State = initialState, action: Object) {
       };
     }
     case 'RECEIVE_TIMES': {
-      const newStations = action.stations
-        .map(s => {
-          const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
-          if (existing) {
-            return mergeStations(existing, s);
-          }
-          return {
-            ...s,
-            walkingDirections: initialWalkingDirections,
-            closestEntranceLoc: getClosestEntrance(s, state.location),
-          };
-        });
-      const selectedDestinationCode = newStations.some(s => s.abbr === state.selectedDestinationCode) ?
-        null :
-        state.selectedDestinationCode;
+      const newStations = action.stations.map(s => {
+        const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
+        if (existing) {
+          return mergeStations(existing, s);
+        }
+        return {
+          ...s,
+          walkingDirections: initialWalkingDirections,
+          closestEntranceLoc: getClosestEntrance(s, state.location),
+        };
+      });
+      const selectedDestinationCode = newStations.some(
+        s => s.abbr === state.selectedDestinationCode,
+      )
+        ? null
+        : state.selectedDestinationCode;
       return {
         ...state,
         stations: newStations,
@@ -140,41 +145,45 @@ export default function(state: State = initialState, action: Object) {
     }
 
     case 'START_WALKING_DIRECTIONS': {
-      const {abbr} = action.station;
+      const { abbr } = action.station;
       return {
         ...state,
-        stations: state.stations && state.stations.map((s: Station) => {
-          if (s.abbr === abbr) {
-            return {
-              ...s,
-              walkingDirections: {
-                ...s.walkingDirections,
-                state: 'loading',
-              },
-            };
-          }
-          return s;
-        }),
+        stations:
+          state.stations &&
+          state.stations.map((s: Station) => {
+            if (s.abbr === abbr) {
+              return {
+                ...s,
+                walkingDirections: {
+                  ...s.walkingDirections,
+                  state: 'loading',
+                },
+              };
+            }
+            return s;
+          }),
       };
     }
     case 'RECEIVE_WALKING_DIRECTIONS': {
-      const {result, station} = action;
-      const {abbr} = station;
+      const { result, station } = action;
+      const { abbr } = station;
       return {
         ...state,
-        stations: state.stations && state.stations.map((s: Station) => {
-          if (s.abbr === abbr) {
-            return {
-              ...s,
-              walkingDirections: {
-                state: 'loaded',
-                distance: result.distance,
-                time: result.time,
-              },
-            };
-          }
-          return s;
-        }),
+        stations:
+          state.stations &&
+          state.stations.map((s: Station) => {
+            if (s.abbr === abbr) {
+              return {
+                ...s,
+                walkingDirections: {
+                  state: 'loaded',
+                  distance: result.distance,
+                  time: result.time,
+                },
+              };
+            }
+            return s;
+          }),
       };
     }
     case 'START_REFRESH_STATIONS': {
@@ -208,7 +217,9 @@ export default function(state: State = initialState, action: Object) {
     }
     case 'DEST_ADD': {
       const alreadyPresent = state.savedDestinations.some(d => d === action.code);
-      const savedDestinations = alreadyPresent ? state.savedDestinations : [...state.savedDestinations, action.code];
+      const savedDestinations = alreadyPresent
+        ? state.savedDestinations
+        : [...state.savedDestinations, action.code];
       AsyncStorage.setItem('savedDestinations', JSON.stringify(savedDestinations));
       return {
         ...state,
@@ -242,12 +253,18 @@ export default function(state: State = initialState, action: Object) {
         });
         return {
           code,
-          lines: uniq(lines),
+          lines: uniqBy(lines, 'abbreviation'),
         };
       });
       return {
         ...state,
         trips,
+      };
+    }
+    case 'RECEIVE_ADVS': {
+      return {
+        ...state,
+        advisories: action.advs,
       };
     }
     default:
