@@ -57,7 +57,7 @@ type State = {
   selectionData: ?Object,
   selectionKey: ?string,
   selectedDestinationCode: ?string,
-  savedDestinations: string[],
+  savedDestinations: SavedDestinations,
   trips: ?(Trip[]),
   advisories: ?Object,
 };
@@ -73,7 +73,7 @@ const initialState: State = {
   selectionKind: null,
   selectionKey: null,
   selectedDestinationCode: null,
-  savedDestinations: [],
+  savedDestinations: {},
   trips: null,
   advisories: null,
 };
@@ -216,27 +216,27 @@ export default function(state: State = initialState, action: Object) {
       };
     }
     case 'DEST_ADD': {
-      const alreadyPresent = state.savedDestinations.some(d => d === action.code);
-      const savedDestinations = alreadyPresent
-        ? state.savedDestinations
-        : [...state.savedDestinations, action.code];
-      AsyncStorage.setItem('savedDestinations', JSON.stringify(savedDestinations));
+      const newSavedDestinations = {
+        ...state.savedDestinations,
+        [action.label]: action.code,
+      };
+      AsyncStorage.setItem('savedDestinations', JSON.stringify(newSavedDestinations));
       return {
         ...state,
-        savedDestinations,
+        savedDestinations: newSavedDestinations,
       };
     }
     case 'DEST_REMOVE': {
-      AsyncStorage.setItem('savedDestinations', JSON.stringify([]));
+      AsyncStorage.setItem('savedDestinations', JSON.stringify({}));
       return {
         ...state,
-        savedDestinations: [],
+        savedDestinations: {},
       };
     }
     case 'DEST_LOAD': {
       return {
         ...state,
-        savedDestinations: action.destinations || [],
+        savedDestinations: action.destinations || {},
       };
     }
 

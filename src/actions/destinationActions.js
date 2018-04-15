@@ -5,9 +5,10 @@ import tracker from '../native/ga';
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart/directions';
 
-export function destinationAdd(code: string) {
+export function destinationAdd(label: string, code: string) {
   return {
     type: 'DEST_ADD',
+    label,
     code,
   };
 }
@@ -19,7 +20,7 @@ export function destinationRemove(code: string) {
   };
 }
 
-function setDestinations(destinations: string[]) {
+function setDestinations(destinations: SavedDestinations) {
   return {
     type: 'DEST_LOAD',
     destinations,
@@ -33,7 +34,10 @@ export function loadSavedDestinations() {
       try {
         dests = JSON.parse(destinations);
       } catch (e) {
-        dests = [];
+        dests = {};
+      }
+      if (Array.isArray(dests)) {
+        dests = {};
       }
       dispatch(setDestinations(dests));
     });

@@ -15,6 +15,7 @@ import {
 import type { Station } from '../reducers/appStore';
 
 import StationPicker from './StationPicker';
+import PulseView from './PulseView';
 import { stationNames } from '../utils/stations';
 
 import tracker from '../native/ga';
@@ -22,7 +23,7 @@ import tracker from '../native/ga';
 import styles from './DestinationSelector.styles';
 
 type Props = {
-  savedDestinations: string[],
+  savedDestinations: SavedDestinations,
   selectedDestinationCode: ?string,
   stations: ?(Station[]),
   trips: ?any,
@@ -34,20 +35,28 @@ type Props = {
 type State = {
   adding: boolean,
   code: string,
+  addingLabel: ?string,
 };
 
 class DestinationSelector extends React.Component<Props, State> {
-  state = { adding: false, code: 'EMBR' };
+  state = { adding: false, code: 'EMBR', addingLabel: null };
 
   componentDidUpdate(prevProps: Props, prevState: Object) {
     const { savedDestinations, stations, selectedDestinationCode } = this.props;
-    const oldDests = prevProps.savedDestinations.filter(
+
+    const previousEligibleDestinations = Object.values(prevProps.savedDestinations).filter(
       d => !prevProps.stations || !prevProps.stations.some(s => s.abbr === d),
     );
-    const newDests = savedDestinations.filter(d => !stations || !stations.some(s => s.abbr === d));
-    if (newDests.length !== oldDests.length && newDests.length === 1 && !selectedDestinationCode) {
+    const currentEligibleDestinations = Object.values(savedDestinations).filter(
+      d => !stations || !stations.some(s => s.abbr === d),
+    );
+    if (
+      currentEligibleDestinations.length !== previousEligibleDestinations.length &&
+      currentEligibleDestinations.length === 1 &&
+      !selectedDestinationCode
+    ) {
       tracker.trackEvent('auto', 'auto-select-destination');
-      this.select(newDests[0]);
+      this.select(currentEligibleDestinations[0]);
     }
     if (!prevState.adding && this.state.adding) {
       tracker.trackScreenView('destination-picker');
@@ -57,9 +66,13 @@ class DestinationSelector extends React.Component<Props, State> {
     }
   }
 
-  add = code => {
+  add = (label, code) => {
+    if (!label) {
+      tracker.trackEvent('interaction', 'add-temp-destination');
+      return;
+    }
     tracker.trackEvent('interaction', 'add-destination');
-    this.props.add(code);
+    this.props.add(label, code);
   };
 
   remove = () => {
@@ -84,15 +97,43 @@ class DestinationSelector extends React.Component<Props, State> {
   select = (code: ?string) => {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
-      if (!stationCodes.includes(code)) {
-        tracker.trackEvent('interaction', 'select-destination');
-        this.props.select(code, stationCodes);
-      }
+      // if (!stationCodes.includes(code)) {
+      tracker.trackEvent('interaction', 'select-destination');
+      this.props.select(code, stationCodes);
+      // }
     }
   };
 
-  renderDest = (code: string) => {
+  renderLabelIcon = (label: ?string) => {
+    if (!label) {
+      return null;
+    }
+    return (
+      <Text>
+        <Icon
+          name={label === 'work' ? 'building' : 'home'}
+          size={20}
+          color="#E6E6E6"
+          style={{ paddingRight: 5 }}
+        />{' '}
+      </Text>
+    );
+  };
+
+  renderSaveableDest = (label: string, code: ?string) => {
     const { stations } = this.props;
+    if (!code) {
+      return (
+        <PulseView>
+          <TouchableOpacity
+            style={[styles.destToken]}
+            onPress={() => this.setState({ adding: true, addingLabel: label })}
+          >
+            <Text style={[styles.label, { fontSize: 18 }]}>Add {label}</Text>
+          </TouchableOpacity>
+        </PulseView>
+      );
+    }
     const disabled = !stations || stations.some(s => s.abbr === code);
     return (
       <TouchableOpacity
@@ -102,6 +143,7 @@ class DestinationSelector extends React.Component<Props, State> {
         onPress={() => this.select(code)}
       >
         <Text numberOfLines={1} style={[styles.label, disabled && styles.disabledText]}>
+          {this.renderLabelIcon(label)}
           {stationNames[code]}
         </Text>
       </TouchableOpacity>
@@ -109,12 +151,19 @@ class DestinationSelector extends React.Component<Props, State> {
   };
 
   renderSelected() {
-    const { selectedDestinationCode, trips } = this.props;
+    const { selectedDestinationCode, trips, savedDestinations } = this.props;
     invariant(selectedDestinationCode, 'renderSelected called without a selectedDestinationCode');
+    const matchedSavedLabel =
+      selectedDestinationCode === savedDestinations.home
+        ? 'home'
+        : selectedDestinationCode === savedDestinations.work
+          ? 'work'
+          : null;
     return (
       <View style={[styles.container, styles.leftRight]}>
         <View style={[styles.leftRight, { flex: 1 }]}>
-          <Text style={styles.label} key={selectedDestinationCode}>
+          <Text numberOfLines={1} style={styles.label} key={selectedDestinationCode}>
+            {this.renderLabelIcon(matchedSavedLabel)}
             Showing trains to
             {` ${stationNames[selectedDestinationCode]}`}
           </Text>
@@ -127,15 +176,16 @@ class DestinationSelector extends React.Component<Props, State> {
     );
   }
 
-  renderSome() {
+  renderSelector() {
     const { savedDestinations } = this.props;
     return (
       <View style={[styles.container, styles.leftRight]} horizontal>
         <ScrollView style={{ height: 35 }} horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.listContainer}>
-            {savedDestinations.map(this.renderDest)}
+            {this.renderSaveableDest('home', savedDestinations.home)}
+            {this.renderSaveableDest('work', savedDestinations.work)}
             <TouchableOpacity
-              style={[styles.container, { height: 35 }]}
+              // style={[{ height: 40 }]}
               onPress={() => this.setState({ adding: true })}
             >
               <Icon name="plus-square" size={20} color="#E6E6E6" />
@@ -159,12 +209,12 @@ class DestinationSelector extends React.Component<Props, State> {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                this.add(this.state.code);
+                this.add(this.state.addingLabel, this.state.code);
                 this.select(this.state.code);
                 this.setState({ adding: false, code: 'EMBR' });
               }}
             >
-              <Text style={[styles.genericText, { height: 40 }]}>Save</Text>
+              <Text style={[styles.genericText, { height: 40 }]}>Select</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.picker}>
@@ -178,27 +228,15 @@ class DestinationSelector extends React.Component<Props, State> {
     );
   }
 
-  renderEmpty() {
-    return (
-      <TouchableOpacity style={[styles.container]} onPress={() => this.setState({ adding: true })}>
-        <View style={[styles.destToken]}>
-          <Text style={[styles.label, { fontSize: 18 }]}>Where to?</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
   render() {
-    const { savedDestinations, selectedDestinationCode } = this.props;
+    const { selectedDestinationCode } = this.props;
     let body;
     if (this.state.adding) {
       body = this.renderPicker();
-    } else if (!savedDestinations.length) {
-      body = this.renderEmpty();
     } else if (selectedDestinationCode) {
       body = this.renderSelected();
     } else {
-      body = this.renderSome();
+      body = this.renderSelector();
     }
     return <View style={styles.wrapper}>{body}</View>;
   }

@@ -721,7 +721,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = UZM8CJQFWX;
-						LastSwiftMigration = 810;
+						LastSwiftMigration = 0930;
 					};
 				};
 			};
@@ -1212,7 +1212,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hr.Should-I-Run";
 				PRODUCT_NAME = SirBart;
 				SWIFT_OBJC_BRIDGING_HEADER = "SirBart-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1236,7 +1237,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hr.Should-I-Run";
 				PRODUCT_NAME = SirBart;
 				SWIFT_OBJC_BRIDGING_HEADER = "SirBart-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

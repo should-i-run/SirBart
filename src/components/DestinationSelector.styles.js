@@ -11,8 +11,17 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    marginTop: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 10,
     backgroundColor: colors.darkBackground,
+    marginHorizontal: 10,
+    borderRadius: 5,
+    height: 55,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: 10,
     borderRadius: 5,
     height: 55,
