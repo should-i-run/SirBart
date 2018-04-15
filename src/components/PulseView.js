@@ -21,15 +21,7 @@ export default class PulseView extends React.Component<*, { fadeAnim: * }> {
           duration: 1000,
         }),
       ]),
-      // Animated.timing(
-      //   // Animate over time
-      //   this.state.fadeAnim, // The animated value to drive
-      //   {
-      //     toValue: 1, // Animate to opacity: 1 (opaque)
-      //     duration: 10000, // Make it take a while
-      //   },
-      // ),
-    ).start(); // Starts the animation
+    ).start();
   }
 
   render() {

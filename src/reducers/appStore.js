@@ -36,14 +36,6 @@ export type Station = {
   walkingDirections: WalkingDirections,
 };
 
-export type Trip = {
-  code: string,
-  lines: {
-    abbreviation: string,
-    timeEstimate: number,
-  }[],
-};
-
 type State = {
   stations: ?(Station[]),
   location: ?{
@@ -246,9 +238,11 @@ export default function(state: State = initialState, action: Object) {
         const lines = tripsForStation.map(t => {
           const legs = Array.isArray(t.leg) ? t.leg : [t.leg];
           code = legs[0].origin;
+          const transferStation = legs.length > 1 ? legs[0].destination : null;
           return {
             abbreviation: legs[0].trainHeadStation,
             timeEstimate: t.tripTime,
+            transferStation,
           };
         });
         return {

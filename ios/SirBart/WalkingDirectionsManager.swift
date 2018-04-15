@@ -7,7 +7,7 @@ protocol WalkingDirectionsDelegate {
   func handleWalkingDistance(_ stationCode:String, distance:Int, time:Int)
 }
 
-@objc (WalkingDirectionsManager)
+@objc (WalkingDirectionsManager) 
 class WalkingDirectionsManager: NSObject {
   
   var delegate : WalkingDirectionsDelegate?

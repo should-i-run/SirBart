@@ -8,6 +8,7 @@ import { Text, Animated, Linking, TouchableOpacity, View, Platform } from 'react
 
 import { hideSelector } from '../actions/selectorActions';
 import tracker from '../native/ga';
+import { stationNames } from '../utils/stations';
 
 import styles from './Selector.styles';
 
@@ -101,23 +102,23 @@ class Selector extends React.Component<Props, State> {
     );
   }
 
-  renderDeparture(
-    station: Station,
-    line: Line,
-    estimate: Estimate,
-    tripForLine?: { timeEstimate?: string },
-  ) {
+  renderDeparture(station: Station, line: Line, estimate: Estimate, tripForLine?: ?TripForLine) {
     const min = estimate.minutes;
 
-    const renderArrive = (timeEstimate: string) => {
+    const renderArrive = (trip: TripForLine) => {
       const minNumber = min === 'Leaving' ? 0 : min;
       const now = new Date().getTime();
-      const minutesToAdd = (parseInt(minNumber, 10) + parseInt(timeEstimate, 10)) * 1000 * 60;
+      const minutesToAdd = (parseInt(minNumber, 10) + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
       const time = new Date(now + minutesToAdd);
       return (
         <View style={{ marginLeft: 20 }}>
-          <Text style={[styles.genericText]}>Duration {timeEstimate} minutes</Text>
+          <Text style={[styles.genericText]}>Duration {trip.timeEstimate} minutes</Text>
           <Text style={[styles.genericText]}>Arrives around {formatAMPM(time)}</Text>
+          {trip.transferStation && (
+            <Text style={[styles.genericText]}>
+              Transfer at {stationNames[trip.transferStation]}
+            </Text>
+          )}
         </View>
       );
     };
@@ -128,7 +129,7 @@ class Selector extends React.Component<Props, State> {
           {/* <Text style={styles.title}>{desc}</Text> */}
           <Text style={[styles.genericText]}>{estimate.length} cars</Text>
         </View>
-        {tripForLine && renderArrive(tripForLine.timeEstimate || '')}
+        {tripForLine && renderArrive(tripForLine)}
       </View>
     );
   }

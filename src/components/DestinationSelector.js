@@ -66,7 +66,7 @@ class DestinationSelector extends React.Component<Props, State> {
     }
   }
 
-  add = (label, code) => {
+  save = (label, code) => {
     if (!label) {
       tracker.trackEvent('interaction', 'add-temp-destination');
       return;
@@ -150,32 +150,6 @@ class DestinationSelector extends React.Component<Props, State> {
     );
   };
 
-  renderSelected() {
-    const { selectedDestinationCode, trips, savedDestinations } = this.props;
-    invariant(selectedDestinationCode, 'renderSelected called without a selectedDestinationCode');
-    const matchedSavedLabel =
-      selectedDestinationCode === savedDestinations.home
-        ? 'home'
-        : selectedDestinationCode === savedDestinations.work
-          ? 'work'
-          : null;
-    return (
-      <View style={[styles.container, styles.leftRight]}>
-        <View style={[styles.leftRight, { flex: 1 }]}>
-          <Text numberOfLines={1} style={styles.label} key={selectedDestinationCode}>
-            {this.renderLabelIcon(matchedSavedLabel)}
-            Showing trains to
-            {` ${stationNames[selectedDestinationCode]}`}
-          </Text>
-          {!trips && <ActivityIndicator style={{ marginRight: 10 }} />}
-        </View>
-        <TouchableOpacity style={[styles.destToken]} onPress={() => this.select(null)}>
-          <Text style={[styles.genericText, { fontSize: 14 }]}>Clear</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
   renderSelector() {
     const { savedDestinations } = this.props;
     return (
@@ -209,9 +183,9 @@ class DestinationSelector extends React.Component<Props, State> {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                this.add(this.state.addingLabel, this.state.code);
+                this.save(this.state.addingLabel, this.state.code);
                 this.select(this.state.code);
-                this.setState({ adding: false, code: 'EMBR' });
+                this.setState({ adding: false, code: 'EMBR', addingLabel: null });
               }}
             >
               <Text style={[styles.genericText, { height: 40 }]}>Select</Text>
@@ -224,6 +198,35 @@ class DestinationSelector extends React.Component<Props, State> {
             />
           </View>
         </View>
+      </View>
+    );
+  }
+
+  renderSelected() {
+    const { selectedDestinationCode, trips, savedDestinations } = this.props;
+    invariant(selectedDestinationCode, 'renderSelected called without a selectedDestinationCode');
+    const matchedSavedLabel =
+      selectedDestinationCode === savedDestinations.home
+        ? 'home'
+        : selectedDestinationCode === savedDestinations.work
+          ? 'work'
+          : null;
+    return (
+      <View style={[styles.container, styles.leftRight]}>
+        <View style={[styles.leftRight, { flex: 1 }]}>
+          <Text numberOfLines={1} style={styles.label} key={selectedDestinationCode}>
+            {this.renderLabelIcon(matchedSavedLabel)}
+            Showing trains to
+            {` ${stationNames[selectedDestinationCode]}`}
+          </Text>
+        </View>
+        {!trips && <ActivityIndicator style={{ marginRight: 10 }} />}
+        <TouchableOpacity
+          style={[styles.destToken, { marginRight: 0, marginLeft: 5 }]}
+          onPress={() => this.select(null)}
+        >
+          <Text style={[styles.genericText, { fontSize: 14 }]}>Clear</Text>
+        </TouchableOpacity>
       </View>
     );
   }
