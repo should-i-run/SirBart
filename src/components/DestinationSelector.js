@@ -133,7 +133,7 @@ class DestinationSelector extends React.Component<Props, State> {
         </PulseView>
       );
     }
-    const disabled = !stations || stations.some(s => s.abbr === code);
+    const disabled = !stations || (stations.some(s => s.abbr === code) && stations.length === 1);
     return (
       <TouchableOpacity
         key={code}
@@ -157,10 +157,7 @@ class DestinationSelector extends React.Component<Props, State> {
           <View style={styles.listContainer}>
             {this.renderSaveableDest('home', savedDestinations.home)}
             {this.renderSaveableDest('work', savedDestinations.work)}
-            <TouchableOpacity
-              // style={[{ height: 40 }]}
-              onPress={() => this.setState({ adding: true })}
-            >
+            <TouchableOpacity onPress={() => this.setState({ adding: true })}>
               <Icon name="plus-square" size={20} color="#E6E6E6" />
             </TouchableOpacity>
           </View>

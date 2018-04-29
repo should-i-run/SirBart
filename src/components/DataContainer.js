@@ -61,7 +61,7 @@ class DataContainer extends React.Component<Props, State> {
     this.props.loadSavedDestinations();
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentDidReceiveProps(nextProps: Props) {
     const { location, selectedDestinationCode } = this.props;
     hackilySetLoc(nextProps.location);
     if (!this.props.location && nextProps.location) {
@@ -132,7 +132,7 @@ class DataContainer extends React.Component<Props, State> {
         >
           <Advisories advisories={advisories} />
           {stations &&
-            stations.map(s => {
+            stations.filter(s => s.abbr !== this.props.selectedDestinationCode).map(s => {
               const tripForStation = trips && trips.find(l => l.code === s.abbr);
               return (
                 <StationView

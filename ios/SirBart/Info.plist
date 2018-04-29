@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Your location is needed to get you to BART</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
