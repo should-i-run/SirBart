@@ -61,7 +61,7 @@ class DataContainer extends React.Component<Props, State> {
     this.props.loadSavedDestinations();
   }
 
-  componentDidReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: Props) {
     const { location, selectedDestinationCode } = this.props;
     hackilySetLoc(nextProps.location);
     if (!this.props.location && nextProps.location) {
