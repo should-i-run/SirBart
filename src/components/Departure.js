@@ -18,14 +18,13 @@ type Props = {
 };
 
 class Departure extends React.Component<Props> {
-  renderArrive = (trip: TripForLine, min: string) => {
-    const minNumber = min === 'Leaving' ? 0 : min;
+  renderArrive = (trip: TripForLine, min: number) => {
     const now = new Date().getTime();
-    const minutesToAdd = (parseInt(minNumber, 10) + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
+    const minutesToAdd = (min + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
     const time = new Date(now + minutesToAdd);
     return (
       <View style={styles.arriveInfo}>
-        <Text style={[styles.genericText]}>{trip.timeEstimate} minutes</Text>
+        <Text style={[styles.genericText]}>Takes {trip.timeEstimate} minutes</Text>
         <Text style={[styles.genericText]}>Arrives {formatAMPM(time)}</Text>
         {trip.transferStation && (
           <Text style={[styles.genericText]}>Transfer at {stationNames[trip.transferStation]}</Text>
@@ -38,19 +37,18 @@ class Departure extends React.Component<Props> {
     const { estimate, line } = departure;
     const { walkingDirections } = station;
     let labelStyle = styles.missed;
-    const departureTime = estimate.minutes === 'Leaving' ? 0 : parseInt(estimate.minutes, 10);
 
     const { distance, time } = walkingDirections || {};
     if (distance && typeof time === 'number') {
-      if (departureTime >= time) {
+      if (estimate.minutes >= time) {
         labelStyle = styles.walk;
-      } else if (departureTime >= getRunningTime(distance)) {
+      } else if (estimate.minutes >= getRunningTime(distance)) {
         labelStyle = styles.run;
       }
     }
     return (
       <View style={[styles.departure, styles.row, { justifyContent: 'flex-start' }]}>
-        <Text style={[styles.departureTime, labelStyle]}>{departureTime}</Text>
+        <Text style={[styles.departureTime, labelStyle]}>{estimate.minutes}</Text>
         <View style={styles.row}>
           <View styles={styles.trainInfo}>
             <Text style={styles.lineName}>{line.destination}</Text>

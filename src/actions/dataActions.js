@@ -62,12 +62,19 @@ const fetchData = dispatch => {
     },
   })
     .then(response => response.json())
-    .then(data => {
-      dispatch(receiveStations(data));
-    })
+    .then(
+      data => {
+        dispatch(receiveStations(data));
+      },
+      error => {
+        console.warn(error);
+        tracker.trackEvent('api', 'fetchData stations error');
+        fetchData(dispatch);
+      },
+    )
     .catch(error => {
       console.warn(error);
-      tracker.trackEvent('api', 'fetchData stations error');
+      tracker.trackEvent('api', 'fetchData dispatch error');
       fetchData(dispatch);
     });
   fetchAdvs(dispatch);

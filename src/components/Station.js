@@ -40,7 +40,7 @@ export default class StationView extends React.Component<Props> {
         return acc.concat(estimates);
       }, [])
       .sort((a: DepartureType, b: DepartureType) => {
-        if (parseInt(a.estimate.minutes, 10) < parseInt(b.estimate.minutes, 10)) {
+        if (a.estimate.minutes <= b.estimate.minutes) {
           return -1;
         }
         return 1;

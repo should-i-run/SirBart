@@ -11,7 +11,7 @@ export type Estimate = {
   direction: string,
   hexcolor: string,
   length: string,
-  minutes: string,
+  minutes: number,
   platform: string,
 };
 
@@ -122,6 +122,14 @@ export default function(state: State = initialState, action: Object) {
           closestEntranceLoc: getClosestEntrance(s, state.location),
         };
       });
+      newStations.map(s =>
+        s.lines.map(l =>
+          l.estimates.map(e => {
+            e.minutes = e.minutes === 'Leaving' ? 0 : parseInt(e.minutes, 10);
+          }),
+        ),
+      );
+
       const selectedDestinationCode =
         newStations.some(s => s.abbr === state.selectedDestinationCode) && newStations.length === 1
           ? null
