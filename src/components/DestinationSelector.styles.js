@@ -68,7 +68,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   disabled: {
-    borderColor: '#AAA',
+    borderColor: colors.lightText,
   },
   disabledText: {
     color: colors.disabledText,

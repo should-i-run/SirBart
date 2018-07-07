@@ -25,14 +25,14 @@ export default StyleSheet.create({
   directionText: {
     ...genericText,
     fontSize: 14,
-    color: '#AAA',
+    color: colors.lightText,
     marginBottom: 5,
   },
   stationMetadata: {
     ...genericText,
     fontSize: 14,
     marginRight: 15,
-    color: '#AAA',
+    color: colors.lightText,
     marginBottom: 10,
   },
   stationMetadataContainer: {

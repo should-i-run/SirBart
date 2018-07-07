@@ -15,6 +15,6 @@ export default StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    color: '#AAA',
+    color: colors.lightText,
   },
 });

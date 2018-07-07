@@ -1,7 +1,7 @@
 /* @flow */
 import { StyleSheet } from 'react-native';
 
-import { genericText } from '../styles';
+import { genericText, colors } from '../styles';
 
 export default StyleSheet.create({
   stationNameContainer: {
@@ -18,7 +18,7 @@ export default StyleSheet.create({
   },
   stationDistanceText: {
     ...genericText,
-    color: '#AAA',
+    color: colors.lightText,
     fontSize: 20,
     textAlign: 'right',
     lineHeight: 26,

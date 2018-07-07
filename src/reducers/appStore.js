@@ -5,8 +5,6 @@ import { getClosestEntrance, isSameLocation } from '../utils/distance';
 
 import type { Location } from '../actions/dataActions';
 
-export type Trip = *;
-
 export type Estimate = {
   direction: string,
   hexcolor: string,
@@ -27,6 +25,11 @@ type WalkingDirections = {
   time: ?number,
 };
 
+export type Departure = {
+  estimate: Estimate,
+  line: Line,
+};
+
 export type Station = {
   abbr: string,
   name: string,
@@ -36,6 +39,7 @@ export type Station = {
   gtfs_longitude: number,
   closestEntranceLoc: Location,
   walkingDirections: WalkingDirections,
+  departures: Departure[],
 };
 
 type State = {
@@ -111,24 +115,45 @@ export default function(state: State = initialState, action: Object) {
       };
     }
     case 'RECEIVE_TIMES': {
-      const newStations = action.stations.map(s => {
-        const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
-        if (existing) {
-          return mergeStations(existing, s);
-        }
-        return {
+      const newStations = action.stations
+        .map(s => {
+          const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
+          if (existing) {
+            return mergeStations(existing, s);
+          }
+          return {
+            ...s,
+            walkingDirections: initialWalkingDirections,
+            closestEntranceLoc: getClosestEntrance(s, state.location),
+          };
+        })
+        .map(s => ({
           ...s,
-          walkingDirections: initialWalkingDirections,
-          closestEntranceLoc: getClosestEntrance(s, state.location),
-        };
-      });
-      newStations.map(s =>
-        s.lines.map(l =>
-          l.estimates.map(e => {
-            e.minutes = e.minutes === 'Leaving' ? 0 : parseInt(e.minutes, 10);
-          }),
-        ),
-      );
+          lines: s.lines.map(l => ({
+            ...l,
+            estimates: l.estimates.map(e => ({
+              ...e,
+              minutes: e.minutes === 'Leaving' ? 0 : parseInt(e.minutes, 10),
+            })),
+          })),
+        }))
+        .map(s => ({
+          ...s,
+          departures: s.lines
+            .reduce((acc, l) => {
+              const estimates = l.estimates.map(e => ({
+                estimate: e,
+                line: l,
+              }));
+              return acc.concat(estimates);
+            }, [])
+            .sort((a: Departure, b: Departure) => {
+              if (a.estimate.minutes <= b.estimate.minutes) {
+                return -1;
+              }
+              return 1;
+            }),
+        }));
 
       const selectedDestinationCode =
         newStations.some(s => s.abbr === state.selectedDestinationCode) && newStations.length === 1

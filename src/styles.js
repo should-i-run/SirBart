@@ -12,4 +12,5 @@ export const colors = {
   disabledText: '#999',
   walk: '#6FD57F',
   run: '#FC5B3F',
+  lightText: '#AAA',
 };

@@ -1,4 +1,5 @@
 /* @flow */
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import React from 'react';
@@ -7,7 +8,6 @@ import invariant from 'invariant';
 
 import tracker from '../native/ga';
 
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { colors } from '../styles';
 import {
   selectDestination,

@@ -5,18 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import StationName from './StationName';
 import styles from './Station.styles';
-import Departure from './Departure';
+import DepartureView from './Departure';
 import tracker from '../native/ga';
+import { colors } from '../styles';
 
-import type { Station, Line, Trip, Estimate } from '../reducers/appStore';
+import type { Station, Trip, Departure } from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
-
-type DepartureType = {
-  estimate: Estimate,
-  line: Line,
-};
 
 type Props = {
   station: Station,
@@ -29,32 +25,17 @@ export default class StationView extends React.Component<Props> {
     Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`);
   };
 
-  renderDirection = (lines: Line[], direction: string) => {
+  renderDirection = (departures: Departure[], direction: string) => {
     const { tripForStation } = this.props;
-    const departures: DepartureType[] = lines
-      .reduce((acc, l) => {
-        const estimates = l.estimates.map(e => ({
-          estimate: e,
-          line: l,
-        }));
-        return acc.concat(estimates);
-      }, [])
-      .sort((a: DepartureType, b: DepartureType) => {
-        if (a.estimate.minutes <= b.estimate.minutes) {
-          return -1;
-        }
-        return 1;
-      })
-      .slice(0, 4);
 
     return (
       <View key={direction}>
-        {departures.map(d => {
+        {departures.slice(0, 4).map(d => {
           const tripForLine = tripForStation
             ? tripForStation.lines.find(l => l.abbreviation === d.line.abbreviation)
             : undefined;
           return (
-            <Departure
+            <DepartureView
               key={`${d.estimate.minutes}${d.line.abbreviation}`}
               departure={d}
               station={this.props.station}
@@ -76,7 +57,7 @@ export default class StationView extends React.Component<Props> {
           <Text
             style={[
               styles.genericText,
-              { fontSize: 16, color: '#AAA', fontWeight: '400', marginBottom: 4 },
+              { fontSize: 16, color: colors.lightText, fontWeight: '400', marginBottom: 4 },
             ]}
           >
             No departure times avaliable.
@@ -92,19 +73,16 @@ export default class StationView extends React.Component<Props> {
   render() {
     const { tripForStation } = this.props;
     const s = this.props.station;
-    const { distance, time } = this.props.station.walkingDirections || {};
+    const { distance, time } = s.walkingDirections || {};
 
-    const lineName = (a: Line, b: Line) =>
-      a.destination.charCodeAt(0) - b.destination.charCodeAt(0);
-
-    const selected = tripForStation
-      ? s.lines.filter(l =>
-          tripForStation.lines.map(line => line.abbreviation).includes(l.abbreviation),
+    const selectedDepartures = tripForStation
+      ? s.departures.filter(d =>
+          tripForStation.lines.map(line => line.abbreviation).includes(d.line.abbreviation),
         )
-      : s.lines;
+      : s.departures;
 
-    const north = selected.filter(d => d.estimates[0].direction === 'North').sort(lineName);
-    const south = selected.filter(d => d.estimates[0].direction === 'South').sort(lineName);
+    const north = selectedDepartures.filter(d => d.estimate.direction === 'North');
+    const south = selectedDepartures.filter(d => d.estimate.direction === 'South');
     return (
       <View style={styles.station}>
         <StationName station={s} distance={distance} />

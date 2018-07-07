@@ -1,7 +1,7 @@
 /* @flow */
 
 // https://stackoverflow.com/a/8888498
-export function formatAMPM(date) {
+export function formatAMPM(date: Date) {
   let hours = date.getHours();
   let minutes = date.getMinutes();
   const ampm = hours >= 12 ? 'pm' : 'am';

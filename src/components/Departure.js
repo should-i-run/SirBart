@@ -47,9 +47,9 @@ class Departure extends React.Component<Props> {
       }
     }
     return (
-      <View style={[styles.departure, styles.row, { justifyContent: 'flex-start' }]}>
+      <View style={[styles.departure, styles.row]}>
         <Text style={[styles.departureTime, labelStyle]}>{estimate.minutes}</Text>
-        <View style={styles.row}>
+        <View style={[styles.row, { justifyContent: 'flex-end' }]}>
           <View styles={styles.trainInfo}>
             <Text style={styles.lineName}>{line.destination}</Text>
             <Text style={[styles.genericText]}>{estimate.length} cars</Text>

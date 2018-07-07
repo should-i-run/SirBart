@@ -12,7 +12,6 @@ export default StyleSheet.create({
     width: 45,
     textAlign: 'center',
     fontSize: 26,
-    paddingVertical: 5,
     marginLeft: -10,
   },
   lineName: {
@@ -21,22 +20,17 @@ export default StyleSheet.create({
   },
   trainInfo: {
     width: 150,
-    marginRight: 10,
-    flex: 0,
   },
   arriveInfo: {
     marginLeft: 10,
-    flex: 0,
   },
 
   departure: {
-    marginHorizontal: 0,
-    padding: 2,
+    marginVertical: 2,
   },
 
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   missed: {
