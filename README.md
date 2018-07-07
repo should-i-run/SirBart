@@ -1,6 +1,6 @@
 # Should I Run?
 
-> We help you catch the first possible BART train using real-time transit data.
+> Instant BART departures
 
 ## Development
 

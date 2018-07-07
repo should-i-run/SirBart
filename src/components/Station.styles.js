@@ -14,24 +14,6 @@ export default StyleSheet.create({
   genericText: {
     ...genericText,
   },
-  stationMetadata: {
-    ...genericText,
-    fontSize: 14,
-    marginRight: 15,
-    color: '#AAA',
-    marginBottom: 10,
-  },
-  departureTime: {
-    ...genericText,
-    width: 45,
-    textAlign: 'center',
-    fontSize: 26,
-    paddingVertical: 5,
-  },
-  lineName: {
-    ...genericText,
-    width: 120,
-  },
   direction: {
     marginBottom: 5,
     backgroundColor: colors.lightBackground,
@@ -46,38 +28,37 @@ export default StyleSheet.create({
     color: '#AAA',
     marginBottom: 5,
   },
+  stationMetadata: {
+    ...genericText,
+    fontSize: 14,
+    marginRight: 15,
+    color: '#AAA',
+    marginBottom: 10,
+  },
   stationMetadataContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingLeft: 10,
     marginTop: 6,
   },
-  departure: {
-    marginHorizontal: 0,
-    padding: 2,
+  departureTime: {
+    ...genericText,
+    width: 45,
+    textAlign: 'center',
+    fontSize: 26,
+    paddingVertical: 5,
   },
-  selectedDeparture: {
-    borderRadius: 6,
-    backgroundColor: colors.darkBackground,
-    // backgroundColor: '#D6F6B5',
+  lineName: {
+    ...genericText,
+    width: 120,
   },
-  line: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  run: {
+    color: colors.run,
   },
-  depTimeContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  walk: {
+    color: colors.walk,
   },
   missed: {
     color: '#999',
-  },
-  run: {
-    color: '#FC5B3F',
-  },
-  walk: {
-    color: '#6FD57F',
   },
 });

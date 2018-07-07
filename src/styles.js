@@ -10,4 +10,6 @@ export const colors = {
   background: '#19212C',
   lightBackground: '#232E3D',
   disabledText: '#999',
+  walk: '#6FD57F',
+  run: '#FC5B3F',
 };

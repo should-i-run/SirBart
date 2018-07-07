@@ -5,6 +5,8 @@ import { getClosestEntrance, isSameLocation } from '../utils/distance';
 
 import type { Location } from '../actions/dataActions';
 
+export type Trip = *;
+
 export type Estimate = {
   direction: string,
   hexcolor: string,

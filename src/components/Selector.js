@@ -8,23 +8,10 @@ import { Text, Animated, Linking, TouchableOpacity, View, Platform } from 'react
 
 import { hideSelector } from '../actions/selectorActions';
 import tracker from '../native/ga';
-import { stationNames } from '../utils/stations';
 
 import styles from './Selector.styles';
 
-import type { Station, Line, Estimate } from '../reducers/appStore';
-
-// https://stackoverflow.com/a/8888498
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  const ampm = hours >= 12 ? 'pm' : 'am';
-  hours %= 12;
-  hours = hours || 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? `0${minutes}` : minutes;
-  const strTime = `${hours}:${minutes} ${ampm}`;
-  return strTime;
-}
+import type { Station } from '../reducers/appStore';
 
 type Props = {
   selectorShown: boolean,
@@ -102,52 +89,12 @@ class Selector extends React.Component<Props, State> {
     );
   }
 
-  renderDeparture(station: Station, line: Line, estimate: Estimate, tripForLine?: ?TripForLine) {
-    const min = estimate.minutes;
-
-    const renderArrive = (trip: TripForLine) => {
-      const minNumber = min === 'Leaving' ? 0 : min;
-      const now = new Date().getTime();
-      const minutesToAdd = (parseInt(minNumber, 10) + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
-      const time = new Date(now + minutesToAdd);
-      return (
-        <View style={{ marginLeft: 20 }}>
-          <Text style={[styles.genericText]}>Duration {trip.timeEstimate} minutes</Text>
-          <Text style={[styles.genericText]}>Arrives around {formatAMPM(time)}</Text>
-          {trip.transferStation && (
-            <Text style={[styles.genericText]}>
-              Transfer at {stationNames[trip.transferStation]}
-            </Text>
-          )}
-        </View>
-      );
-    };
-
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <View>
-          {/* <Text style={styles.title}>{desc}</Text> */}
-          <Text style={[styles.genericText]}>{estimate.length} cars</Text>
-        </View>
-        {tripForLine && renderArrive(tripForLine)}
-      </View>
-    );
-  }
-
   render() {
     const { selectorShown, selectionData, selectionKind } = this.props;
     if ((selectorShown || this.state.closing) && selectionData && selectionKind) {
       let stuff;
       if (selectionKind === 'distance' && selectionData.station) {
         stuff = this.renderDistance(selectionData.station);
-      }
-      if (selectionKind === 'departure' && selectionData.station) {
-        stuff = this.renderDeparture(
-          selectionData.station,
-          selectionData.line,
-          selectionData.estimate,
-          selectionData.tripForLine,
-        );
       }
       const bottom = this.height.interpolate({
         inputRange: [0, 1],

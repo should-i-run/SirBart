@@ -8,10 +8,15 @@ import styles from './Station.styles';
 import Departure from './Departure';
 import tracker from '../native/ga';
 
-import type { Station, Line, Trip } from '../reducers/appStore';
+import type { Station, Line, Trip, Estimate } from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
+
+type DepartureType = {
+  estimate: Estimate,
+  line: Line,
+};
 
 type Props = {
   station: Station,
@@ -24,33 +29,39 @@ export default class StationView extends React.Component<Props> {
     Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`);
   };
 
-  renderLine = (line: Line, i: number) => {
+  renderDirection = (lines: Line[], direction: string) => {
     const { tripForStation } = this.props;
-    const { destination, estimates, abbreviation } = line;
-    while (estimates.length < 3) {
-      // $FlowFixMe
-      estimates.push('blank');
-    }
+    const departures: DepartureType[] = lines
+      .reduce((acc, l) => {
+        const estimates = l.estimates.map(e => ({
+          estimate: e,
+          line: l,
+        }));
+        return acc.concat(estimates);
+      }, [])
+      .sort((a: DepartureType, b: DepartureType) => {
+        if (parseInt(a.estimate.minutes, 10) < parseInt(b.estimate.minutes, 10)) {
+          return -1;
+        }
+        return 1;
+      })
+      .slice(0, 4);
 
-    const tripForLine = tripForStation
-      ? tripForStation.lines.find(l => l.abbreviation === abbreviation)
-      : undefined;
     return (
-      <View key={i} style={styles.line}>
-        <Text numberOfLines={2} style={styles.lineName}>
-          {destination}
-        </Text>
-        <View style={styles.depTimeContainer}>
-          {estimates.map((estimate, iE) => (
+      <View key={direction}>
+        {departures.map(d => {
+          const tripForLine = tripForStation
+            ? tripForStation.lines.find(l => l.abbreviation === d.line.abbreviation)
+            : undefined;
+          return (
             <Departure
-              key={`${estimate.minutes}${iE}`}
-              line={line}
-              estimate={estimate}
+              key={`${d.estimate.minutes}${d.line.abbreviation}`}
+              departure={d}
               station={this.props.station}
               tripForLine={tripForLine}
             />
-          ))}
-        </View>
+          );
+        })}
       </View>
     );
   };
@@ -114,13 +125,13 @@ export default class StationView extends React.Component<Props> {
         {!!north.length && (
           <View style={styles.direction}>
             <Text style={styles.directionText}>Northbound departures</Text>
-            {north.map(this.renderLine)}
+            {this.renderDirection(north, 'north')}
           </View>
         )}
         {!!south.length && (
           <View style={styles.direction}>
             <Text style={styles.directionText}>Southbound departures</Text>
-            {south.map(this.renderLine)}
+            {this.renderDirection(south, 'south')}
           </View>
         )}
       </View>

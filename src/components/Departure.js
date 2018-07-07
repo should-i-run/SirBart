@@ -1,72 +1,41 @@
 /* @flow */
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
 
-import styles from './Station.styles';
-import { showSelector, hideSelector } from '../actions/selectorActions';
-import tracker from '../native/ga';
+import styles from './Departure.styles';
+import { stationNames } from '../utils/stations';
+import { formatAMPM } from '../utils/time';
 
-import type { Station, Estimate, Line, Trip } from '../reducers/appStore';
+import type { Station, Trip } from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 
-function getKey(station: Station, line: Line, estimate: Estimate) {
-  return `${station.abbr}-${line.destination}-${estimate.minutes}`;
-}
-
 type Props = {
   station: Station,
-  estimate: Estimate,
-  line: Line,
+  departure: *,
   tripForLine: ?Trip,
-  showSelector: Function,
-  hideSelector: Function,
-  selectorShown: boolean,
-  selectionData: ?Object,
-  selectionKind: 'departure' | 'distance',
-  selectionKey: ?string,
 };
 
 class Departure extends React.Component<Props> {
-  toggle = () => {
-    const {
-      selectorShown,
-      selectionData,
-      selectionKind,
-      estimate,
-      station,
-      line,
-      tripForLine,
-    } = this.props;
-    if (selectorShown && selectionData && selectionKind === 'departure') {
-      const isSelected = selectionData.estimate.minutes === estimate.minutes;
-      if (isSelected) {
-        this.props.hideSelector();
-        tracker.trackEvent('interaction', 'hide-selector-departure');
-
-        return;
-      }
-    }
-    this.props.showSelector(
-      'departure',
-      { station, line, estimate, tripForLine },
-      getKey(station, line, estimate),
+  renderArrive = (trip: TripForLine, min: string) => {
+    const minNumber = min === 'Leaving' ? 0 : min;
+    const now = new Date().getTime();
+    const minutesToAdd = (parseInt(minNumber, 10) + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
+    const time = new Date(now + minutesToAdd);
+    return (
+      <View style={styles.arriveInfo}>
+        <Text style={[styles.genericText]}>{trip.timeEstimate} minutes</Text>
+        <Text style={[styles.genericText]}>Arrives {formatAMPM(time)}</Text>
+        {trip.transferStation && (
+          <Text style={[styles.genericText]}>Transfer at {stationNames[trip.transferStation]}</Text>
+        )}
+      </View>
     );
-    tracker.trackEvent('interaction', 'show-selector-departure');
   };
-
   render = () => {
-    const { estimate, station, line, selectionKey } = this.props;
-    if (estimate === 'blank') {
-      return (
-        <View style={styles.departure}>
-          <Text style={styles.departureTime} />
-        </View>
-      );
-    }
+    const { station, departure, tripForLine } = this.props;
+    const { estimate, line } = departure;
     const { walkingDirections } = station;
     let labelStyle = styles.missed;
     const departureTime = estimate.minutes === 'Leaving' ? 0 : parseInt(estimate.minutes, 10);
@@ -79,31 +48,19 @@ class Departure extends React.Component<Props> {
         labelStyle = styles.run;
       }
     }
-    const isSelected = getKey(station, line, estimate) === selectionKey;
     return (
-      <View style={isSelected && styles.selectedDeparture}>
-        <TouchableOpacity onPress={this.toggle} style={[styles.departure]}>
-          <Text style={[styles.departureTime, labelStyle]}>{departureTime}</Text>
-        </TouchableOpacity>
+      <View style={[styles.departure, styles.row, { justifyContent: 'flex-start' }]}>
+        <Text style={[styles.departureTime, labelStyle]}>{departureTime}</Text>
+        <View style={styles.row}>
+          <View styles={styles.trainInfo}>
+            <Text style={styles.lineName}>{line.destination}</Text>
+            <Text style={[styles.genericText]}>{estimate.length} cars</Text>
+          </View>
+          {tripForLine && this.renderArrive(tripForLine, estimate.minutes)}
+        </View>
       </View>
     );
   };
 }
 
-const mapStateToProps = state => ({
-  selectionData: state.selectionData,
-  selectionKind: state.selectionKind,
-  selectorShown: state.selectorShown,
-  selectionKey: state.selectionKey,
-});
-
-const mapDispatchToProps = (dispatch: Function) =>
-  bindActionCreators(
-    {
-      showSelector,
-      hideSelector,
-    },
-    dispatch,
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(Departure);
+export default Departure;
