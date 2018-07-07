@@ -26,7 +26,7 @@ import { distanceBetweenCoordinates } from '../utils/distance';
 
 import { colors } from '../styles';
 
-import type { Station, Trip } from '../reducers/appStore';
+import type { Station } from '../reducers/appStore';
 
 type State = {
   fakeRefreshing: boolean,

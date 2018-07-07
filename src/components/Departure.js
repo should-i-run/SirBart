@@ -6,7 +6,7 @@ import styles from './Departure.styles';
 import { stationNames } from '../utils/stations';
 import { formatAMPM } from '../utils/time';
 
-import type { Station, Trip } from '../reducers/appStore';
+import type { Station } from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
@@ -14,7 +14,7 @@ const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 type Props = {
   station: Station,
   departure: *,
-  tripForLine: ?Trip,
+  tripForLine: ?TripForLine,
 };
 
 class Departure extends React.Component<Props> {

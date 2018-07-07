@@ -9,7 +9,7 @@ import DepartureView from './Departure';
 import tracker from '../native/ga';
 import { colors } from '../styles';
 
-import type { Station, Trip, Departure } from '../reducers/appStore';
+import type { Station, Departure } from '../reducers/appStore';
 
 const runningSpeed = 200; // meters per minute
 const getRunningTime = distance => Math.ceil(distance / runningSpeed);
