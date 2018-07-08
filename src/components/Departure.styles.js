@@ -18,15 +18,16 @@ export default StyleSheet.create({
     ...genericText,
     fontSize: 26,
   },
-  trainInfo: {
-    width: 150,
-  },
-  arriveInfo: {
-    marginLeft: 10,
-  },
 
   departure: {
     marginVertical: 2,
+  },
+
+  metadataText: {
+    ...genericText,
+    color: colors.lightText,
+    fontSize: 14,
+    marginRight: 5,
   },
 
   row: {

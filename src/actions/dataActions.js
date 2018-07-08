@@ -38,12 +38,18 @@ const fetchAdvs = throttle(dispatch => {
     method: 'GET',
   })
     .then(response => response.json())
-    .then(data => {
-      dispatch(receiveAdvs(data.root.bsa));
-    })
+    .then(
+      data => {
+        dispatch(receiveAdvs(data.root.bsa));
+      },
+      error => {
+        console.warn(error);
+        tracker.trackEvent('api', 'fetchAdvs error');
+      },
+    )
     .catch(error => {
       console.warn(error);
-      tracker.trackEvent('api', 'fetchAdvs error');
+      tracker.trackEvent('api', 'fetchAdvs dispatch error');
     });
 }, 1000 * 60);
 

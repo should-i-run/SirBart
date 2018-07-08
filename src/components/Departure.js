@@ -3,7 +3,6 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './Departure.styles';
-import { stationNames } from '../utils/stations';
 import { formatAMPM } from '../utils/time';
 
 import type { Station } from '../reducers/appStore';
@@ -18,20 +17,31 @@ type Props = {
 };
 
 class Departure extends React.Component<Props> {
-  renderArrive = (trip: TripForLine, min: number) => {
+  // renderArrive = (trip: TripForLine, min: number) => {
+  //   const now = new Date().getTime();
+  //   const minutesToAdd = (min + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
+  //   const time = new Date(now + minutesToAdd);
+  //   return (
+  //     <View style={styles.arriveInfo}>
+  //       <Text style={[styles.genericText]}>Takes {trip.timeEstimate} minutes</Text>
+  //       <Text style={[styles.genericText]}>Arrives {formatAMPM(time)}</Text>
+  //       {trip.transferStation && (
+  //         <Text style={[styles.genericText]}>Transfer at {stationNames[trip.transferStation]}</Text>
+  //       )}
+  //     </View>
+  //   );
+  // };
+  renderEstimateArrive = (trip: TripForLine, min: number) => {
     const now = new Date().getTime();
     const minutesToAdd = (min + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
     const time = new Date(now + minutesToAdd);
     return (
-      <View style={styles.arriveInfo}>
-        <Text style={[styles.genericText]}>Takes {trip.timeEstimate} minutes</Text>
-        <Text style={[styles.genericText]}>Arrives {formatAMPM(time)}</Text>
-        {trip.transferStation && (
-          <Text style={[styles.genericText]}>Transfer at {stationNames[trip.transferStation]}</Text>
-        )}
-      </View>
+      <Text key="a" style={[styles.metadataText]}>
+        ETA {formatAMPM(time)}
+      </Text>
     );
   };
+
   render = () => {
     const { station, departure, tripForLine } = this.props;
     const { estimate, line } = departure;
@@ -47,14 +57,19 @@ class Departure extends React.Component<Props> {
       }
     }
     return (
-      <View style={[styles.departure, styles.row]}>
+      <View style={[styles.departure, styles.row, { alignItems: 'flex-start' }]}>
         <Text style={[styles.departureTime, labelStyle]}>{estimate.minutes}</Text>
-        <View style={[styles.row, { justifyContent: 'flex-end' }]}>
-          <View styles={styles.trainInfo}>
-            <Text style={styles.lineName}>{line.destination}</Text>
-            <Text style={[styles.genericText]}>{estimate.length} cars</Text>
+        <View>
+          <Text style={styles.lineName}>{line.destination}</Text>
+          <View style={styles.row}>
+            <Text style={[styles.metadataText]}>{estimate.length} cars</Text>
+            {tripForLine && (
+              <Text key="t" style={[styles.metadataText]}>
+                Takes {tripForLine.timeEstimate} minutes
+              </Text>
+            )}
+            {tripForLine && this.renderEstimateArrive(tripForLine, estimate.minutes)}
           </View>
-          {tripForLine && this.renderArrive(tripForLine, estimate.minutes)}
         </View>
       </View>
     );
