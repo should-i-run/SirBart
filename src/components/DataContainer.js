@@ -133,13 +133,13 @@ class DataContainer extends React.Component<Props, State> {
           <Advisories advisories={advisories} />
           {stations &&
             stations.filter(s => s.abbr !== this.props.selectedDestinationCode).map(s => {
-              const tripForStation = trips && trips.find(l => l.code === s.abbr);
+              const selectedTrip = trips && trips.find(l => l.code === s.abbr);
               return (
                 <StationView
                   key={s.abbr}
                   station={s}
                   location={location}
-                  tripForStation={tripForStation}
+                  selectedTrip={selectedTrip}
                 />
               );
             })}

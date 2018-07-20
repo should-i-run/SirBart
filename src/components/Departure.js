@@ -3,17 +3,18 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './Departure.styles';
+import { colors } from '../styles';
 import { formatAMPM } from '../utils/time';
 
 import type { Station } from '../reducers/appStore';
-
-const runningSpeed = 200; // meters per minute
-const getRunningTime = distance => Math.ceil(distance / runningSpeed);
 
 type Props = {
   station: Station,
   departure: *,
   tripForLine: ?TripForLine,
+  firstWalkableIndex: number,
+  firstRunableIndex: number,
+  index: number,
 };
 
 class Departure extends React.Component<Props> {
@@ -37,37 +38,72 @@ class Departure extends React.Component<Props> {
     const time = new Date(now + minutesToAdd);
     return (
       <Text key="a" style={[styles.metadataText]}>
-        ETA {formatAMPM(time)}
+        • Arrives {formatAMPM(time)}
       </Text>
     );
   };
 
   render = () => {
-    const { station, departure, tripForLine } = this.props;
+    const {
+      station,
+      departure,
+      tripForLine,
+      firstWalkableIndex,
+      index,
+      firstRunableIndex,
+    } = this.props;
     const { estimate, line } = departure;
     const { walkingDirections } = station;
-    let labelStyle = styles.missed;
+    const isFirstWalkable = firstWalkableIndex === index;
+    const isAfterFirstWalkable = firstWalkableIndex < index;
+    const isRunable = index >= firstRunableIndex && index < firstWalkableIndex;
+    const isMissed = index < firstRunableIndex && index < firstWalkableIndex;
 
+    let labelStyle = styles.missed;
     const { distance, time } = walkingDirections || {};
     if (distance && typeof time === 'number') {
-      if (estimate.minutes >= time) {
+      if (isFirstWalkable) {
+        labelStyle = styles.best;
+      } else if (isRunable) {
+        // labelStyle = styles.run;
         labelStyle = styles.walk;
-      } else if (estimate.minutes >= getRunningTime(distance)) {
-        labelStyle = styles.run;
+      } else if (isAfterFirstWalkable) {
+        labelStyle = styles.walk;
       }
     }
+
+    function getStatus() {
+      if (isMissed) {
+        return 'missed';
+      } else if (isRunable) {
+        return 'run';
+      } else if (isFirstWalkable || isAfterFirstWalkable) {
+        return 'walk';
+      }
+      return '';
+    }
+
     return (
       <View style={[styles.departure, styles.row, { alignItems: 'flex-start' }]}>
         <Text style={[styles.departureTime, labelStyle]}>{estimate.minutes}</Text>
         <View>
-          <Text style={styles.lineName}>{line.destination}</Text>
+          <Text
+            style={[
+              styles.lineName,
+              (isAfterFirstWalkable || isRunable) && { color: colors.genericText },
+              isFirstWalkable && styles.best,
+            ]}
+          >
+            {line.destination}
+          </Text>
           <View style={styles.row}>
+            <Text style={[styles.metadataText]}>{getStatus()}</Text>
             <Text style={[styles.metadataText]}>{estimate.length} cars</Text>
-            {tripForLine && (
+            {/* {tripForLine && (
               <Text key="t" style={[styles.metadataText]}>
                 Takes {tripForLine.timeEstimate} minutes
               </Text>
-            )}
+            )} */}
             {tripForLine && this.renderEstimateArrive(tripForLine, estimate.minutes)}
           </View>
         </View>

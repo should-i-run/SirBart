@@ -37,3 +37,6 @@ export function distanceBetweenCoordinates(lat1: number, lon1: number, lat2: num
   dist = dist * 60 * 1.1515;
   return dist * 1.609344;
 }
+
+const runningSpeed = 200; // meters per minute
+export const getRunningTime = (distance: number) => Math.ceil(distance / runningSpeed);

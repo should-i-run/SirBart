@@ -1,9 +1,4 @@
 /* @flow */
-export const genericText = {
-  color: '#E6E6E6',
-  fontSize: 18,
-  fontWeight: '200',
-};
 
 export const colors = {
   darkBackground: '#10131a',
@@ -13,4 +8,11 @@ export const colors = {
   walk: '#6FD57F',
   run: '#FC5B3F',
   lightText: '#AAA',
+  genericText: '#E6E6E6',
+};
+
+export const genericText = {
+  color: colors.genericText,
+  fontSize: 18,
+  fontWeight: '200',
 };

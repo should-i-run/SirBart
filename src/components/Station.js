@@ -8,15 +8,13 @@ import styles from './Station.styles';
 import DepartureView from './Departure';
 import tracker from '../native/ga';
 import { colors } from '../styles';
+import { getRunningTime } from '../utils/distance';
 
 import type { Station, Departure } from '../reducers/appStore';
 
-const runningSpeed = 200; // meters per minute
-const getRunningTime = distance => Math.ceil(distance / runningSpeed);
-
 type Props = {
   station: Station,
-  tripForStation: ?Trip,
+  selectedTrip: ?Trip,
 };
 
 export default class StationView extends React.Component<Props> {
@@ -26,18 +24,26 @@ export default class StationView extends React.Component<Props> {
   };
 
   renderDirection = (departures: Departure[], direction: string) => {
-    const { tripForStation } = this.props;
-
+    const { selectedTrip, station } = this.props;
+    const firstWalkableIndex = departures.findIndex(
+      d => (d.estimate.minutes || 0) >= station.walkingDirections.time,
+    );
+    const firstRunableIndex = departures.findIndex(
+      d => (d.estimate.minutes || 0) >= getRunningTime(station.walkingDirections.distance),
+    );
     return (
       <View key={direction}>
-        {departures.slice(0, 4).map(d => {
-          const tripForLine = tripForStation
-            ? tripForStation.lines.find(l => l.abbreviation === d.line.abbreviation)
+        {departures.slice(0, 4).map((d, i) => {
+          const tripForLine = selectedTrip
+            ? selectedTrip.lines.find(l => l.abbreviation === d.line.abbreviation)
             : undefined;
           return (
             <DepartureView
               key={`${d.estimate.minutes}${d.line.abbreviation}`}
               departure={d}
+              firstWalkableIndex={firstWalkableIndex === undefined ? -1 : firstWalkableIndex}
+              firstRunableIndex={firstRunableIndex === undefined ? -1 : firstRunableIndex}
+              index={i}
               station={this.props.station}
               tripForLine={tripForLine}
             />
@@ -71,13 +77,13 @@ export default class StationView extends React.Component<Props> {
   }
 
   render() {
-    const { tripForStation } = this.props;
+    const { selectedTrip } = this.props;
     const s = this.props.station;
     const { distance, time } = s.walkingDirections || {};
 
-    const selectedDepartures = tripForStation
+    const selectedDepartures = selectedTrip
       ? s.departures.filter(d =>
-          tripForStation.lines.map(line => line.abbreviation).includes(d.line.abbreviation),
+          selectedTrip.lines.map(line => line.abbreviation).includes(d.line.abbreviation),
         )
       : s.departures;
 
@@ -102,13 +108,13 @@ export default class StationView extends React.Component<Props> {
         {!s.lines.length && this.renderNoDepartures()}
         {!!north.length && (
           <View style={styles.direction}>
-            <Text style={styles.directionText}>Northbound departures</Text>
+            {!selectedTrip && <Text style={styles.directionText}>Northbound departures</Text>}
             {this.renderDirection(north, 'north')}
           </View>
         )}
         {!!south.length && (
           <View style={styles.direction}>
-            <Text style={styles.directionText}>Southbound departures</Text>
+            {!selectedTrip && <Text style={styles.directionText}>Southbound departures</Text>}
             {this.renderDirection(south, 'south')}
           </View>
         )}

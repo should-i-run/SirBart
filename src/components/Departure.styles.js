@@ -9,14 +9,16 @@ export default StyleSheet.create({
   },
   departureTime: {
     ...genericText,
-    width: 45,
+    width: 65,
     textAlign: 'center',
-    fontSize: 26,
+    fontSize: 46,
+    fontWeight: '100',
     marginLeft: -10,
   },
   lineName: {
     ...genericText,
     fontSize: 26,
+    color: colors.lightText,
   },
 
   departure: {
@@ -40,7 +42,10 @@ export default StyleSheet.create({
   run: {
     color: colors.run,
   },
-  walk: {
+  best: {
     color: colors.walk,
+  },
+  walk: {
+    color: genericText.color,
   },
 });
