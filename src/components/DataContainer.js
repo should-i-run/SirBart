@@ -62,7 +62,8 @@ class DataContainer extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { location, selectedDestinationCode } = this.props;
+    const { location, selectedDestinationCode, stations } = this.props;
+    const { stations: nextStations } = nextProps;
     hackilySetLoc(nextProps.location);
     if (!this.props.location && nextProps.location) {
       this.props.fetchStations();
@@ -79,20 +80,20 @@ class DataContainer extends React.Component<Props, State> {
       this.props.refreshStations();
     }
 
-    if (nextProps.stations) {
-      nextProps.stations.forEach((s: Station) => {
+    if (nextStations) {
+      nextStations.forEach((s: Station) => {
         if (s.walkingDirections.state === 'dirty') {
           this.props.fetchWalkingDirections(s);
         }
       });
     }
 
-    if (this.props.stations && nextProps.stations && selectedDestinationCode) {
+    if (stations && nextStations && selectedDestinationCode) {
       const stationsHaveChanged =
-        !this.props.stations.every(s => nextProps.stations.some(n => n.abbr === s.abbr)) &&
-        this.props.stations.length === nextProps.stations.length;
+        !stations.every(s => nextStations.some(n => n.abbr === s.abbr)) &&
+        stations.length === nextStations.length;
       if (stationsHaveChanged) {
-        const stationCodes = nextProps.stations.map((s: Station) => s.abbr);
+        const stationCodes = nextStations.map((s: Station) => s.abbr);
         if (!stationCodes.includes(selectedDestinationCode)) {
           tracker.trackEvent('interaction', 'select-destination');
           this.props.selectDestination(selectedDestinationCode, stationCodes);
