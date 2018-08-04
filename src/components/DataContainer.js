@@ -47,6 +47,7 @@ type Props = {
   loadSavedDestinations: Function,
   selectedDestinationCode: ?string,
   selectDestination: Function,
+  savedDestinations: SavedDestinations,
 };
 
 class DataContainer extends React.Component<Props, State> {
@@ -61,39 +62,62 @@ class DataContainer extends React.Component<Props, State> {
     this.props.loadSavedDestinations();
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { location, selectedDestinationCode, stations } = this.props;
-    const { stations: nextStations } = nextProps;
-    hackilySetLoc(nextProps.location);
-    if (!this.props.location && nextProps.location) {
+  componentDidUpdate(prevProps: Props) {
+    const {
+      location: prevLocation,
+      stations: prevStations,
+      savedDestinations: prevSavedDestinations,
+    } = prevProps;
+    const { stations, savedDestinations, selectedDestinationCode, location } = this.props;
+    hackilySetLoc(location);
+    if (!prevLocation && location) {
       this.props.fetchStations();
     } else if (
+      prevLocation &&
       location &&
-      nextProps.location &&
-      distanceBetweenCoordinates(
-        location.lat,
-        location.lng,
-        nextProps.location.lat,
-        nextProps.location.lng,
-      ) > 0.5
+      distanceBetweenCoordinates(prevLocation.lat, prevLocation.lng, location.lat, location.lng) >
+        0.5
     ) {
       this.props.refreshStations();
+      this.props.selectDestination();
     }
 
-    if (nextStations) {
-      nextStations.forEach((s: Station) => {
+    if (stations) {
+      stations.forEach((s: Station) => {
         if (s.walkingDirections.state === 'dirty') {
           this.props.fetchWalkingDirections(s);
         }
       });
     }
 
-    if (stations && nextStations && selectedDestinationCode) {
+    // Auto select destination
+    if (stations && !selectedDestinationCode) {
+      if (!stations) {
+        return;
+      }
+      const previousEligibleDestinations = prevStations
+        ? Object.values(prevSavedDestinations).filter(d => !prevStations.some(s => s.abbr === d))
+        : [];
+      const currentEligibleDestinations = Object.values(savedDestinations).filter(
+        d => !stations.some(s => s.abbr === d),
+      );
+      const inCommon = previousEligibleDestinations.filter(d =>
+        currentEligibleDestinations.includes(d),
+      );
+      if (inCommon.length === 0 && currentEligibleDestinations.length === 1) {
+        tracker.trackEvent('auto', 'auto-select-destination');
+        const stationCodes = stations.map((s: Station) => s.abbr);
+        this.props.selectDestination(currentEligibleDestinations[0], stationCodes);
+      }
+    }
+
+    // when a destination is selected, and the stations change, get directions for the new station
+    if (prevStations && stations && selectedDestinationCode) {
       const stationsHaveChanged =
-        !stations.every(s => nextStations.some(n => n.abbr === s.abbr)) &&
-        stations.length === nextStations.length;
+        !prevStations.every(s => stations.some(n => n.abbr === s.abbr)) &&
+        prevStations.length === stations.length;
       if (stationsHaveChanged) {
-        const stationCodes = nextStations.map((s: Station) => s.abbr);
+        const stationCodes = stations.map((s: Station) => s.abbr);
         if (!stationCodes.includes(selectedDestinationCode)) {
           tracker.trackEvent('interaction', 'select-destination');
           this.props.selectDestination(selectedDestinationCode, stationCodes);
@@ -159,6 +183,7 @@ const mapStateToProps = state => ({
   trips: state.trips,
   advisories: state.advisories,
   selectedDestinationCode: state.selectedDestinationCode,
+  savedDestinations: state.savedDestinations,
 });
 
 const mapDispatchToProps = (dispatch: Function) =>

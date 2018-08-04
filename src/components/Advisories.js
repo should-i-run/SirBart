@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
 import { Text, View, Linking, TouchableOpacity } from 'react-native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './Advisories.styles';
 import tracker from '../native/ga';
@@ -36,13 +36,16 @@ export default class StationView extends React.Component<Props> {
     }
     return (
       <TouchableOpacity style={styles.container} onPress={this.goToAdvisories}>
-        {advisories.map(adv => (
-          <View style={styles.advisory} key={adv['@id']}>
-            <Text style={styles.text}>
-              {adv.description['#cdata-section'].replace(' Visit bart.gov.', '')}
-            </Text>
-          </View>
-        ))}
+        {/* <Icon name="exclamation-triangle" size={40} color="#FC5B3F" style={styles.icon} /> */}
+        <View styles={styles.advisoryContainer}>
+          {advisories.map(adv => (
+            <View style={styles.advisory} key={adv['@id']}>
+              <Text style={styles.text}>
+                {adv.description['#cdata-section'].replace(' Visit bart.gov.', '')}
+              </Text>
+            </View>
+          ))}
+        </View>
       </TouchableOpacity>
     );
   }

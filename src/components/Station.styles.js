@@ -15,11 +15,10 @@ export default StyleSheet.create({
     ...genericText,
   },
   direction: {
-    marginBottom: 5,
     backgroundColor: colors.lightBackground,
     paddingLeft: 10,
     paddingBottom: 5,
-    paddingTop: 10,
+    paddingTop: 5,
     borderRadius: 5,
   },
   directionText: {

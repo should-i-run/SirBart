@@ -71,17 +71,17 @@ class Departure extends React.Component<Props> {
         labelStyle = styles.walk;
       }
     }
-
-    function getStatus() {
-      if (isMissed) {
-        return 'missed';
-      } else if (isRunable) {
-        return 'run';
-      } else if (isFirstWalkable || isAfterFirstWalkable) {
-        return 'walk';
-      }
-      return '';
-    }
+    //
+    // function getStatus() {
+    //   if (isMissed) {
+    //     return 'missed';
+    //   } else if (isRunable) {
+    //     return 'run';
+    //   } else if (isFirstWalkable || isAfterFirstWalkable) {
+    //     return 'walk';
+    //   }
+    //   return '';
+    // }
 
     return (
       <View style={[styles.departure, styles.row, { alignItems: 'flex-start' }]}>
@@ -90,14 +90,15 @@ class Departure extends React.Component<Props> {
           <Text
             style={[
               styles.lineName,
-              (isAfterFirstWalkable || isRunable) && { color: colors.genericText },
-              isFirstWalkable && styles.best,
+              !isMissed && { color: colors.genericText },
+              // (isAfterFirstWalkable || isRunable) && { color: colors.genericText },
+              // isFirstWalkable && styles.best,
             ]}
           >
             {line.destination}
           </Text>
           <View style={styles.row}>
-            <Text style={[styles.metadataText]}>{getStatus()}</Text>
+            {/* <Text style={[styles.metadataText]}>{getStatus()}</Text> */}
             <Text style={[styles.metadataText]}>{estimate.length} cars</Text>
             {/* {tripForLine && (
               <Text key="t" style={[styles.metadataText]}>

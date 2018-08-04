@@ -10,20 +10,20 @@ export default StyleSheet.create({
   departureTime: {
     ...genericText,
     width: 65,
-    textAlign: 'center',
+    textAlign: 'right',
     fontSize: 46,
     fontWeight: '100',
-    marginLeft: -10,
+    marginLeft: -8,
+    marginRight: 10,
   },
   lineName: {
     ...genericText,
     fontSize: 26,
     color: colors.lightText,
+    marginTop: 5,
   },
 
-  departure: {
-    marginVertical: 2,
-  },
+  departure: {},
 
   metadataText: {
     ...genericText,

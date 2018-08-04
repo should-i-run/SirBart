@@ -41,22 +41,6 @@ class DestinationSelector extends React.Component<Props, State> {
   state = { adding: false, code: 'EMBR', addingLabel: null };
 
   componentDidUpdate(prevProps: Props, prevState: Object) {
-    const { savedDestinations, stations, selectedDestinationCode } = this.props;
-
-    const previousEligibleDestinations = Object.values(prevProps.savedDestinations).filter(
-      d => !prevProps.stations || !prevProps.stations.some(s => s.abbr === d),
-    );
-    const currentEligibleDestinations = Object.values(savedDestinations).filter(
-      d => !stations || !stations.some(s => s.abbr === d),
-    );
-    if (
-      currentEligibleDestinations.length !== previousEligibleDestinations.length &&
-      currentEligibleDestinations.length === 1 &&
-      !selectedDestinationCode
-    ) {
-      tracker.trackEvent('auto', 'auto-select-destination');
-      this.select(currentEligibleDestinations[0]);
-    }
     if (!prevState.adding && this.state.adding) {
       tracker.trackScreenView('destination-picker');
       tracker.trackEvent('interaction', 'destination-picker-open');
@@ -96,10 +80,8 @@ class DestinationSelector extends React.Component<Props, State> {
   select = (code: ?string) => {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
-      // if (!stationCodes.includes(code)) {
       tracker.trackEvent('interaction', 'select-destination');
       this.props.select(code, stationCodes);
-      // }
     }
   };
 
