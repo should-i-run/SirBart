@@ -2,7 +2,7 @@
 import { AsyncStorage } from 'react-native';
 import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';
-
+import { getAbbrForName } from '../utils/stations.js';
 import type { Location } from '../actions/dataActions';
 
 export type Estimate = {
@@ -274,7 +274,7 @@ export default function(state: State = initialState, action: Object) {
           code = legs[0].origin;
           const transferStation = legs.length > 1 ? legs[0].destination : null;
           return {
-            abbreviation: legs[0].trainHeadStation,
+            abbreviation: getAbbrForName(legs[0].trainHeadStation),
             timeEstimate: t.tripTime,
             transferStation,
           };
