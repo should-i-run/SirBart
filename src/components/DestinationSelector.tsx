@@ -2,7 +2,7 @@
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import React from 'react';
+import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import invariant from 'invariant';
 
@@ -14,7 +14,7 @@ import {
   destinationAdd,
   destinationRemove,
 } from '../actions/destinationActions';
-import type { Station } from '../reducers/appStore';
+import { Station } from '../reducers/appStore';
 import StationPicker from './StationPicker';
 import PulseView from './PulseView';
 import { stationNames } from '../utils/stations';
@@ -23,9 +23,9 @@ import styles from './DestinationSelector.styles';
 
 type Props = {
   savedDestinations: SavedDestinations,
-  selectedDestinationCode: ?string,
-  stations: ?(Station[]),
-  trips: ?any,
+  selectedDestinationCode?: string,
+  stations?: Station[],
+  trips?: any,
   add: Function,
   remove: Function,
   select: Function,
@@ -34,13 +34,13 @@ type Props = {
 type State = {
   adding: boolean,
   code: string,
-  addingLabel: ?string,
+  addingLabel?: string | null,
 };
 
 class DestinationSelector extends React.Component<Props, State> {
   state = { adding: false, code: 'EMBR', addingLabel: null };
 
-  componentDidUpdate(prevProps: Props, prevState: Object) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     if (!prevState.adding && this.state.adding) {
       tracker.trackScreenView('destination-picker');
       tracker.trackEvent('interaction', 'destination-picker-open');
@@ -49,7 +49,7 @@ class DestinationSelector extends React.Component<Props, State> {
     }
   }
 
-  save = (label, code) => {
+  save = (label: string | null, code: string | null) => {
     if (!label) {
       tracker.trackEvent('interaction', 'add-temp-destination');
       return;
@@ -77,7 +77,7 @@ class DestinationSelector extends React.Component<Props, State> {
     );
   };
 
-  select = (code: ?string) => {
+  select = (code?: string | null) => {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
       tracker.trackEvent('interaction', 'select-destination');
@@ -85,7 +85,7 @@ class DestinationSelector extends React.Component<Props, State> {
     }
   };
 
-  renderLabelIcon = (label: ?string, disabled?: boolean) => {
+  renderLabelIcon = (label?: string, disabled?: boolean) => {
     if (!label) {
       return null;
     }
@@ -101,7 +101,7 @@ class DestinationSelector extends React.Component<Props, State> {
     );
   };
 
-  renderSaveableDest = (label: string, code: ?string) => {
+  renderSaveableDest = (label: string, code?: string) => {
     const { stations } = this.props;
     if (!code) {
       return (
@@ -134,7 +134,7 @@ class DestinationSelector extends React.Component<Props, State> {
   renderSelector() {
     const { savedDestinations } = this.props;
     return (
-      <View style={[styles.container, styles.leftRight]} horizontal>
+      <View style={[styles.container, styles.leftRight]}>
         <ScrollView style={{ height: 35 }} horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.listContainer}>
             {this.renderSaveableDest('home', savedDestinations.home)}
@@ -182,13 +182,13 @@ class DestinationSelector extends React.Component<Props, State> {
 
   renderSelected() {
     const { selectedDestinationCode, trips, savedDestinations } = this.props;
-    invariant(selectedDestinationCode, 'renderSelected called without a selectedDestinationCode');
+    if (!selectedDestinationCode) return;
     const matchedSavedLabel =
       selectedDestinationCode === savedDestinations.home
         ? 'home'
         : selectedDestinationCode === savedDestinations.work
           ? 'work'
-          : null;
+          : undefined;
     return (
       <View style={[styles.container, styles.leftRight]}>
         <View style={[styles.leftRight, { flex: 1 }]}>
@@ -223,14 +223,14 @@ class DestinationSelector extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   savedDestinations: state.savedDestinations,
   selectedDestinationCode: state.selectedDestinationCode,
   stations: state.stations,
   trips: state.trips,
 });
 
-const mapDispatchToProps = (dispatch: Function) =>
+const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       add: destinationAdd,

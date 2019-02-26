@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import { Text, View, Linking, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -17,7 +17,7 @@ type Advisory = {
 };
 
 type Props = {
-  advisories: ?(Advisory[]),
+  advisories?: Advisory[],
 };
 
 export default class StationView extends React.Component<Props> {
@@ -37,7 +37,7 @@ export default class StationView extends React.Component<Props> {
     return (
       <TouchableOpacity style={styles.container} onPress={this.goToAdvisories}>
         {/* <Icon name="exclamation-triangle" size={40} color="#FC5B3F" style={styles.icon} /> */}
-        <View styles={styles.advisoryContainer}>
+        <View>
           {advisories.map(adv => (
             <View style={styles.advisory} key={adv['@id']}>
               <Text style={styles.text}>

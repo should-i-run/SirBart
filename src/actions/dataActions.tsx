@@ -2,7 +2,7 @@
 // import { NativeModules } from 'react-native';
 import { throttle } from 'lodash';
 
-import type { Station } from '../reducers/appStore';
+import { Station } from '../reducers/appStore';
 import tracker from '../native/ga';
 
 // const { WalkingDirectionsManager } = NativeModules;
@@ -11,7 +11,7 @@ const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let interval;
 
 export type Location = { lat: number, lng: number };
-let location: ?Location;
+let location: Location | undefined;
 
 function receiveStations(stations) {
   return {
@@ -117,7 +117,7 @@ export function stopFetchingTimes() {
   return {};
 }
 
-export function hackilySetLoc(loc: ?Location) {
+export function hackilySetLoc(loc?: Location) {
   location = loc;
 }
 
@@ -161,7 +161,7 @@ export function fetchWalkingDirections(station: Station) {
           const leg = result.routes[0].legs[0];
           const directions = {
             distance: leg.distance.value,
-            time: parseInt(leg.duration.value / 60, 10),
+            time: parseInt(String(leg.duration.value / 60), 10),
           };
           dispatch(receiveWalkingDirections(station, directions));
         })

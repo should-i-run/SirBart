@@ -1,17 +1,18 @@
 /* @flow */
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import React from 'react';
+import * as React from 'react';
 import { StatusBar, Platform } from 'react-native';
 import thunkMiddleware from 'redux-thunk';
 import codePush from 'react-native-code-push';
 
 import DataContainer from './DataContainer';
 import appStore from '../reducers/appStore';
+import CodePush from 'react-native-code-push';
 
 const store = createStore(appStore, applyMiddleware(thunkMiddleware));
 
-class App extends React.Component<*> {
+class App extends React.Component<{}> {
   componentDidMount() {
     if (Platform.OS === 'ios') {
       StatusBar.setBarStyle('light-content');
@@ -29,4 +30,4 @@ class App extends React.Component<*> {
   }
 }
 
-export default codePush(App);
+export default codePush({ checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME })(App);

@@ -1,3 +1,5 @@
+import { TextStyle } from 'react-native';
+
 /* @flow */
 
 export const colors = {
@@ -11,7 +13,7 @@ export const colors = {
   genericText: '#E6E6E6',
 };
 
-export const genericText = {
+export const genericText: TextStyle = {
   color: colors.genericText,
   fontSize: 18,
   fontWeight: '200',

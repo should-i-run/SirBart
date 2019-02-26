@@ -32,7 +32,7 @@ export function loadSavedDestinations() {
     AsyncStorage.getItem('savedDestinations').then(destinations => {
       let dests;
       try {
-        dests = JSON.parse(destinations);
+        if (destinations) dests = JSON.parse(destinations);
       } catch (e) {
         dests = {};
       }
@@ -51,7 +51,7 @@ function loadTrips(trips: Object[]) {
   };
 }
 
-export function selectDestinationAction(code: ?string) {
+export function selectDestinationAction(code?: string) {
   return {
     type: 'DEST_SELECT',
     code,
@@ -73,7 +73,7 @@ function fetchData(trips: Object[], dispatch) {
     .catch(error => {
       console.warn(error);
       tracker.trackEvent('api', 'fetchTrips error');
-      dispatch(selectDestinationAction(null));
+      dispatch(selectDestinationAction(undefined));
     });
 }
 
@@ -85,5 +85,5 @@ export function selectDestination(endCode?: string, stationCodes?: string[]) {
       fetchData(trips, dispatch);
     };
   }
-  return selectDestinationAction(null);
+  return selectDestinationAction(undefined);
 }

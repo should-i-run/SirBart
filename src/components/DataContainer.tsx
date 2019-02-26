@@ -1,7 +1,7 @@
 /* @flow */
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import React from 'react';
+import * as React from 'react';
 
 import { ScrollView, Text, RefreshControl, View, Platform } from 'react-native';
 
@@ -26,18 +26,19 @@ import { distanceBetweenCoordinates } from '../utils/distance';
 
 import { colors } from '../styles';
 
-import type { Station } from '../reducers/appStore';
+import { Station } from '../reducers/appStore';
+
+import { Location } from '../actions/dataActions';
 
 type State = {
   fakeRefreshing: boolean,
 };
 
 type Props = {
-  stations: ?(Station[]),
-  location: ?Object,
-  advisories: ?*,
-  locationError: boolean,
-  trips: ?(Trip[]),
+  stations?: Station[],
+  location?: Location,
+  advisories?: any,
+  trips?: Trip[],
   startLocation: Function,
   setupDataFetching: Function,
   fetchWalkingDirections: (s: Station) => void,
@@ -45,7 +46,7 @@ type Props = {
   refreshStations: Function,
   fetchStations: Function,
   loadSavedDestinations: Function,
-  selectedDestinationCode: ?string,
+  selectedDestinationCode?: string,
   selectDestination: Function,
   savedDestinations: SavedDestinations,
 };
@@ -136,7 +137,7 @@ class DataContainer extends React.Component<Props, State> {
   };
 
   render() {
-    const { location, stations, locationError, trips, advisories } = this.props;
+    const { location, stations, trips, advisories } = this.props;
     return (
       <View
         style={{
@@ -159,16 +160,8 @@ class DataContainer extends React.Component<Props, State> {
           {stations &&
             stations.filter(s => s.abbr !== this.props.selectedDestinationCode).map(s => {
               const selectedTrip = trips && trips.find(l => l.code === s.abbr);
-              return (
-                <StationView
-                  key={s.abbr}
-                  station={s}
-                  location={location}
-                  selectedTrip={selectedTrip}
-                />
-              );
+              return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
             })}
-          {locationError && <Text>Location Error</Text>}
         </ScrollView>
         <Selector />
       </View>
@@ -176,7 +169,7 @@ class DataContainer extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   location: state.location,
   stations: state.stations,
   refreshingStations: state.refreshingStations,
@@ -186,7 +179,7 @@ const mapStateToProps = state => ({
   savedDestinations: state.savedDestinations,
 });
 
-const mapDispatchToProps = (dispatch: Function) =>
+const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       startLocation,

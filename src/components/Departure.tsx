@@ -1,17 +1,17 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './Departure.styles';
 import { colors } from '../styles';
 import { formatAMPM } from '../utils/time';
 
-import type { Station } from '../reducers/appStore';
+import { Station, Departure as DepartureType } from '../reducers/appStore';
 
 type Props = {
   station: Station,
-  departure: *,
-  tripForLine: ?TripForLine,
+  departure: DepartureType,
+  tripForLine?: TripForLine,
   firstWalkableIndex: number,
   firstRunableIndex: number,
   index: number,
@@ -34,7 +34,7 @@ class Departure extends React.Component<Props> {
   // };
   renderEstimateArrive = (trip: TripForLine, min: number) => {
     const now = new Date().getTime();
-    const minutesToAdd = (min + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
+    const minutesToAdd = (min + parseInt(String(trip.timeEstimate), 10)) * 1000 * 60;
     const time = new Date(now + minutesToAdd);
     return (
       <Text key="a" style={[styles.metadataText]}>
@@ -60,15 +60,15 @@ class Departure extends React.Component<Props> {
     const isMissed = index < firstRunableIndex && index < firstWalkableIndex;
 
     let labelStyle = styles.missed;
-    const { distance, time } = walkingDirections || {};
+    const { distance, time } = walkingDirections;
     if (distance && typeof time === 'number') {
       if (isFirstWalkable) {
         labelStyle = styles.best;
       } else if (isRunable) {
         // labelStyle = styles.run;
-        labelStyle = styles.walk;
+        labelStyle = (styles.walk as {color: string});
       } else if (isAfterFirstWalkable) {
-        labelStyle = styles.walk;
+        labelStyle = (styles.walk as {color: string});
       }
     }
     //

@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';
 import { getAbbrForName } from '../utils/stations.js';
-import type { Location } from '../actions/dataActions';
+import { Location } from '../actions/dataActions';
 
 export type Estimate = {
   direction: string,
@@ -21,8 +21,8 @@ export type Line = {
 
 type WalkingDirections = {
   state: 'dirty' | 'loading' | 'loaded',
-  distance: ?number,
-  time: ?number,
+  distance?: number,
+  time?: number,
 };
 
 export type Departure = {
@@ -34,7 +34,7 @@ export type Station = {
   abbr: string,
   name: string,
   lines: Line[],
-  entrances: ?(Location[]),
+  entrances?: Location[],
   gtfs_latitude: number,
   gtfs_longitude: number,
   closestEntranceLoc: Location,
@@ -43,37 +43,36 @@ export type Station = {
 };
 
 type State = {
-  stations: ?(Station[]),
-  location: ?{
+  stations?: Station[],
+  location?: {
     lat: number,
     lng: number,
   },
   locationError: boolean,
   refreshingStations: boolean,
   selectorShown: boolean,
-  selectionKind: ?'distance',
-  selectionData: ?Object,
-  selectionKey: ?string,
-  selectedDestinationCode: ?string,
+  selectionKind?: 'distance',
+  selectionData?: Object,
+  selectionKey?: string,
+  selectedDestinationCode?: string,
   savedDestinations: SavedDestinations,
-  trips: ?(Trip[]),
-  advisories: ?Object,
+  trips?: Trip[],
+  advisories?: any,
 };
 
 const initialState: State = {
-  stations: null,
-  location: null,
-  walkingDirections: null,
+  stations: undefined,
+  location: undefined,
   locationError: false,
   refreshingStations: false,
   selectorShown: false,
-  selectionData: null,
-  selectionKind: null,
-  selectionKey: null,
-  selectedDestinationCode: null,
+  selectionData: undefined,
+  selectionKind: undefined,
+  selectionKey: undefined,
+  selectedDestinationCode: undefined,
   savedDestinations: {},
-  trips: null,
-  advisories: null,
+  trips: undefined,
+  advisories: undefined,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -86,34 +85,34 @@ const mergeStations = (existing: Station, newStation: Station) => ({
   lines: newStation.lines,
 });
 
-export default function(state: State = initialState, action: Object) {
+export default function(state: State = initialState, action: any) {
   switch (action.type) {
-    case 'RECEIVE_LOCATION': {
-      if (state.location && action.location && isSameLocation(state.location, action.location)) {
-        return state;
-      }
-      return {
-        ...state,
-        location: action.location,
-        locationError: false,
-        stations:
-          state.stations &&
-          state.stations.map(s => ({
-            ...s,
-            closestEntranceLoc: getClosestEntrance(s, action.location),
-            walkingDirections: {
-              ...s.walkingDirections,
-              state: 'dirty',
-            },
-          })),
-      };
-    }
-    case 'LOCATION_ERROR': {
-      return {
-        ...state,
-        locationError: true,
-      };
-    }
+    // case 'RECEIVE_LOCATION': {
+    //   if (state.location && action.location && isSameLocation(state.location, action.location)) {
+    //     return state;
+    //   }
+    //   return {
+    //     ...state,
+    //     location: action.location,
+    //     locationError: false,
+    //     stations:
+    //       state.stations &&
+    //       state.stations.map(s => ({
+    //         ...s,
+    //         closestEntranceLoc: getClosestEntrance(s, action.location),
+    //         walkingDirections: {
+    //           ...s.walkingDirections,
+    //           state: 'dirty',
+    //         },
+    //       })),
+    //   };
+    // }
+    // case 'LOCATION_ERROR': {
+    //   return {
+    //     ...state,
+    //     locationError: true,
+    //   };
+    // }
     case 'RECEIVE_TIMES': {
       const newStations = action.stations
         .map(s => {
@@ -157,7 +156,7 @@ export default function(state: State = initialState, action: Object) {
 
       const selectedDestinationCode =
         newStations.some(s => s.abbr === state.selectedDestinationCode) && newStations.length === 1
-          ? null
+          ? undefined
           : state.selectedDestinationCode;
       return {
         ...state,
@@ -165,7 +164,7 @@ export default function(state: State = initialState, action: Object) {
         locationError: false,
         refreshingStations: false,
         selectorShown: false,
-        selectionKey: null,
+        selectionKey: undefined,
         selectedDestinationCode,
       };
     }
@@ -176,7 +175,7 @@ export default function(state: State = initialState, action: Object) {
         ...state,
         stations:
           state.stations &&
-          state.stations.map((s: Station) => {
+          state.stations.map((s: Station): Station => {
             if (s.abbr === abbr) {
               return {
                 ...s,
@@ -197,7 +196,7 @@ export default function(state: State = initialState, action: Object) {
         ...state,
         stations:
           state.stations &&
-          state.stations.map((s: Station) => {
+          state.stations.map((s: Station): Station => {
             if (s.abbr === abbr) {
               return {
                 ...s,
@@ -231,14 +230,14 @@ export default function(state: State = initialState, action: Object) {
       return {
         ...state,
         selectorShown: false,
-        selectionKey: null,
+        selectionKey: undefined,
       };
     }
     case 'DEST_SELECT': {
       return {
         ...state,
         selectedDestinationCode: action.code,
-        trips: null,
+        trips: undefined,
       };
     }
     case 'DEST_ADD': {

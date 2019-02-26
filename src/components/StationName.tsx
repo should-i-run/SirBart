@@ -1,22 +1,22 @@
 /* @flow */
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import React from 'react';
+import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import { showSelector, hideSelector } from '../actions/selectorActions';
 import tracker from '../native/ga';
 
-import type { Station } from '../reducers/appStore';
+import { Station } from '../reducers/appStore';
 import styles from './StationName.styles';
 
 type Props = {
   station: Station,
-  distance: ?number,
+  distance?: number,
   showSelector: Function,
   hideSelector: Function,
   selectorShown: boolean,
-  selectionData: ?Object,
+  selectionData?: any,
   selectionKind: 'distance' | 'departure',
 };
 
@@ -60,7 +60,7 @@ const mapStateToProps = state => ({
   selectionKind: state.selectionKind,
 });
 
-const mapDispatchToProps = (dispatch: Function) =>
+const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       showSelector,

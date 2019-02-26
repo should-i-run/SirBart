@@ -1,13 +1,13 @@
 /* @flow */
 
-import type { Location } from '../actions/dataActions';
-import type { Station } from '../reducers/appStore';
+import { Location } from '../actions/dataActions';
+import { Station } from '../reducers/appStore';
 
 export function isSameLocation(old: Location, newLoc: Location) {
   return old.lat === newLoc.lat && old.lng === newLoc.lng;
 }
 
-export function getClosestEntrance(station: Station, start: ?Location) {
+export function getClosestEntrance(station: Station, start?: Location) {
   if (start && station.entrances && station.entrances.length) {
     const getDistance = (entrance: Location, startLoc: Location) => {
       const latDistance = Math.pow(startLoc.lat - entrance.lat, 2);

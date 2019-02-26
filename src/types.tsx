@@ -1,13 +1,13 @@
 /* @flow */
 declare type SavedDestinations = {
-  home?: ?string,
-  work?: ?string,
+  home?: string,
+  work?: string,
 };
 
 declare type TripForLine = {
   abbreviation: string,
   timeEstimate: number,
-  transferStation: ?string,
+  transferStation?: string,
 };
 
 declare type Trip = {
@@ -15,4 +15,4 @@ declare type Trip = {
   lines: TripForLine[],
 };
 
-declare var __DEV__: boolean;
+declare type __DEV__ = boolean;

@@ -1,9 +1,9 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 
 import { Animated } from 'react-native';
 
-export default class PulseView extends React.Component<*, { fadeAnim: * }> {
+export default class PulseView extends React.Component<any, { fadeAnim: any }> {
   state = {
     fadeAnim: new Animated.Value(0.5),
   };

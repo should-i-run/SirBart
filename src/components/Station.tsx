@@ -10,11 +10,11 @@ import tracker from '../native/ga';
 import { colors } from '../styles';
 import { getRunningTime } from '../utils/distance';
 
-import type { Station, Departure } from '../reducers/appStore';
+import { Station, Departure } from '../reducers/appStore';
 
 type Props = {
   station: Station,
-  selectedTrip: ?Trip,
+  selectedTrip?: Trip,
 };
 
 export default class StationView extends React.Component<Props> {
@@ -26,10 +26,16 @@ export default class StationView extends React.Component<Props> {
   renderDirection = (departures: Departure[], direction: string) => {
     const { selectedTrip, station } = this.props;
     const firstWalkableIndex = departures.findIndex(
-      d => (d.estimate.minutes || 0) >= station.walkingDirections.time,
+      d =>
+        station.walkingDirections.time === undefined
+          ? false
+          : (d.estimate.minutes || 0) >= station.walkingDirections.time,
     );
     const firstRunableIndex = departures.findIndex(
-      d => (d.estimate.minutes || 0) >= getRunningTime(station.walkingDirections.distance),
+      d =>
+        station.walkingDirections.distance === undefined
+          ? false
+          : (d.estimate.minutes || 0) >= getRunningTime(station.walkingDirections.distance),
     );
     return (
       <View key={direction}>
@@ -79,7 +85,7 @@ export default class StationView extends React.Component<Props> {
   render() {
     const { selectedTrip } = this.props;
     const s = this.props.station;
-    const { distance, time } = s.walkingDirections || {};
+    const { distance, time } = s.walkingDirections;
 
     const selectedDepartures = selectedTrip
       ? s.departures.filter(d =>

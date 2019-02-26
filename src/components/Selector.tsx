@@ -1,23 +1,31 @@
 /* @flow */
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import React from 'react';
+import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Text, Animated, Linking, TouchableOpacity, View, Platform } from 'react-native';
+import {
+  Text,
+  Animated,
+  Linking,
+  TouchableOpacity,
+  View,
+  Platform,
+  GestureResponderEvent,
+} from 'react-native';
 
 import { hideSelector } from '../actions/selectorActions';
 import tracker from '../native/ga';
 
 import styles from './Selector.styles';
 
-import type { Station } from '../reducers/appStore';
+import { Station } from '../reducers/appStore';
 
 type Props = {
-  selectorShown: boolean,
-  hideSelector: Function,
-  selectionKind: 'distance' | 'departure',
-  selectionData: ?Object,
+  selectorShown?: boolean,
+  hideSelector?: ((event: GestureResponderEvent) => void) | undefined,
+  selectionKind?: 'distance' | 'departure',
+  selectionData?: any,
 };
 
 type State = {
@@ -120,13 +128,13 @@ class Selector extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   selectorShown: state.selectorShown,
   selectionData: state.selectionData,
   selectionKind: state.selectionKind,
 });
 
-const mapDispatchToProps = (dispatch: Function) =>
+const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       hideSelector,
