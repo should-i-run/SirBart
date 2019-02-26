@@ -6,9 +6,9 @@ export const locationOptions = {
   maximumAge: 1000 * 30,
 };
 
-function receiveLocation(location) {
+function receiveLocation(location: {coords: {latitude: number, longitude: number}}) {
   return {
-    type: 'RECEIVE_LOCATION',
+    type: 'RECEIVE_LOCATION' as 'RECEIVE_LOCATION',
     location: {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
@@ -16,9 +16,9 @@ function receiveLocation(location) {
   };
 }
 
-export function locationError() {
+function locationError() {
   return {
-    type: 'LOCATION_ERROR',
+    type: 'LOCATION_ERROR' as 'LOCATION_ERROR',
   };
 }
 
@@ -36,3 +36,7 @@ export function startLocation() {
     );
   };
 }
+
+export type LocationActions =
+  | ReturnType<typeof locationError>
+  | ReturnType<typeof receiveLocation>;

@@ -5,16 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './Advisories.styles';
 import tracker from '../native/ga';
-
-type Advisory = {
-  '@id': string,
-  station: string,
-  type: string,
-  description: {
-    '#cdata-section': string,
-  },
-  expires: string,
-};
+import { Advisory } from '../reducers/appStore';
 
 type Props = {
   advisories?: Advisory[],

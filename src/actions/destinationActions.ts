@@ -2,12 +2,13 @@
 import { AsyncStorage } from 'react-native';
 
 import tracker from '../native/ga';
+import { Dispatch } from 'redux';
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart/directions';
 
 export function destinationAdd(label: string, code: string) {
   return {
-    type: 'DEST_ADD',
+    type: 'DEST_ADD' as 'DEST_ADD',
     label,
     code,
   };
@@ -15,14 +16,14 @@ export function destinationAdd(label: string, code: string) {
 
 export function destinationRemove(code: string) {
   return {
-    type: 'DEST_REMOVE',
+    type: 'DEST_REMOVE' as 'DEST_REMOVE',
     code,
   };
 }
 
 function setDestinations(destinations: SavedDestinations) {
   return {
-    type: 'DEST_LOAD',
+    type: 'DEST_LOAD' as 'DEST_LOAD',
     destinations,
   };
 }
@@ -44,21 +45,21 @@ export function loadSavedDestinations() {
   };
 }
 
-function loadTrips(trips: Object[]) {
+function loadTrips(trips: any[][]) {
   return {
-    type: 'TRIPS_LOAD',
+    type: 'TRIPS_LOAD' as 'TRIPS_LOAD',
     trips,
   };
 }
 
 export function selectDestinationAction(code?: string) {
   return {
-    type: 'DEST_SELECT',
+    type: 'DEST_SELECT' as 'DEST_SELECT',
     code,
   };
 }
 
-function fetchData(trips: Object[], dispatch) {
+function fetchData(trips: Object[], dispatch: Dispatch<any>) {
   fetch(URL, {
     method: 'POST',
     body: JSON.stringify(trips),
@@ -80,10 +81,17 @@ function fetchData(trips: Object[], dispatch) {
 export function selectDestination(endCode?: string, stationCodes?: string[]) {
   if (endCode && stationCodes) {
     const trips = stationCodes.filter(c => c !== endCode).map(c => ({ startCode: c, endCode }));
-    return (dispatch: Function) => {
+    return (dispatch: Dispatch<any>) => {
       dispatch(selectDestinationAction(endCode));
       fetchData(trips, dispatch);
     };
   }
   return selectDestinationAction(undefined);
 }
+
+export type DestinationActions =
+  | ReturnType<typeof loadTrips>
+  | ReturnType<typeof destinationAdd>
+  | ReturnType<typeof destinationRemove>
+  | ReturnType<typeof setDestinations>
+  | ReturnType<typeof selectDestinationAction>;

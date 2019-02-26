@@ -3,7 +3,20 @@ import { AsyncStorage } from 'react-native';
 import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';
 import { getAbbrForName } from '../utils/stations.js';
-import { Location } from '../actions/dataActions';
+import { Location, DataActions } from '../actions/dataActions';
+import { DestinationActions } from '../actions/destinationActions';
+import { LocationActions } from '../actions/locationActions';
+import { SelectorActions, SelectorKinds } from '../actions/selectorActions';
+
+export type Advisory = {
+  '@id': string,
+  station: string,
+  type: string,
+  description: {
+    '#cdata-section': string,
+  },
+  expires: string,
+};
 
 export type Estimate = {
   direction: string,
@@ -42,7 +55,10 @@ export type Station = {
   departures: Departure[],
 };
 
-type State = {
+export type SelectionData = 
+{station: Station};
+
+export type State = {
   stations?: Station[],
   location?: {
     lat: number,
@@ -51,13 +67,13 @@ type State = {
   locationError: boolean,
   refreshingStations: boolean,
   selectorShown: boolean,
-  selectionKind?: 'distance',
-  selectionData?: Object,
+  selectionKind?: SelectorKinds, 
+  selectionData?: SelectionData,
   selectionKey?: string,
   selectedDestinationCode?: string,
   savedDestinations: SavedDestinations,
   trips?: Trip[],
-  advisories?: any,
+  advisories?: Advisory[],
 };
 
 const initialState: State = {
@@ -85,34 +101,37 @@ const mergeStations = (existing: Station, newStation: Station) => ({
   lines: newStation.lines,
 });
 
-export default function(state: State = initialState, action: any) {
+export default function(
+  state: State = initialState,
+  action: DataActions | DestinationActions | LocationActions | SelectorActions,
+) {
   switch (action.type) {
-    // case 'RECEIVE_LOCATION': {
-    //   if (state.location && action.location && isSameLocation(state.location, action.location)) {
-    //     return state;
-    //   }
-    //   return {
-    //     ...state,
-    //     location: action.location,
-    //     locationError: false,
-    //     stations:
-    //       state.stations &&
-    //       state.stations.map(s => ({
-    //         ...s,
-    //         closestEntranceLoc: getClosestEntrance(s, action.location),
-    //         walkingDirections: {
-    //           ...s.walkingDirections,
-    //           state: 'dirty',
-    //         },
-    //       })),
-    //   };
-    // }
-    // case 'LOCATION_ERROR': {
-    //   return {
-    //     ...state,
-    //     locationError: true,
-    //   };
-    // }
+    case 'RECEIVE_LOCATION': {
+      if (state.location && action.location && isSameLocation(state.location, action.location)) {
+        return state;
+      }
+      return {
+        ...state,
+        location: action.location,
+        locationError: false,
+        stations:
+          state.stations &&
+          state.stations.map((s): Station => ({
+            ...s,
+            closestEntranceLoc: getClosestEntrance(s, action.location),
+            walkingDirections: {
+              ...s.walkingDirections,
+              state: 'dirty',
+            },
+          })),
+      };
+    }
+    case 'LOCATION_ERROR': {
+      return {
+        ...state,
+        locationError: true,
+      };
+    }
     case 'RECEIVE_TIMES': {
       const newStations = action.stations
         .map(s => {
@@ -126,13 +145,13 @@ export default function(state: State = initialState, action: any) {
             closestEntranceLoc: getClosestEntrance(s, state.location),
           };
         })
-        .map(s => ({
+        .map((s): Station => ({
           ...s,
           lines: s.lines.map(l => ({
             ...l,
             estimates: l.estimates.map(e => ({
               ...e,
-              minutes: e.minutes === 'Leaving' ? 0 : parseInt(e.minutes, 10),
+              minutes: String(e.minutes) === 'Leaving' ? 0 : parseInt(String(e.minutes), 10),
             })),
           })),
         }))
@@ -145,7 +164,7 @@ export default function(state: State = initialState, action: any) {
                 line: l,
               }));
               return acc.concat(estimates);
-            }, [])
+            }, [] as Departure[])
             .sort((a: Departure, b: Departure) => {
               if (a.estimate.minutes <= b.estimate.minutes) {
                 return -1;
@@ -267,19 +286,19 @@ export default function(state: State = initialState, action: any) {
 
     case 'TRIPS_LOAD': {
       const trips = action.trips.map(tripsForStation => {
-        let code;
+        let code: string;
         const lines = tripsForStation.map(t => {
           const legs = Array.isArray(t.leg) ? t.leg : [t.leg];
           code = legs[0].origin;
           const transferStation = legs.length > 1 ? legs[0].destination : null;
           return {
-            abbreviation: getAbbrForName(legs[0].trainHeadStation),
+            abbreviation: getAbbrForName(legs[0].trainHeadStation)!,
             timeEstimate: t.tripTime,
             transferStation,
           };
         });
         return {
-          code,
+          code: code!,
           lines: uniqBy(lines, 'abbreviation'),
         };
       });

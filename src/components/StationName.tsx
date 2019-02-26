@@ -1,13 +1,13 @@
 /* @flow */
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { showSelector, hideSelector } from '../actions/selectorActions';
+import { showSelector, hideSelector, SelectorKinds } from '../actions/selectorActions';
 import tracker from '../native/ga';
 
-import { Station } from '../reducers/appStore';
+import { Station, State as ReducerState, SelectionData } from '../reducers/appStore';
 import styles from './StationName.styles';
 
 type Props = {
@@ -16,8 +16,8 @@ type Props = {
   showSelector: Function,
   hideSelector: Function,
   selectorShown: boolean,
-  selectionData?: any,
-  selectionKind: 'distance' | 'departure',
+  selectionData?: SelectionData,
+  selectionKind?: SelectorKinds,
 };
 
 class StationView extends React.Component<Props> {
@@ -31,7 +31,7 @@ class StationView extends React.Component<Props> {
         return;
       }
     }
-    this.props.showSelector('distance', { station: this.props.station });
+    this.props.showSelector(SelectorKinds.distance, { station: this.props.station });
     tracker.trackEvent('interaction', 'show-selector-station');
   };
 
@@ -54,13 +54,13 @@ class StationView extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReducerState) => ({
   selectorShown: state.selectorShown,
   selectionData: state.selectionData,
   selectionKind: state.selectionKind,
 });
 
-const mapDispatchToProps = (dispatch: any) =>
+const mapDispatchToProps = (dispatch: Dispatch<any>) =>
   bindActionCreators(
     {
       showSelector,

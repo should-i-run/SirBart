@@ -1,8 +1,9 @@
 /* @flow */
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { State as ReducerState, SelectionData } from '../reducers/appStore';
 
 import {
   Text,
@@ -14,7 +15,7 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 
-import { hideSelector } from '../actions/selectorActions';
+import { hideSelector, SelectorKinds } from '../actions/selectorActions';
 import tracker from '../native/ga';
 
 import styles from './Selector.styles';
@@ -24,8 +25,8 @@ import { Station } from '../reducers/appStore';
 type Props = {
   selectorShown?: boolean,
   hideSelector?: ((event: GestureResponderEvent) => void) | undefined,
-  selectionKind?: 'distance' | 'departure',
-  selectionData?: any,
+  selectionKind?: SelectorKinds,
+  selectionData?: SelectionData,
 };
 
 type State = {
@@ -101,7 +102,7 @@ class Selector extends React.Component<Props, State> {
     const { selectorShown, selectionData, selectionKind } = this.props;
     if ((selectorShown || this.state.closing) && selectionData && selectionKind) {
       let stuff;
-      if (selectionKind === 'distance' && selectionData.station) {
+      if (selectionKind === SelectorKinds.distance && selectionData.station) {
         stuff = this.renderDistance(selectionData.station);
       }
       const bottom = this.height.interpolate({
@@ -128,13 +129,13 @@ class Selector extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: ReducerState) => ({
   selectorShown: state.selectorShown,
   selectionData: state.selectionData,
   selectionKind: state.selectionKind,
 });
 
-const mapDispatchToProps = (dispatch: any) =>
+const mapDispatchToProps = (dispatch: Dispatch<any>) =>
   bindActionCreators(
     {
       hideSelector,

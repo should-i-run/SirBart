@@ -1,5 +1,5 @@
 /* @flow */
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 
@@ -18,6 +18,7 @@ import {
   fetchStations,
   refreshStations,
 } from '../actions/dataActions';
+import { State as ReducerState } from '../reducers/appStore';
 
 import { loadSavedDestinations, selectDestination } from '../actions/destinationActions';
 
@@ -26,7 +27,7 @@ import { distanceBetweenCoordinates } from '../utils/distance';
 
 import { colors } from '../styles';
 
-import { Station } from '../reducers/appStore';
+import { Station, Advisory } from '../reducers/appStore';
 
 import { Location } from '../actions/dataActions';
 
@@ -37,7 +38,7 @@ type State = {
 type Props = {
   stations?: Station[],
   location?: Location,
-  advisories?: any,
+  advisories?: Advisory[],
   trips?: Trip[],
   startLocation: Function,
   setupDataFetching: Function,
@@ -169,7 +170,7 @@ class DataContainer extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: ReducerState) => ({
   location: state.location,
   stations: state.stations,
   refreshingStations: state.refreshingStations,
@@ -179,7 +180,7 @@ const mapStateToProps = (state: any) => ({
   savedDestinations: state.savedDestinations,
 });
 
-const mapDispatchToProps = (dispatch: any) =>
+const mapDispatchToProps = (dispatch: Dispatch<any>) =>
   bindActionCreators(
     {
       startLocation,

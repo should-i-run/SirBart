@@ -2,33 +2,34 @@
 // import { NativeModules } from 'react-native';
 import { throttle } from 'lodash';
 
-import { Station } from '../reducers/appStore';
+import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/ga';
+import { Dispatch } from 'redux';
 
 // const { WalkingDirectionsManager } = NativeModules;
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
-let interval;
+let interval: number;
 
 export type Location = { lat: number, lng: number };
 let location: Location | undefined;
 
-function receiveStations(stations) {
+const receiveStations = (stations: Station[]) => {
   return {
-    type: 'RECEIVE_TIMES',
+    type: 'RECEIVE_TIMES' as 'RECEIVE_TIMES',
     stations,
   };
-}
+};
 
 function startRefreshStations() {
   return {
-    type: 'START_REFRESH_STATIONS',
+    type: 'START_REFRESH_STATIONS' as 'START_REFRESH_STATIONS',
   };
 }
 
-function receiveAdvs(advs) {
+function receiveAdvs(advs: Advisory[]) {
   return {
-    type: 'RECEIVE_ADVS',
+    type: 'RECEIVE_ADVS' as 'RECEIVE_ADVS',
     advs,
   };
 }
@@ -53,7 +54,7 @@ const fetchAdvs = throttle(dispatch => {
     });
 }, 1000 * 60);
 
-const fetchData = dispatch => {
+const fetchData = (dispatch: Dispatch<any>) => {
   if (!location) {
     return;
   }
@@ -87,7 +88,7 @@ const fetchData = dispatch => {
 };
 
 export function setupDataFetching() {
-  return (dispatch: Function) => {
+  return (dispatch: Dispatch<any>) => {
     if (interval) {
       clearInterval(interval);
     } else {
@@ -101,13 +102,13 @@ export function setupDataFetching() {
 }
 
 export function refreshStations() {
-  return (dispatch: Function) => {
+  return (dispatch: Dispatch<any>) => {
     dispatch(startRefreshStations());
     fetchData(dispatch);
   };
 }
 export function fetchStations() {
-  return (dispatch: Function) => {
+  return (dispatch: Dispatch<any>) => {
     fetchData(dispatch);
   };
 }
@@ -121,15 +122,15 @@ export function hackilySetLoc(loc?: Location) {
   location = loc;
 }
 
-function startWalkingDirections(station) {
+function startWalkingDirections(station: Station) {
   return {
-    type: 'START_WALKING_DIRECTIONS',
+    type: 'START_WALKING_DIRECTIONS' as 'START_WALKING_DIRECTIONS',
     station,
   };
 }
-function receiveWalkingDirections(station: Station, result: Object) {
+function receiveWalkingDirections(station: Station, result: {time: number, distance: number}) {
   return {
-    type: 'RECEIVE_WALKING_DIRECTIONS',
+    type: 'RECEIVE_WALKING_DIRECTIONS' as 'RECEIVE_WALKING_DIRECTIONS',
     station,
     result,
   };
@@ -173,3 +174,10 @@ export function fetchWalkingDirections(station: Station) {
     }
   };
 }
+
+export type DataActions =
+  | ReturnType<typeof startRefreshStations>
+  | ReturnType<typeof receiveAdvs>
+  | ReturnType<typeof startWalkingDirections>
+  | ReturnType<typeof receiveWalkingDirections>
+  | ReturnType<typeof receiveStations>;

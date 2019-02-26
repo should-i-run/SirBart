@@ -1,11 +1,11 @@
 /* @flow */
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import invariant from 'invariant';
 
+import { State as ReducerState } from '../reducers/appStore';
 import tracker from '../native/ga';
 
 import { colors } from '../styles';
@@ -25,7 +25,7 @@ type Props = {
   savedDestinations: SavedDestinations,
   selectedDestinationCode?: string,
   stations?: Station[],
-  trips?: any,
+  trips?: Trip[],
   add: Function,
   remove: Function,
   select: Function,
@@ -223,14 +223,14 @@ class DestinationSelector extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: ReducerState) => ({
   savedDestinations: state.savedDestinations,
   selectedDestinationCode: state.selectedDestinationCode,
   stations: state.stations,
   trips: state.trips,
 });
 
-const mapDispatchToProps = (dispatch: any) =>
+const mapDispatchToProps = (dispatch: Dispatch<any>) =>
   bindActionCreators(
     {
       add: destinationAdd,
