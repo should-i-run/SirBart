@@ -1,4 +1,4 @@
 <resources>
-    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">U6ZZ6FZ3aKdPf2TYHbV2EoUiZkMW4kMJ9FRff</string>
-    <string name="app_name">Should I Run</string>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
+    <string name="app_name">SirBart2</string>
 </resources>

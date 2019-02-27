@@ -2,7 +2,7 @@
 import { AsyncStorage } from 'react-native';
 import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';
-import { getAbbrForName } from '../utils/stations.js';
+import { getAbbrForName } from '../utils/stations';
 import { Location, DataActions } from '../actions/dataActions';
 import { DestinationActions } from '../actions/destinationActions';
 import { LocationActions } from '../actions/locationActions';
