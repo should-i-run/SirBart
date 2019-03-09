@@ -22,19 +22,19 @@ import { stationNames } from '../utils/stations';
 import styles from './DestinationSelector.styles';
 
 type Props = {
-  savedDestinations: SavedDestinations,
-  selectedDestinationCode?: string,
-  stations?: Station[],
-  trips?: Trip[],
-  add: Function,
-  remove: Function,
-  select: Function,
+  savedDestinations: SavedDestinations;
+  selectedDestinationCode?: string;
+  stations?: Station[];
+  trips?: Trip[];
+  add: Function;
+  remove: Function;
+  select: Function;
 };
 
 type State = {
-  adding: boolean,
-  code: string,
-  addingLabel?: string | null,
+  adding: boolean;
+  code: string;
+  addingLabel?: string | null;
 };
 
 class DestinationSelector extends React.Component<Props, State> {
@@ -110,7 +110,9 @@ class DestinationSelector extends React.Component<Props, State> {
             style={[styles.destToken]}
             onPress={() => this.setState({ adding: true, addingLabel: label })}
           >
-            <Text style={[styles.label, { fontSize: 18 }]}>Add {label}</Text>
+            <Text style={[styles.label, { fontSize: 18 }]}>
+              Add {label === 'work' ? 'Work' : 'Home'}
+            </Text>
           </TouchableOpacity>
         </PulseView>
       );
@@ -135,7 +137,7 @@ class DestinationSelector extends React.Component<Props, State> {
     const { savedDestinations } = this.props;
     return (
       <View style={[styles.container, styles.leftRight]}>
-        <ScrollView style={{ height: 35 }} horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.listContainer}>
             {this.renderSaveableDest('home', savedDestinations.home)}
             {this.renderSaveableDest('work', savedDestinations.work)}
@@ -144,9 +146,11 @@ class DestinationSelector extends React.Component<Props, State> {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <TouchableOpacity onPress={this.remove}>
-          <Icon name="times" size={20} color="#E6E6E6" />
-        </TouchableOpacity>
+        <View style={styles.listContainer}>
+          <TouchableOpacity onPress={this.remove}>
+            <Icon name="times" size={20} color="#E6E6E6" />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -187,8 +191,8 @@ class DestinationSelector extends React.Component<Props, State> {
       selectedDestinationCode === savedDestinations.home
         ? 'home'
         : selectedDestinationCode === savedDestinations.work
-          ? 'work'
-          : undefined;
+        ? 'work'
+        : undefined;
     return (
       <View style={[styles.container, styles.leftRight]}>
         <View style={[styles.leftRight, { flex: 1 }]}>
@@ -240,4 +244,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(DestinationSelector);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DestinationSelector);

@@ -1,36 +1,42 @@
 /* @flow */
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, ViewStyle, TextStyle } from 'react-native';
 
 import { genericText, colors } from '../styles';
+import { pickerHeight } from './StationPicker.styles';
 
-export default StyleSheet.create({
+const styles: { [k: string]: ViewStyle | TextStyle } = {
   wrapper: {
     ...(Platform.OS === 'ios' ? { zIndex: 100 } : {}),
-    alignItems: 'stretch',
+    // alignItems: 'flex-end',
+    // marginBottom: 30,
+    justifyContent: 'flex-start',
+    // flexDirection: 'column',
+    backgroundColor: colors.darkBackground,
+    shadowColor: colors.darkBackground,
+    shadowRadius: 10,
+    shadowOpacity: 1,
+    borderRadius: 12,
+    height: 105,
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
-    paddingVertical: 2,
+    paddingTop: 14,
     paddingHorizontal: 10,
-    backgroundColor: colors.darkBackground,
-    marginHorizontal: 10,
-    borderRadius: 5,
-    height: 55,
+    // marginHorizontal: 5,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 10,
-    borderRadius: 5,
-    height: 55,
-  },
+  // buttonContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginHorizontal: 10,
+  //   borderRadius: 5,
+  //   // height: 55,
+  // },
   pickerContainer: {
     position: 'absolute',
     zIndex: Platform.select({ ios: 100, android: 0 }),
     elevation: 5,
-    top: 0,
+    top: 20 - pickerHeight,
     left: 0,
     right: 0,
     borderRadius: 12,
@@ -59,11 +65,11 @@ export default StyleSheet.create({
   destToken: {
     marginRight: 8,
     maxWidth: 140,
-    padding: 6,
+    paddingHorizontal: 6,
     borderRadius: 4,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#FFF',
-    height: 35,
+    height: 44,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -73,4 +79,6 @@ export default StyleSheet.create({
   disabledText: {
     color: colors.disabledText,
   },
-});
+};
+
+export default styles;
