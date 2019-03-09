@@ -27,7 +27,10 @@ export default class StationView extends React.Component<Props> {
     }
     return (
       <TouchableOpacity style={styles.container} onPress={this.goToAdvisories}>
-        {/* <Icon name="exclamation-triangle" size={40} color="#FC5B3F" style={styles.icon} /> */}
+        <View style={{ flexDirection: 'row' }}>
+          <Icon name="exclamation-triangle" size={25} color="#FC5B3F" style={styles.icon} />
+          <Text style={[styles.genericText, { fontSize: 26 }]}>BART Service Advisories</Text>
+        </View>
         <View>
           {advisories.map(adv => (
             <View style={styles.advisory} key={adv['@id']}>

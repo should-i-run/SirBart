@@ -148,6 +148,7 @@ class DataContainer extends React.Component<Props, State> {
         }}
       >
         <DestinationSelector />
+        <Advisories advisories={advisories} />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -157,7 +158,6 @@ class DataContainer extends React.Component<Props, State> {
             />
           }
         >
-          <Advisories advisories={advisories} />
           {stations &&
             stations.filter(s => s.abbr !== this.props.selectedDestinationCode).map(s => {
               const selectedTrip = trips && trips.find(l => l.code === s.abbr);
