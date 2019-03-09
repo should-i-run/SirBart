@@ -27,6 +27,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1775283B19864AA7980A97AE /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 521D35E81EC1426EB3A337CB /* Octicons.ttf */; };
 		2513973322263D7C004735B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2513973222263D7C004735B0 /* LaunchScreen.storyboard */; };
+		25331A1022347CB100514AF2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253319E622347CB100514AF2 /* LaunchScreen.xib */; };
 		2B54647ED53748539FE73366 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07E4BF2673F442E9D6BFFDC /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -388,6 +389,7 @@
 		1CEAECAA273B4D26AEAFE248 /* libRCTGoogleAnalyticsBridge.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTGoogleAnalyticsBridge.a; sourceTree = "<group>"; };
 		20132ED0B75A40B990FB07C5 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		2513973222263D7C004735B0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		253319E622347CB100514AF2 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* SirBart2-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SirBart2-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* SirBart2-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SirBart2-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -564,6 +566,7 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				253319E622347CB100514AF2 /* LaunchScreen.xib */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				2513973222263D7C004735B0 /* LaunchScreen.storyboard */,
@@ -1245,6 +1248,7 @@
 				56D865D813A1442EAD764060 /* MaterialCommunityIcons.ttf in Resources */,
 				6BC43D170D0C437BAD794121 /* MaterialIcons.ttf in Resources */,
 				1775283B19864AA7980A97AE /* Octicons.ttf in Resources */,
+				25331A1022347CB100514AF2 /* LaunchScreen.xib in Resources */,
 				2513973322263D7C004735B0 /* LaunchScreen.storyboard in Resources */,
 				13A9B209BCA1468B9465738B /* SimpleLineIcons.ttf in Resources */,
 				2B54647ED53748539FE73366 /* Zocial.ttf in Resources */,
