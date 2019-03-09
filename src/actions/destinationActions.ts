@@ -1,5 +1,5 @@
 /* @flow */
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import tracker from '../native/ga';
 import { Dispatch } from 'redux';

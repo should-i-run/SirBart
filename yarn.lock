@@ -656,6 +656,11 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@react-native-community/async-storage@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.2.0.tgz#33ebb208709c5ed99387007c94b0ae931a05c276"
+  integrity sha512-ALHFs4hpJpNpfBZwAxNw4blPnkReSDb7EqHDu4yJIh6RROxB5ZoyNMai6wq3aZMKdZT1DhD+wVICaNIrN8rR1w==
+
 "@react-native-community/cli@^1.2.1":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-1.3.0.tgz#6cf8f84d65483b618b561fe5f25e0759fc994909"
@@ -5795,10 +5800,10 @@ react-native-vector-icons@^4.6.0:
     prop-types "^15.5.10"
     yargs "^8.0.2"
 
-react-native@0.59.0-rc.2:
-  version "0.59.0-rc.2"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.59.0-rc.2.tgz#ad1a145be18805be2c55abd1507f473a40220acf"
-  integrity sha512-p6uKqye+PMjLzaBVMm1YJdHSHNDqutAVSCkj11luXf65gnNWuYWta7CDSthXuGGMmhlDFcmFOR8ewpzvo1m46A==
+react-native@0.59.0-rc.3:
+  version "0.59.0-rc.3"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.59.0-rc.3.tgz#a989e4cdab596bb62248c26920fb641b210fd60e"
+  integrity sha512-jMH/5VUaajBXADmBlDyNQ9gYDU3ywXRQTdVMFBLPcPwT+xJzF1HuUo/xEpAQ6G+mjia3G70BQpEgxi55berviw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@react-native-community/cli" "^1.2.1"
