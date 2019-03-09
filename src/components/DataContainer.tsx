@@ -32,24 +32,24 @@ import { Station, Advisory } from '../reducers/appStore';
 import { Location } from '../actions/dataActions';
 
 type State = {
-  fakeRefreshing: boolean,
+  fakeRefreshing: boolean;
 };
 
 type Props = {
-  stations?: Station[],
-  location?: Location,
-  advisories?: Advisory[],
-  trips?: Trip[],
-  startLocation: Function,
-  setupDataFetching: Function,
-  fetchWalkingDirections: (s: Station) => void,
-  refreshingStations: boolean,
-  refreshStations: Function,
-  fetchStations: Function,
-  loadSavedDestinations: Function,
-  selectedDestinationCode?: string,
-  selectDestination: Function,
-  savedDestinations: SavedDestinations,
+  stations?: Station[];
+  location?: Location;
+  advisories?: Advisory[];
+  trips?: Trip[];
+  startLocation: Function;
+  setupDataFetching: Function;
+  fetchWalkingDirections: (s: Station) => void;
+  refreshingStations: boolean;
+  refreshStations: Function;
+  fetchStations: Function;
+  loadSavedDestinations: Function;
+  selectedDestinationCode?: string;
+  selectDestination: Function;
+  savedDestinations: SavedDestinations;
 };
 
 class DataContainer extends React.Component<Props, State> {
@@ -147,8 +147,8 @@ class DataContainer extends React.Component<Props, State> {
           paddingTop: Platform.select({ android: 0, ios: 25 }),
         }}
       >
-        <DestinationSelector />
         <Advisories advisories={advisories} />
+
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -159,12 +159,15 @@ class DataContainer extends React.Component<Props, State> {
           }
         >
           {stations &&
-            stations.filter(s => s.abbr !== this.props.selectedDestinationCode).map(s => {
-              const selectedTrip = trips && trips.find(l => l.code === s.abbr);
-              return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
-            })}
+            stations
+              .filter(s => s.abbr !== this.props.selectedDestinationCode)
+              .map(s => {
+                const selectedTrip = trips && trips.find(l => l.code === s.abbr);
+                return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
+              })}
         </ScrollView>
         <Selector />
+        <DestinationSelector />
       </View>
     );
   }
@@ -195,4 +198,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DataContainer);
