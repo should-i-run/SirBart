@@ -45,7 +45,7 @@ export default class StationView extends React.Component<Props> {
             : undefined;
           return (
             <DepartureView
-              key={`${d.estimate.minutes}${d.line.abbreviation}`}
+              key={`${d.estimate.minutes}${d.line.abbreviation}${d.estimate.length}`}
               departure={d}
               firstWalkableIndex={firstWalkableIndex === undefined ? -1 : firstWalkableIndex}
               firstRunableIndex={firstRunableIndex === undefined ? -1 : firstRunableIndex}
