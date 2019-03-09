@@ -11,7 +11,7 @@ import { Dispatch } from 'redux';
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
 let interval: number;
 
-export type Location = { lat: number, lng: number };
+export type Location = { lat: number; lng: number };
 let location: Location | undefined;
 
 const receiveStations = (stations: Station[]) => {
@@ -129,7 +129,7 @@ function startWalkingDirections(station: Station) {
     station,
   };
 }
-function receiveWalkingDirections(station: Station, result: {time: number, distance: number}) {
+function receiveWalkingDirections(station: Station, result: { time: number; distance: number }) {
   return {
     type: 'RECEIVE_WALKING_DIRECTIONS' as 'RECEIVE_WALKING_DIRECTIONS',
     station,
