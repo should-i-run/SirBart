@@ -8,24 +8,25 @@ export default StyleSheet.create({
     ...genericText,
   },
   container: {
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingTop: 10,
+    marginHorizontal: 10,
+    marginVertical: 10,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    backgroundColor: colors.lightBackground,
+    borderRadius: 5,
   },
   advisory: {
-    paddingVertical: 10,
-  },
-  advisoryContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 0,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   text: {
     fontSize: 14,
-    color: colors.lightText,
+    color: colors.genericText,
   },
   icon: {
-    marginRight: 10,
+    marginLeft: 10,
+    marginHorizontal: 10,
+    top: 4,
   },
 });

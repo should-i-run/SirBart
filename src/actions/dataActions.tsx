@@ -109,6 +109,7 @@ export function refreshStations() {
 }
 export function fetchStations() {
   return (dispatch: Dispatch<any>) => {
+    dispatch(startRefreshStations());
     fetchData(dispatch);
   };
 }
