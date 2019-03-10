@@ -13,29 +13,27 @@ import { getRunningTime } from '../utils/distance';
 import { Station, Departure } from '../reducers/appStore';
 
 type Props = {
-  station: Station,
-  selectedTrip?: Trip,
+  station: Station;
+  selectedTrip?: Trip;
 };
 
 export default class StationView extends React.Component<Props> {
   goToSchedule = () => {
-    tracker.trackEvent('interaction', 'go-to-schedule');
+    tracker.logEvent('go-to-schedule');
     Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`);
   };
 
   renderDirection = (departures: Departure[], direction: string) => {
     const { selectedTrip, station } = this.props;
-    const firstWalkableIndex = departures.findIndex(
-      d =>
-        station.walkingDirections.time === undefined
-          ? false
-          : (d.estimate.minutes || 0) >= station.walkingDirections.time,
+    const firstWalkableIndex = departures.findIndex(d =>
+      station.walkingDirections.time === undefined
+        ? false
+        : (d.estimate.minutes || 0) >= station.walkingDirections.time,
     );
-    const firstRunableIndex = departures.findIndex(
-      d =>
-        station.walkingDirections.distance === undefined
-          ? false
-          : (d.estimate.minutes || 0) >= getRunningTime(station.walkingDirections.distance),
+    const firstRunableIndex = departures.findIndex(d =>
+      station.walkingDirections.distance === undefined
+        ? false
+        : (d.estimate.minutes || 0) >= getRunningTime(station.walkingDirections.distance),
     );
     return (
       <View key={direction}>

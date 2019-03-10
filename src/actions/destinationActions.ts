@@ -73,7 +73,7 @@ function fetchData(trips: Object[], dispatch: Dispatch<any>) {
     })
     .catch(error => {
       console.warn(error);
-      tracker.trackEvent('api', 'fetchTrips error');
+      tracker.logEvent('fetchTrips error');
       dispatch(selectDestinationAction(undefined));
     });
 }

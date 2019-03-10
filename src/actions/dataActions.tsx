@@ -9,7 +9,7 @@ import { Dispatch } from 'redux';
 // const { WalkingDirectionsManager } = NativeModules;
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
-let interval: number;
+let interval: NodeJS.Timer;
 
 export type Location = { lat: number; lng: number };
 let location: Location | undefined;
@@ -45,12 +45,12 @@ const fetchAdvs = throttle(dispatch => {
       },
       error => {
         console.warn(error);
-        tracker.trackEvent('api', 'fetchAdvs error');
+        tracker.logEvent('fetchAdvs error');
       },
     )
     .catch(error => {
       console.warn(error);
-      tracker.trackEvent('api', 'fetchAdvs dispatch error');
+      tracker.logEvent('fetchAdvs dispatch error');
     });
 }, 1000 * 60);
 
@@ -75,13 +75,13 @@ const fetchData = (dispatch: Dispatch<any>) => {
       },
       error => {
         console.warn(error);
-        tracker.trackEvent('api', 'fetchData stations error');
+        tracker.logEvent('fetchData stations error');
         fetchData(dispatch);
       },
     )
     .catch(error => {
       console.warn(error);
-      tracker.trackEvent('api', 'fetchData dispatch error');
+      tracker.logEvent('fetchData dispatch error');
       fetchData(dispatch);
     });
   fetchAdvs(dispatch);
@@ -169,7 +169,7 @@ export function fetchWalkingDirections(station: Station) {
         })
         .catch(error => {
           console.warn(error);
-          tracker.trackEvent('google-directions-api', 'fetch walking directions error');
+          tracker.logEvent('fetch walking directions error');
         });
       // }
     }

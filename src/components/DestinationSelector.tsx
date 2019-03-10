@@ -42,30 +42,29 @@ class DestinationSelector extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (!prevState.adding && this.state.adding) {
-      tracker.trackScreenView('destination-picker');
-      tracker.trackEvent('interaction', 'destination-picker-open');
+      tracker.logEvent('destination-picker-open');
     } else if (prevState.adding && !this.state.adding) {
-      tracker.trackEvent('interaction', 'destination-picker-close');
+      tracker.logEvent('destination-picker-close');
     }
   }
 
   save = (label: string | null, code: string | null) => {
     if (!label) {
-      tracker.trackEvent('interaction', 'add-temp-destination');
+      tracker.logEvent('add-temp-destination');
       return;
     }
-    tracker.trackEvent('interaction', 'add-destination');
+    tracker.logEvent('add-destination');
     this.props.add(label, code);
   };
 
   remove = () => {
-    tracker.trackEvent('interaction', 'remove-destinations');
+    tracker.logEvent('remove-destinations');
     const confirmRemove = () => {
-      tracker.trackEvent('interaction', 'remove-destinations-confirm');
+      tracker.logEvent('remove-destinations-confirm');
       this.props.remove();
     };
     const cancelRemove = () => {
-      tracker.trackEvent('interaction', 'remove-destinations-cancel');
+      tracker.logEvent('remove-destinations-cancel');
     };
     Alert.alert(
       'Clear destinations',
@@ -80,7 +79,7 @@ class DestinationSelector extends React.Component<Props, State> {
   select = (code?: string | null) => {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
-      tracker.trackEvent('interaction', 'select-destination');
+      tracker.logEvent('select-destination');
       this.props.select(code, stationCodes);
     }
   };
