@@ -144,13 +144,12 @@ class DataContainer extends React.Component<Props, State> {
         style={{
           flex: 1,
           backgroundColor: colors.background,
-          paddingTop: Platform.select({ android: 0, ios: 25 }),
+          paddingTop: Platform.select({ android: 0, ios: 40 }),
         }}
       >
         <Advisories advisories={advisories} />
 
         <ScrollView
-          style={{ paddingTop: 20 }}
           refreshControl={
             <RefreshControl
               refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
