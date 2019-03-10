@@ -62,7 +62,6 @@ class DataContainer extends React.Component<Props, State> {
     this.props.fetchStations();
     this.props.setupDataFetching();
     this.props.loadSavedDestinations();
-    tracker.logEvent('testing');
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -108,7 +107,7 @@ class DataContainer extends React.Component<Props, State> {
         currentEligibleDestinations.includes(d),
       );
       if (inCommon.length === 0 && currentEligibleDestinations.length === 1) {
-        tracker.logEvent('auto-select-destination');
+        tracker.logEvent('auto_select_destination');
         const stationCodes = stations.map((s: Station) => s.abbr);
         this.props.selectDestination(currentEligibleDestinations[0], stationCodes);
       }
@@ -122,7 +121,7 @@ class DataContainer extends React.Component<Props, State> {
       if (stationsHaveChanged) {
         const stationCodes = stations.map((s: Station) => s.abbr);
         if (!stationCodes.includes(selectedDestinationCode)) {
-          tracker.logEvent('select-destination');
+          tracker.logEvent('select_destination');
           this.props.selectDestination(selectedDestinationCode, stationCodes);
         }
       }
@@ -135,7 +134,7 @@ class DataContainer extends React.Component<Props, State> {
     setTimeout(() => {
       this.setState({ fakeRefreshing: false });
     }, 800);
-    tracker.logEvent('pull-to-refresh');
+    tracker.logEvent('pull_to_refresh');
   };
 
   render() {
@@ -151,11 +150,13 @@ class DataContainer extends React.Component<Props, State> {
         <Advisories advisories={advisories} />
 
         <ScrollView
+          style={{ paddingTop: 20 }}
           refreshControl={
             <RefreshControl
               refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
               onRefresh={this.refreshStations}
               tintColor="#E6E6E6"
+              style={{ paddingTop: 10 }}
             />
           }
         >

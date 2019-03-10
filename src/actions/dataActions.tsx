@@ -45,12 +45,12 @@ const fetchAdvs = throttle(dispatch => {
       },
       error => {
         console.warn(error);
-        tracker.logEvent('fetchAdvs error');
+        tracker.logEvent('fetchAdvs_error');
       },
     )
     .catch(error => {
       console.warn(error);
-      tracker.logEvent('fetchAdvs dispatch error');
+      tracker.logEvent('fetchAdvs_dispatch_error');
     });
 }, 1000 * 60);
 
@@ -75,13 +75,13 @@ const fetchData = (dispatch: Dispatch<any>) => {
       },
       error => {
         console.warn(error);
-        tracker.logEvent('fetchData stations error');
+        tracker.logEvent('fetchData_stations_error');
         fetchData(dispatch);
       },
     )
     .catch(error => {
       console.warn(error);
-      tracker.logEvent('fetchData dispatch error');
+      tracker.logEvent('fetchData_dispatch_error');
       fetchData(dispatch);
     });
   fetchAdvs(dispatch);
@@ -169,7 +169,7 @@ export function fetchWalkingDirections(station: Station) {
         })
         .catch(error => {
           console.warn(error);
-          tracker.logEvent('fetch walking directions error');
+          tracker.logEvent('fetch_walking_directions_error');
         });
       // }
     }

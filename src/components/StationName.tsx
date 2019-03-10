@@ -27,12 +27,12 @@ class StationView extends React.Component<Props> {
   //     const isSelected = selectionData.station.abbr === station.abbr;
   //     if (isSelected) {
   //       this.props.hideSelector();
-  //       tracker.logEvent('hide-selector-station');
+  //       tracker.logEvent('hide_selector_station');
   //       return;
   //     }
   //   }
   //   this.props.showSelector(SelectorKinds.distance, { station: this.props.station });
-  //   tracker.logEvent('show-selector-station');
+  //   tracker.logEvent('show_selector_station');
   // };
 
   render() {

@@ -42,29 +42,29 @@ class DestinationSelector extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (!prevState.adding && this.state.adding) {
-      tracker.logEvent('destination-picker-open');
+      tracker.logEvent('destination_picker_open');
     } else if (prevState.adding && !this.state.adding) {
-      tracker.logEvent('destination-picker-close');
+      tracker.logEvent('destination_picker_close');
     }
   }
 
   save = (label: string | null, code: string | null) => {
     if (!label) {
-      tracker.logEvent('add-temp-destination');
+      tracker.logEvent('add_temp_destination');
       return;
     }
-    tracker.logEvent('add-destination');
+    tracker.logEvent('add_destination');
     this.props.add(label, code);
   };
 
   remove = () => {
-    tracker.logEvent('remove-destinations');
+    tracker.logEvent('remove_destinations');
     const confirmRemove = () => {
-      tracker.logEvent('remove-destinations-confirm');
+      tracker.logEvent('remove_destinations_confirm');
       this.props.remove();
     };
     const cancelRemove = () => {
-      tracker.logEvent('remove-destinations-cancel');
+      tracker.logEvent('remove_destinations_cancel');
     };
     Alert.alert(
       'Clear destinations',
@@ -79,7 +79,7 @@ class DestinationSelector extends React.Component<Props, State> {
   select = (code?: string | null) => {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
-      tracker.logEvent('select-destination');
+      tracker.logEvent('select_destination');
       this.props.select(code, stationCodes);
     }
   };
@@ -159,17 +159,21 @@ class DestinationSelector extends React.Component<Props, State> {
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
           <View style={styles.leftRight}>
-            <TouchableOpacity onPress={() => this.setState({ adding: false, code: 'EMBR' })}>
+            <TouchableOpacity
+              style={styles.destToken}
+              onPress={() => this.setState({ adding: false, code: 'EMBR' })}
+            >
               <Text style={styles.genericText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              style={styles.destToken}
               onPress={() => {
                 this.save(this.state.addingLabel, this.state.code);
                 this.select(this.state.code);
                 this.setState({ adding: false, code: 'EMBR', addingLabel: null });
               }}
             >
-              <Text style={[styles.genericText, { height: 40 }]}>Select</Text>
+              <Text style={[styles.genericText]}>Select</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.picker}>
