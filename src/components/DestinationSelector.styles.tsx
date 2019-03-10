@@ -7,10 +7,7 @@ import { pickerHeight } from './StationPicker.styles';
 const styles: { [k: string]: ViewStyle | TextStyle } = {
   wrapper: {
     ...(Platform.OS === 'ios' ? { zIndex: 100 } : {}),
-    // alignItems: 'flex-end',
-    // marginBottom: 30,
     justifyContent: 'flex-start',
-    // flexDirection: 'column',
     backgroundColor: colors.darkBackground,
     shadowColor: colors.darkBackground,
     shadowRadius: 10,
@@ -23,15 +20,7 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     alignItems: 'center',
     paddingTop: 14,
     paddingHorizontal: 10,
-    // marginHorizontal: 5,
   },
-  // buttonContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   marginHorizontal: 10,
-  //   borderRadius: 5,
-  //   // height: 55,
-  // },
   pickerContainer: {
     position: 'absolute',
     zIndex: Platform.select({ ios: 100, android: 0 }),
@@ -67,11 +56,12 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     maxWidth: 140,
     paddingHorizontal: 6,
     borderRadius: 4,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#FFF',
-    height: 44,
+    // borderWidth: StyleSheet.hairlineWidth,
+    // borderColor: '#FFF',
+    height: 40,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: colors.lightBackground,
   },
   disabled: {
     borderColor: colors.lightText,
