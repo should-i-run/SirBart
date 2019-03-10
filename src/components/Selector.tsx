@@ -23,14 +23,14 @@ import styles from './Selector.styles';
 import { Station } from '../reducers/appStore';
 
 type Props = {
-  selectorShown?: boolean,
-  hideSelector?: ((event: GestureResponderEvent) => void) | undefined,
-  selectionKind?: SelectorKinds,
-  selectionData?: SelectionData,
+  selectorShown?: boolean;
+  hideSelector?: ((event: GestureResponderEvent) => void) | undefined;
+  selectionKind?: SelectorKinds;
+  selectionData?: SelectionData;
 };
 
 type State = {
-  closing: boolean,
+  closing: boolean;
 };
 
 class Selector extends React.Component<Props, State> {
@@ -58,7 +58,7 @@ class Selector extends React.Component<Props, State> {
   };
 
   close = () => {
-    tracker.trackEvent('interaction', 'close-selector');
+    tracker.logEvent('close-selector');
     this.height.setValue(1);
     Animated.spring(this.height, {
       toValue: 0,
@@ -68,7 +68,7 @@ class Selector extends React.Component<Props, State> {
   };
 
   goToDirections = () => {
-    tracker.trackEvent('interaction', 'go-to-directions');
+    tracker.logEvent('go-to-directions');
     if (this.props.selectionData) {
       const { lat, lng } = this.props.selectionData.station.closestEntranceLoc;
       const url = Platform.select({
@@ -143,4 +143,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Selector);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Selector);

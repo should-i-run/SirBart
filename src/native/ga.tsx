@@ -1,11 +1,17 @@
-import { GoogleAnalyticsTracker } from 'react-native-google-analytics-bridge';
+// import { GoogleAnalyticsTracker } from 'react-native-google-analytics-bridge';
+import FB from 'react-native-firebase';
 
-const tracker = new GoogleAnalyticsTracker('UA-54111913-2');
+const FBAnalytics = FB.analytics();
 
-const trackerStub = {
-  trackEvent: () => {},
-  trackScreenView: () => {},
+// const tracker = new GoogleAnalyticsTracker('UA-54111913-2');
+
+const wrapper = {
+  logEvent: (name: string, args: any = {}) => {
+    if (!__DEV__) {
+      FBAnalytics.logEvent(name, args);
+    }
+  },
 };
 
-export default (__DEV__ ? trackerStub : tracker);
+export default wrapper;
 // export default trackerStub;

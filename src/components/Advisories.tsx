@@ -8,12 +8,12 @@ import tracker from '../native/ga';
 import { Advisory } from '../reducers/appStore';
 
 type Props = {
-  advisories?: Advisory[],
+  advisories?: Advisory[];
 };
 
 export default class StationView extends React.Component<Props> {
   goToAdvisories = () => {
-    tracker.trackEvent('interaction', 'go-to-advisories');
+    tracker.logEvent('go-to-advisories');
     Linking.openURL('http://m.bart.gov/schedules/advisories');
   };
 
