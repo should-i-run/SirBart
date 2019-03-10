@@ -58,7 +58,7 @@ class Selector extends React.Component<Props, State> {
   };
 
   close = () => {
-    tracker.logEvent('close-selector');
+    tracker.logEvent('close_selector');
     this.height.setValue(1);
     Animated.spring(this.height, {
       toValue: 0,
@@ -68,7 +68,7 @@ class Selector extends React.Component<Props, State> {
   };
 
   goToDirections = () => {
-    tracker.logEvent('go-to-directions');
+    tracker.logEvent('go_to_directions');
     if (this.props.selectionData) {
       const { lat, lng } = this.props.selectionData.station.closestEntranceLoc;
       const url = Platform.select({

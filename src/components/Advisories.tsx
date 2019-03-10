@@ -13,7 +13,7 @@ type Props = {
 
 export default class StationView extends React.Component<Props> {
   goToAdvisories = () => {
-    tracker.logEvent('go-to-advisories');
+    tracker.logEvent('go_to_advisories');
     Linking.openURL('http://m.bart.gov/schedules/advisories');
   };
 
