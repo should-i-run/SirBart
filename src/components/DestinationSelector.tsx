@@ -159,14 +159,10 @@ class DestinationSelector extends React.Component<Props, State> {
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
           <View style={styles.leftRight}>
-            <TouchableOpacity
-              style={styles.destToken}
-              onPress={() => this.setState({ adding: false, code: 'EMBR' })}
-            >
+            <TouchableOpacity onPress={() => this.setState({ adding: false, code: 'EMBR' })}>
               <Text style={styles.genericText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.destToken}
               onPress={() => {
                 this.save(this.state.addingLabel, this.state.code);
                 this.select(this.state.code);
