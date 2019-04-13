@@ -19,15 +19,15 @@
     "eslint-plugin-flowtype": "^2.50.0",
     "invariant": "^2.2.2",
     "lodash": "^4.17.4",
-    "react": "16.8.1",
-    "react-native": "0.59.0-rc.3",
+    "react": "16.8.6",
+    "react-native": "0.59.4",
     "react-native-code-push": "^5.5.2",
     "react-native-firebase": "^5.2.3",
     "react-native-vector-icons": "^4.6.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.4.3"
   },
   "devDependencies": {
     "@babel/core": "7.3.4",
