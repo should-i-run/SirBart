@@ -54,7 +54,7 @@ const fetchAdvs = throttle(dispatch => {
     });
 }, 1000 * 60);
 
-const fetchData = (dispatch: Dispatch<any>) => {
+const fetchData = throttle((dispatch: Dispatch<any>) => {
   if (!location) {
     return;
   }
@@ -76,7 +76,7 @@ const fetchData = (dispatch: Dispatch<any>) => {
       error => {
         console.warn(error);
         tracker.logEvent('fetchData_stations_error');
-        fetchData(dispatch);
+        // fetchData(dispatch);
       },
     )
     .catch(error => {
@@ -85,7 +85,7 @@ const fetchData = (dispatch: Dispatch<any>) => {
       fetchData(dispatch);
     });
   fetchAdvs(dispatch);
-};
+}, 1000);
 
 export function setupDataFetching() {
   return (dispatch: Dispatch<any>) => {

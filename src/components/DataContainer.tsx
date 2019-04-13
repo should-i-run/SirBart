@@ -9,7 +9,8 @@ import Advisories from './Advisories';
 import StationView from './Station';
 import Selector from './Selector';
 import DestinationSelector from './DestinationSelector';
-import { startLocation } from '../actions/locationActions';
+import LocationError from './LocationError';
+import { startLocation, LocationErrorReason } from '../actions/locationActions';
 import {
   setupDataFetching,
   stopFetchingTimes,
@@ -50,6 +51,7 @@ type Props = {
   selectedDestinationCode?: string;
   selectDestination: Function;
   savedDestinations: SavedDestinations;
+  locationErrorReason: LocationErrorReason | undefined;
 };
 
 class DataContainer extends React.Component<Props, State> {
@@ -138,7 +140,7 @@ class DataContainer extends React.Component<Props, State> {
   };
 
   render() {
-    const { location, stations, trips, advisories } = this.props;
+    const { locationErrorReason, stations, trips, advisories } = this.props;
     return (
       <View
         style={{
@@ -147,28 +149,34 @@ class DataContainer extends React.Component<Props, State> {
           paddingTop: Platform.select({ android: 0, ios: 40 }),
         }}
       >
-        <Advisories advisories={advisories} />
+        {locationErrorReason ? (
+          <LocationError errorReason={locationErrorReason} />
+        ) : (
+          <React.Fragment>
+            <Advisories advisories={advisories} />
 
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
-              onRefresh={this.refreshStations}
-              tintColor="#E6E6E6"
-              style={{ paddingTop: 10 }}
-            />
-          }
-        >
-          {stations &&
-            stations
-              .filter(s => s.abbr !== this.props.selectedDestinationCode)
-              .map(s => {
-                const selectedTrip = trips && trips.find(l => l.code === s.abbr);
-                return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
-              })}
-        </ScrollView>
-        <Selector />
-        <DestinationSelector />
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
+                  onRefresh={this.refreshStations}
+                  tintColor="#E6E6E6"
+                  style={{ paddingTop: 10 }}
+                />
+              }
+            >
+              {stations &&
+                stations
+                  .filter(s => s.abbr !== this.props.selectedDestinationCode)
+                  .map(s => {
+                    const selectedTrip = trips && trips.find(l => l.code === s.abbr);
+                    return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
+                  })}
+            </ScrollView>
+            <Selector />
+            <DestinationSelector />
+          </React.Fragment>
+        )}
       </View>
     );
   }
@@ -182,6 +190,7 @@ const mapStateToProps = (state: ReducerState) => ({
   advisories: state.advisories,
   selectedDestinationCode: state.selectedDestinationCode,
   savedDestinations: state.savedDestinations,
+  locationErrorReason: state.locationErrorReason,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) =>

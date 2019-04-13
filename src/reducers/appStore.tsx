@@ -5,81 +5,82 @@ import { getClosestEntrance, isSameLocation } from '../utils/distance';
 import { getAbbrForName } from '../utils/stations';
 import { Location, DataActions } from '../actions/dataActions';
 import { DestinationActions } from '../actions/destinationActions';
-import { LocationActions } from '../actions/locationActions';
+import { LocationActions, LocationErrorReason } from '../actions/locationActions';
 import { SelectorActions, SelectorKinds } from '../actions/selectorActions';
 
 export type Advisory = {
-  '@id': string,
-  station: string,
-  type: string,
+  '@id': string;
+  station: string;
+  type: string;
   description: {
-    '#cdata-section': string,
-  },
-  expires: string,
+    '#cdata-section': string;
+  };
+  expires: string;
 };
 
 export type Estimate = {
-  direction: string,
-  hexcolor: string,
-  length: string,
-  minutes: number,
-  platform: string,
+  direction: string;
+  hexcolor: string;
+  length: string;
+  minutes: number;
+  platform: string;
 };
 
 export type Line = {
-  abbreviation: string,
-  destination: string,
-  estimates: Estimate[],
+  abbreviation: string;
+  destination: string;
+  estimates: Estimate[];
 };
 
 type WalkingDirections = {
-  state: 'dirty' | 'loading' | 'loaded',
-  distance?: number,
-  time?: number,
+  state: 'dirty' | 'loading' | 'loaded';
+  distance?: number;
+  time?: number;
 };
 
 export type Departure = {
-  estimate: Estimate,
-  line: Line,
+  estimate: Estimate;
+  line: Line;
 };
 
 export type Station = {
-  abbr: string,
-  name: string,
-  lines: Line[],
-  entrances?: Location[],
-  gtfs_latitude: number,
-  gtfs_longitude: number,
-  closestEntranceLoc: Location,
-  walkingDirections: WalkingDirections,
-  departures: Departure[],
+  abbr: string;
+  name: string;
+  lines: Line[];
+  entrances?: Location[];
+  gtfs_latitude: number;
+  gtfs_longitude: number;
+  closestEntranceLoc: Location;
+  walkingDirections: WalkingDirections;
+  departures: Departure[];
 };
 
-export type SelectionData = 
-{station: Station};
+export type SelectionData = { station: Station };
 
 export type State = {
-  stations?: Station[],
+  stations?: Station[];
   location?: {
-    lat: number,
-    lng: number,
-  },
-  locationError: boolean,
-  refreshingStations: boolean,
-  selectorShown: boolean,
-  selectionKind?: SelectorKinds, 
-  selectionData?: SelectionData,
-  selectionKey?: string,
-  selectedDestinationCode?: string,
-  savedDestinations: SavedDestinations,
-  trips?: Trip[],
-  advisories?: Advisory[],
+    lat: number;
+    lng: number;
+  };
+  locationError: boolean;
+  locationErrorReason: LocationErrorReason | undefined;
+  refreshingStations: boolean;
+  selectorShown: boolean;
+  selectionKind?: SelectorKinds;
+  selectionData?: SelectionData;
+  selectionKey?: string;
+  selectedDestinationCode?: string;
+  savedDestinations: SavedDestinations;
+  trips?: Trip[];
+  advisories?: Advisory[];
 };
 
 const initialState: State = {
   stations: undefined,
   location: undefined,
   locationError: false,
+  locationErrorReason: undefined,
   refreshingStations: false,
   selectorShown: false,
   selectionData: undefined,
@@ -114,22 +115,26 @@ export default function(
         ...state,
         location: action.location,
         locationError: false,
+        locationErrorReason: undefined,
         stations:
           state.stations &&
-          state.stations.map((s): Station => ({
-            ...s,
-            closestEntranceLoc: getClosestEntrance(s, action.location),
-            walkingDirections: {
-              ...s.walkingDirections,
-              state: 'dirty',
-            },
-          })),
+          state.stations.map(
+            (s): Station => ({
+              ...s,
+              closestEntranceLoc: getClosestEntrance(s, action.location),
+              walkingDirections: {
+                ...s.walkingDirections,
+                state: 'dirty',
+              },
+            }),
+          ),
       };
     }
     case 'LOCATION_ERROR': {
       return {
         ...state,
         locationError: true,
+        locationErrorReason: action.errorReason,
       };
     }
     case 'RECEIVE_TIMES': {
@@ -145,26 +150,31 @@ export default function(
             closestEntranceLoc: getClosestEntrance(s, state.location),
           };
         })
-        .map((s): Station => ({
-          ...s,
-          lines: s.lines.map(l => ({
-            ...l,
-            estimates: l.estimates.map(e => ({
-              ...e,
-              minutes: String(e.minutes) === 'Leaving' ? 0 : parseInt(String(e.minutes), 10),
+        .map(
+          (s): Station => ({
+            ...s,
+            lines: s.lines.map(l => ({
+              ...l,
+              estimates: l.estimates.map(e => ({
+                ...e,
+                minutes: String(e.minutes) === 'Leaving' ? 0 : parseInt(String(e.minutes), 10),
+              })),
             })),
-          })),
-        }))
+          }),
+        )
         .map(s => ({
           ...s,
           departures: s.lines
-            .reduce((acc, l) => {
-              const estimates = l.estimates.map(e => ({
-                estimate: e,
-                line: l,
-              }));
-              return acc.concat(estimates);
-            }, [] as Departure[])
+            .reduce(
+              (acc, l) => {
+                const estimates = l.estimates.map(e => ({
+                  estimate: e,
+                  line: l,
+                }));
+                return acc.concat(estimates);
+              },
+              [] as Departure[],
+            )
             .sort((a: Departure, b: Departure) => {
               if (a.estimate.minutes <= b.estimate.minutes) {
                 return -1;
@@ -194,18 +204,20 @@ export default function(
         ...state,
         stations:
           state.stations &&
-          state.stations.map((s: Station): Station => {
-            if (s.abbr === abbr) {
-              return {
-                ...s,
-                walkingDirections: {
-                  ...s.walkingDirections,
-                  state: 'loading',
-                },
-              };
-            }
-            return s;
-          }),
+          state.stations.map(
+            (s: Station): Station => {
+              if (s.abbr === abbr) {
+                return {
+                  ...s,
+                  walkingDirections: {
+                    ...s.walkingDirections,
+                    state: 'loading',
+                  },
+                };
+              }
+              return s;
+            },
+          ),
       };
     }
     case 'RECEIVE_WALKING_DIRECTIONS': {
@@ -215,19 +227,21 @@ export default function(
         ...state,
         stations:
           state.stations &&
-          state.stations.map((s: Station): Station => {
-            if (s.abbr === abbr) {
-              return {
-                ...s,
-                walkingDirections: {
-                  state: 'loaded',
-                  distance: result.distance,
-                  time: result.time,
-                },
-              };
-            }
-            return s;
-          }),
+          state.stations.map(
+            (s: Station): Station => {
+              if (s.abbr === abbr) {
+                return {
+                  ...s,
+                  walkingDirections: {
+                    state: 'loaded',
+                    distance: result.distance,
+                    time: result.time,
+                  },
+                };
+              }
+              return s;
+            },
+          ),
       };
     }
     case 'START_REFRESH_STATIONS': {
