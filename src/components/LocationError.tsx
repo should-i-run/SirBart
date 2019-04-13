@@ -3,7 +3,7 @@ import { Text, View, Linking, TouchableOpacity } from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './LocationError.styles';
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 import { LocationErrorReason } from '../actions/locationActions';
 
 type Props = {

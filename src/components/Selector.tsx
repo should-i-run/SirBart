@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import { hideSelector, SelectorKinds } from '../actions/selectorActions';
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 
 import styles from './Selector.styles';
 

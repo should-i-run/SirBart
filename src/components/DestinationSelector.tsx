@@ -6,7 +6,7 @@ import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { State as ReducerState } from '../reducers/appStore';
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 
 import { colors } from '../styles';
 import {

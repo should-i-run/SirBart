@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import StationName from './StationName';
 import styles from './Station.styles';
 import DepartureView from './Departure';
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 import { colors } from '../styles';
 import { getRunningTime } from '../utils/distance';
 

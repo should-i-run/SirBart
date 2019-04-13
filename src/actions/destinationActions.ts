@@ -1,7 +1,7 @@
 /* @flow */
 import AsyncStorage from '@react-native-community/async-storage';
 
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 
 const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart/directions';

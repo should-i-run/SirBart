@@ -3,7 +3,7 @@
 import { throttle } from 'lodash';
 
 import { Station, Advisory } from '../reducers/appStore';
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 
 // const { WalkingDirectionsManager } = NativeModules;

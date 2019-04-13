@@ -23,7 +23,7 @@ import { State as ReducerState } from '../reducers/appStore';
 
 import { loadSavedDestinations, selectDestination } from '../actions/destinationActions';
 
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 import { distanceBetweenCoordinates } from '../utils/distance';
 
 import { colors } from '../styles';

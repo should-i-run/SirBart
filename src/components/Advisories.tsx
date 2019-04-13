@@ -4,7 +4,7 @@ import { Text, View, Linking, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './Advisories.styles';
-import tracker from '../native/ga';
+import tracker from '../native/analytics';
 import { Advisory } from '../reducers/appStore';
 
 type Props = {
