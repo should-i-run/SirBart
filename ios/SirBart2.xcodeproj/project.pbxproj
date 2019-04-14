@@ -31,6 +31,7 @@
 		2513973322263D7C004735B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2513973222263D7C004735B0 /* LaunchScreen.storyboard */; };
 		25331A1022347CB100514AF2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253319E622347CB100514AF2 /* LaunchScreen.xib */; };
 		25331A4F22348DA600514AF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25331A4E22348DA600514AF2 /* GoogleService-Info.plist */; };
+		25C20C7E226369A30098F862 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C20C7C226369800098F862 /* libRNCAsyncStorage.a */; };
 		2B54647ED53748539FE73366 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07E4BF2673F442E9D6BFFDC /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -56,7 +57,6 @@
 		95A2716608A040169E9746F4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8750C7D7345478FA140D504 /* Foundation.ttf */; };
 		AABA054BA2F84601BE545DD4 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB41EA36A0C54DCAA7B5AB3E /* EvilIcons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		BAB5DCF1D52A14C80E09F82D /* libPods-SirBart2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD9BC0E033541E3C97E7DE3 /* libPods-SirBart2Tests.a */; };
 		BCB77361110A487BBCC2D275 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF53EF0AD64A485DBFC33E80 /* Ionicons.ttf */; };
 		C3611F8DB756417285097B6F /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A09B1838D44E94A941DCB1 /* libRNVectorIcons.a */; };
 		C609A3111FD54BAA94A0AA94 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = D79AC3A699D9467C9D40F8DA /* AppCenter-Config.plist */; };
@@ -207,6 +207,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5419C2701D824AA700DDF3A1;
 			remoteInfo = AppCenterReactNativeCrashes;
+		};
+		25C20C7B226369800098F862 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNCAsyncStorage;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -418,6 +425,7 @@
 		2513973222263D7C004735B0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		253319E622347CB100514AF2 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		25331A4E22348DA600514AF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* SirBart2-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SirBart2-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* SirBart2-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SirBart2-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -432,10 +440,8 @@
 		69453897C59F42228CD755CA /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		7610FFA1186E4133905421B5 /* SystemConfiguration.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		7DF3ABDA712D24CB1774A65E /* Pods-SirBart2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SirBart2Tests.debug.xcconfig"; path = "Target Support Files/Pods-SirBart2Tests/Pods-SirBart2Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8533E2D75E6D4E72BBF405EA /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		864931B45C6DFE9F2AF1A27B /* Pods-SirBart2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SirBart2Tests.release.xcconfig"; path = "Target Support Files/Pods-SirBart2Tests/Pods-SirBart2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		A424A9AEF3B6EF6BB53F9746 /* libPods-SirBart2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SirBart2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A76A1C15E9C24DE49E464E36 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		AA7E8AC10EE64D81964AB74A /* libsqlite3.0.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -465,7 +471,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				BAB5DCF1D52A14C80E09F82D /* libPods-SirBart2Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +478,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25C20C7E226369A30098F862 /* libRNCAsyncStorage.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -724,6 +730,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		25C20C4D226369800098F862 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				25C20C7C226369800098F862 /* libRNCAsyncStorage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -761,6 +775,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -826,8 +841,6 @@
 			children = (
 				4AC20B0E0A30223E818A6460 /* Pods-SirBart2.debug.xcconfig */,
 				2FC67AC07983AF749520BAE5 /* Pods-SirBart2.release.xcconfig */,
-				7DF3ABDA712D24CB1774A65E /* Pods-SirBart2Tests.debug.xcconfig */,
-				864931B45C6DFE9F2AF1A27B /* Pods-SirBart2Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -848,7 +861,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SirBart2Tests" */;
 			buildPhases = (
-				EB7A2F7F097D7BBBCDFC1AC4 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -1028,6 +1040,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 25C20C4D226369800098F862 /* Products */;
+					ProjectRef = 25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */;
+				},
+				{
 					ProductGroup = 251396F022263C61004735B0 /* Products */;
 					ProjectRef = F5D78CFCED1A4C75B0D5359D /* RNVectorIcons.xcodeproj */;
 				},
@@ -1174,6 +1190,13 @@
 			fileType = archive.ar;
 			path = libAppCenterReactNativeCrashes.a;
 			remoteRef = 259DA70822624000002208D9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		25C20C7C226369800098F862 /* libRNCAsyncStorage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCAsyncStorage.a;
+			remoteRef = 25C20C7B226369800098F862 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {
@@ -1452,28 +1475,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EB7A2F7F097D7BBBCDFC1AC4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SirBart2Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1529,7 +1530,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DF3ABDA712D24CB1774A65E /* Pods-SirBart2Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = UZM8CJQFWX;
@@ -1567,7 +1567,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 864931B45C6DFE9F2AF1A27B /* Pods-SirBart2Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;

@@ -6,34 +6,21 @@ PODS:
     - AppCenter/Core
   - AppCenterReactNativeShared (1.13.0):
     - AppCenter/Core (= 1.14.0)
-  - React (0.11.0):
-    - React/Core (= 0.11.0)
-  - react-native-async-storage (1.2.0):
-    - React
-  - React/Core (0.11.0)
 
 DEPENDENCIES:
   - AppCenter/Analytics (~> 1.14.0)
   - AppCenter/Crashes (~> 1.14.0)
   - AppCenterReactNativeShared (~> 1.13.0)
-  - "react-native-async-storage (from `../node_modules/@react-native-community/async-storage`)"
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AppCenter
     - AppCenterReactNativeShared
-    - React
-
-EXTERNAL SOURCES:
-  react-native-async-storage:
-    :path: "../node_modules/@react-native-community/async-storage"
 
 SPEC CHECKSUMS:
   AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
   AppCenterReactNativeShared: 00f470c3c17b47718db8733cbe811ccdcfd86282
-  React: ab1a2e21deb34965c38328d5ec40cc7d12c6050a
-  react-native-async-storage: 572b0e6bbb368eeb3d303f2505d642517a9396de
 
-PODFILE CHECKSUM: 78970ff0fddaac34f25501960877a437f27342f2
+PODFILE CHECKSUM: 35ec0440d7b49f5e2256f640721a05053e82f9a5
 
 COCOAPODS: 1.6.1
