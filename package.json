@@ -19,6 +19,7 @@
     "appcenter": "1.13.0",
     "appcenter-analytics": "1.13.0",
     "appcenter-crashes": "1.13.0",
+    "async-retry": "^1.2.3",
     "eslint-plugin-flowtype": "^2.50.0",
     "invariant": "^2.2.2",
     "lodash": "^4.17.4",

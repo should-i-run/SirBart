@@ -4,10 +4,10 @@ import Analytics from 'appcenter-analytics';
 
 const wrapper = {
   logEvent: (name: string) => {
-    // if (!__DEV__) {
-    Analytics.trackEvent(name);
-    // Analytics.trackEvent('Video clicked', { Category: 'Music', FileName: 'favorite.avi' });
-    // }
+    if (!__DEV__) {
+      Analytics.trackEvent(name);
+      // Analytics.trackEvent('Video clicked', { Category: 'Music', FileName: 'favorite.avi' });
+    }
   },
 };
 
