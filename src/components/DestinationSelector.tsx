@@ -78,7 +78,11 @@ class DestinationSelector extends React.Component<Props, State> {
   select = (code?: string | null) => {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
-      tracker.logEvent('select_destination');
+      if (code) {
+        tracker.logEvent('select_destination');
+      } else {
+        tracker.logEvent('clear_selected_destination');
+      }
       this.props.select(code, stationCodes);
     }
   };
