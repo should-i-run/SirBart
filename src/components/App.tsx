@@ -1,4 +1,3 @@
-/* @flow */
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import * as React from 'react';

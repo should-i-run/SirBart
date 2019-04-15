@@ -1,5 +1,3 @@
-/* @flow */
-
 // https://stackoverflow.com/a/8888498
 export function formatAMPM(date: Date): string {
   let hours = date.getHours();

@@ -1,5 +1,3 @@
-/* @flow */
-
 export const locationOptions = {
   enableHighAccuracy: true,
   timeout: 15000,

@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 
 import { Animated, StyleProp } from 'react-native';

@@ -1,7 +1,7 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:flowtype/recommended', 'plugin:prettier/recommended'],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   parser: 'babel-eslint',
-  plugins: ['flowtype', 'prettier'],
+  plugins: ['prettier'],
   rules: {
     // allow things that airbnb forbids
     'react/jsx-filename-extension': 0,
@@ -14,8 +14,6 @@ module.exports = {
     'max-len': 0,
     'class-methods-use-this': 0,
     'import/prefer-default-export': 0,
-    'flowtype/define-flow-type': 1,
-    'flowtype/use-flow-type': 1,
 
     // change airbnb rules
     'react/sort-comp': [

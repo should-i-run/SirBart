@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 import { Text, View, Linking, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';

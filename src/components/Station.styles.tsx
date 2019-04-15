@@ -1,4 +1,3 @@
-/* @flow */
 import { StyleSheet } from 'react-native';
 
 import { genericText, colors } from '../styles';

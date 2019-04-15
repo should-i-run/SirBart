@@ -1,4 +1,3 @@
-/* @flow */
 import AsyncStorage from '@react-native-community/async-storage';
 
 import tracker from '../native/analytics';

@@ -1,4 +1,3 @@
-/* @flow */
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';

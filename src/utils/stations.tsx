@@ -1,4 +1,3 @@
-/* @flow */
 export const stationNames: { [k: string]: string } = {
   '12TH': '12th St Oakland City Center',
   '16TH': '16th St Mission',

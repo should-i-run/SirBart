@@ -1,7 +1,5 @@
 import { TextStyle } from 'react-native';
 
-/* @flow */
-
 export const colors = {
   darkBackground: '#10131a',
   background: '#19212C',

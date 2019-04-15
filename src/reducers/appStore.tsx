@@ -1,4 +1,3 @@
-/* @flow */
 import AsyncStorage from '@react-native-community/async-storage';
 import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';

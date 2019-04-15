@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
@@ -9,12 +8,12 @@ import { formatAMPM } from '../utils/time';
 import { Station, Departure as DepartureType } from '../reducers/appStore';
 
 type Props = {
-  station: Station,
-  departure: DepartureType,
-  tripForLine?: TripForLine,
-  firstWalkableIndex: number,
-  firstRunableIndex: number,
-  index: number,
+  station: Station;
+  departure: DepartureType;
+  tripForLine?: TripForLine;
+  firstWalkableIndex: number;
+  firstRunableIndex: number;
+  index: number;
 };
 
 class Departure extends React.Component<Props> {
@@ -66,9 +65,9 @@ class Departure extends React.Component<Props> {
         labelStyle = styles.best;
       } else if (isRunable) {
         // labelStyle = styles.run;
-        labelStyle = (styles.walk as {color: string});
+        labelStyle = styles.walk as { color: string };
       } else if (isAfterFirstWalkable) {
-        labelStyle = (styles.walk as {color: string});
+        labelStyle = styles.walk as { color: string };
       }
     }
     //

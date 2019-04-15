@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 
 import { Picker } from 'react-native';
@@ -8,8 +7,8 @@ import { stationNames } from '../utils/stations';
 import styles from './StationPicker.styles';
 
 type Props = {
-  onSelect: (itemValue: any, itemPosition: number) => void,
-  selectedValue: string,
+  onSelect: (itemValue: any, itemPosition: number) => void;
+  selectedValue: string;
 };
 
 class StationPicker extends React.Component<Props> {

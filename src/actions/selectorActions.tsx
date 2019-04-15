@@ -1,6 +1,4 @@
-import { SelectionData } from "../reducers/appStore";
-
-/* @flow */
+import { SelectionData } from '../reducers/appStore';
 
 export function showSelector(kind: SelectorKinds, data: SelectionData, selectionKey?: string) {
   return {
@@ -17,9 +15,7 @@ export function hideSelector() {
 }
 
 export enum SelectorKinds {
-  distance = 'distance'
+  distance = 'distance',
 }
 
-export type SelectorActions =
-  | ReturnType<typeof hideSelector>
-  | ReturnType<typeof showSelector>;
+export type SelectorActions = ReturnType<typeof hideSelector> | ReturnType<typeof showSelector>;

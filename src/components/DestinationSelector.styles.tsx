@@ -1,4 +1,3 @@
-/* @flow */
 import { StyleSheet, Platform, ViewStyle, TextStyle } from 'react-native';
 
 import { genericText, colors } from '../styles';

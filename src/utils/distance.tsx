@@ -1,5 +1,3 @@
-/* @flow */
-
 import { Location } from '../actions/dataActions';
 import { Station } from '../reducers/appStore';
 
@@ -15,7 +13,6 @@ export function getClosestEntrance(station: Station, start?: Location) {
       return Math.sqrt(lngDistance + latDistance);
     };
     const sortedEntrances = station.entrances.sort(
-      // $FlowFixMe
       (a, b) => getDistance(a, start) - getDistance(b, start),
     );
     return sortedEntrances[0];
@@ -25,15 +22,15 @@ export function getClosestEntrance(station: Station, start?: Location) {
 
 // http://www.geodatasource.com/developers/javascript
 export function distanceBetweenCoordinates(lat1: number, lon1: number, lat2: number, lon2: number) {
-  const radlat1 = Math.PI * lat1 / 180;
-  const radlat2 = Math.PI * lat2 / 180;
+  const radlat1 = (Math.PI * lat1) / 180;
+  const radlat2 = (Math.PI * lat2) / 180;
   const theta = lon1 - lon2;
-  const radtheta = Math.PI * theta / 180;
+  const radtheta = (Math.PI * theta) / 180;
   let dist =
     Math.sin(radlat1) * Math.sin(radlat2) +
     Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
   dist = Math.acos(dist);
-  dist = dist * 180 / Math.PI;
+  dist = (dist * 180) / Math.PI;
   dist = dist * 60 * 1.1515;
   return dist * 1.609344;
 }
