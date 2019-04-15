@@ -5,6 +5,7 @@ import { throttle } from 'lodash';
 import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
+import retry from 'async-retry';
 
 // const { WalkingDirectionsManager } = NativeModules;
 
@@ -34,7 +35,7 @@ function receiveAdvs(advs: Advisory[]) {
   };
 }
 
-const fetchAdvs = throttle(dispatch => {
+const fetchAdvs = dispatch => {
   fetch('https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y', {
     method: 'GET',
   })
@@ -52,40 +53,42 @@ const fetchAdvs = throttle(dispatch => {
       console.warn(error);
       tracker.logEvent('fetchAdvs_dispatch_error');
     });
-}, 1000 * 60);
+};
 
-const fetchData = throttle((dispatch: Dispatch<any>) => {
-  if (!location) {
-    return;
-  }
-  fetch(URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      lat: location.lat,
-      lng: location.lng,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(response => response.json())
-    .then(
-      data => {
-        dispatch(receiveStations(data));
-      },
-      error => {
-        console.warn(error);
-        tracker.logEvent('fetchData_stations_error');
-        // fetchData(dispatch);
-      },
-    )
-    .catch(error => {
-      console.warn(error);
-      tracker.logEvent('fetchData_dispatch_error');
-      fetchData(dispatch);
-    });
+const fetchData = (dispatch: Dispatch<any>) => {
   fetchAdvs(dispatch);
-}, 1000);
+
+  retry(
+    async () => {
+      if (!location) {
+        return;
+      }
+      const res = await fetch(URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          lat: location.lat,
+          lng: location.lng,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      try {
+        dispatch(receiveStations(data));
+      } catch (e) {
+        console.warn(e);
+        tracker.logEvent('fetchData_dispatch_error');
+      }
+    },
+    {
+      onRetry(error) {
+        console.warn(error);
+        tracker.logEvent('fetchData_stations_error', { error: error.toString() });
+      },
+    },
+  );
+};
 
 export function setupDataFetching() {
   return (dispatch: Dispatch<any>) => {

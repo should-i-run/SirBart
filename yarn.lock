@@ -708,6 +708,13 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@types/async-retry@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@types/async-retry/-/async-retry-1.4.0.tgz#4c52040183941c6f5e7b404538cd5687f9ea7b2a"
+  integrity sha512-6bF24iEEM8ApmvJYpUjUW/w5Ud9q8KV8c25T5ClSxTmgeM7vtJZIKwYwQ0rWQmKCwPVkbwfxIJ8sgXQC4XzAlw==
+  dependencies:
+    "@types/retry" "*"
+
 "@types/invariant@^2.2.29":
   version "2.2.29"
   resolved "https://registry.yarnpkg.com/@types/invariant/-/invariant-2.2.29.tgz#aa845204cd0a289f65d47e0de63a6a815e30cc66"
@@ -759,6 +766,11 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/retry@*":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.0.tgz#2b35eccfcee7d38cd72ad99232fbd58bffb3c84d"
+  integrity sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==
 
 abab@^2.0.0:
   version "2.0.0"
