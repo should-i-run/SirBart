@@ -8,7 +8,7 @@ import retry from 'async-retry';
 
 // const { WalkingDirectionsManager } = NativeModules;
 
-const URL = 'https://tranquil-harbor-8717.herokuapp.com/bart';
+const URL = 'https://bart.rgoldfinger.com/bart';
 let interval: NodeJS.Timer;
 
 export type Location = { lat: number; lng: number };
@@ -34,7 +34,7 @@ function receiveAdvs(advs: Advisory[]) {
   };
 }
 
-const fetchAdvs = dispatch => {
+const fetchAdvs = (dispatch: Dispatch<any>) => {
   fetch('https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y', {
     method: 'GET',
   })
