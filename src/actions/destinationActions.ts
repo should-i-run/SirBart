@@ -1,5 +1,4 @@
-import AsyncStorage from '@react-native-community/async-storage';
-
+import { AsyncStorage } from 'react-native';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 

@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';
 import { getAbbrForName } from '../utils/stations';

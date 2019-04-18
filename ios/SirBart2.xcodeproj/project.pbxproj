@@ -31,7 +31,6 @@
 		2513973322263D7C004735B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2513973222263D7C004735B0 /* LaunchScreen.storyboard */; };
 		25331A1022347CB100514AF2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253319E622347CB100514AF2 /* LaunchScreen.xib */; };
 		25331A4F22348DA600514AF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25331A4E22348DA600514AF2 /* GoogleService-Info.plist */; };
-		25C20C7E226369A30098F862 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C20C7C226369800098F862 /* libRNCAsyncStorage.a */; };
 		2B54647ED53748539FE73366 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07E4BF2673F442E9D6BFFDC /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -207,13 +206,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5419C2701D824AA700DDF3A1;
 			remoteInfo = AppCenterReactNativeCrashes;
-		};
-		25C20C7B226369800098F862 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNCAsyncStorage;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -425,7 +417,6 @@
 		2513973222263D7C004735B0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		253319E622347CB100514AF2 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		25331A4E22348DA600514AF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* SirBart2-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SirBart2-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* SirBart2-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SirBart2-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -478,7 +469,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25C20C7E226369A30098F862 /* libRNCAsyncStorage.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -730,14 +720,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		25C20C4D226369800098F862 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				25C20C7C226369800098F862 /* libRNCAsyncStorage.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -775,7 +757,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -1040,10 +1021,6 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 25C20C4D226369800098F862 /* Products */;
-					ProjectRef = 25C20C4C226369800098F862 /* RNCAsyncStorage.xcodeproj */;
-				},
-				{
 					ProductGroup = 251396F022263C61004735B0 /* Products */;
 					ProjectRef = F5D78CFCED1A4C75B0D5359D /* RNVectorIcons.xcodeproj */;
 				},
@@ -1190,13 +1167,6 @@
 			fileType = archive.ar;
 			path = libAppCenterReactNativeCrashes.a;
 			remoteRef = 259DA70822624000002208D9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		25C20C7C226369800098F862 /* libRNCAsyncStorage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCAsyncStorage.a;
-			remoteRef = 25C20C7B226369800098F862 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {
@@ -1626,6 +1596,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hr.Should-I-Run";
 				PRODUCT_NAME = SirBart2;
+				SKIP_INSTALL = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1656,6 +1627,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hr.Should-I-Run";
 				PRODUCT_NAME = SirBart2;
+				SKIP_INSTALL = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
