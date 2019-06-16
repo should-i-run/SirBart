@@ -25,11 +25,12 @@
     "react": "16.8.6",
     "react-native": "0.59.4",
     "react-native-code-push": "^5.6.0",
+    "react-native-store-review": "^0.1.5",
     "react-native-vector-icons": "^4.6.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.5.2"
   },
   "devDependencies": {
     "@babel/core": "7.3.4",

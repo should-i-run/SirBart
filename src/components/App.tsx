@@ -8,16 +8,18 @@ import codePush from 'react-native-code-push';
 import DataContainer from './DataContainer';
 import appStore from '../reducers/appStore';
 import CodePush from 'react-native-code-push';
+import { incrementLaunchCount } from '../utils/launches';
 
 const store = createStore(appStore, applyMiddleware(thunkMiddleware));
 
 class App extends React.Component<{}> {
-  componentDidMount() {
+  async componentDidMount() {
     if (Platform.OS === 'ios') {
       StatusBar.setBarStyle('light-content');
     } else {
       StatusBar.setBackgroundColor('#252F39');
     }
+    incrementLaunchCount();
   }
 
   render() {

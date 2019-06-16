@@ -9,6 +9,7 @@ import StationView from './Station';
 import Selector from './Selector';
 import DestinationSelector from './DestinationSelector';
 import LocationError from './LocationError';
+import ReviewPrompt from './ReviewPrompt';
 import { startLocation, LocationErrorReason } from '../actions/locationActions';
 import {
   setupDataFetching,
@@ -152,8 +153,6 @@ class DataContainer extends React.Component<Props, State> {
           <LocationError errorReason={locationErrorReason} />
         ) : (
           <React.Fragment>
-            <Advisories advisories={advisories} />
-
             <ScrollView
               refreshControl={
                 <RefreshControl
@@ -164,6 +163,7 @@ class DataContainer extends React.Component<Props, State> {
                 />
               }
             >
+              <Advisories advisories={advisories} />
               {stations &&
                 stations
                   .filter(s => s.abbr !== this.props.selectedDestinationCode)
@@ -176,6 +176,7 @@ class DataContainer extends React.Component<Props, State> {
             <DestinationSelector />
           </React.Fragment>
         )}
+        <ReviewPrompt />
       </View>
     );
   }
