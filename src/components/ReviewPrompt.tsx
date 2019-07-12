@@ -19,12 +19,10 @@ function handleCancel() {
 export default class ReviewPrompt extends React.Component {
   async componentDidMount() {
     if (!StoreReview.isAvailable) {
-      console.log('store review not avail');
       return;
     }
     const launchCount = await getLaunchCount();
-    console.log({ launchCount });
-    const hasReviewed = AsyncStorage.getItem(HAS_REVIEWED_KEY);
+    const hasReviewed = await AsyncStorage.getItem(HAS_REVIEWED_KEY);
     const shouldPrompt =
       launchCount === 5 || launchCount === 20 || launchCount === 50 || launchCount === 100;
     if (shouldPrompt && !hasReviewed) {
@@ -38,7 +36,7 @@ export default class ReviewPrompt extends React.Component {
             { text: 'Rate', style: 'default', onPress: handleRate },
           ],
         );
-      }, 1000 * 30);
+      }, 1000 * 10);
     }
   }
 
