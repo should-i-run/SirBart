@@ -19,6 +19,7 @@ import PulseView from './PulseView';
 import { stationNames } from '../utils/stations';
 
 import styles from './DestinationSelector.styles';
+import LastUpdatedTime from './LastUpdatedTime';
 
 type Props = {
   savedDestinations: SavedDestinations;
@@ -28,6 +29,7 @@ type Props = {
   add: Function;
   remove: Function;
   select: Function;
+  timesLastUpdatedAt?: Date; 
 };
 
 type State = {
@@ -218,7 +220,7 @@ class DestinationSelector extends React.Component<Props, State> {
   }
 
   render() {
-    const { selectedDestinationCode } = this.props;
+    const { selectedDestinationCode, timesLastUpdatedAt } = this.props;
     let body;
     if (this.state.adding) {
       body = this.renderPicker();
@@ -227,7 +229,9 @@ class DestinationSelector extends React.Component<Props, State> {
     } else {
       body = this.renderSelector();
     }
-    return <View style={styles.wrapper}>{body}</View>;
+    return <View style={styles.wrapper}>
+      <LastUpdatedTime time={timesLastUpdatedAt} />
+      {body}</View>;
   }
 }
 
@@ -236,6 +240,7 @@ const mapStateToProps = (state: ReducerState) => ({
   selectedDestinationCode: state.selectedDestinationCode,
   stations: state.stations,
   trips: state.trips,
+  timesLastUpdatedAt: state.timesLastUpdatedAt
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) =>

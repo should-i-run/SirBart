@@ -76,6 +76,7 @@ export type State = {
   trips?: Trip[];
   advisories?: Advisory[];
   network: Record<string, NetworkStatus>;
+  timesLastUpdatedAt?: Date;
 };
 
 const initialState: State = {
@@ -100,6 +101,7 @@ const initialState: State = {
   //   expires: '1235'
   // }],
   network: {},
+  timesLastUpdatedAt: undefined,
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -205,6 +207,7 @@ export default function(
         selectorShown: false,
         selectionKey: undefined,
         selectedDestinationCode,
+        timesLastUpdatedAt: new Date(),
       };
     }
 
