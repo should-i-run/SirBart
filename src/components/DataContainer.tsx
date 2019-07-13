@@ -167,6 +167,12 @@ class DataContainer extends React.Component<Props, State> {
               {stations &&
                 stations
                   .filter(s => s.abbr !== this.props.selectedDestinationCode)
+                  .sort((a, b) => {
+                    if (a.walkingDirections.distance && b.walkingDirections.distance) {
+                      return a.walkingDirections!.distance! - b.walkingDirections!.distance!
+                    }
+                    return 0;
+                  })
                   .map(s => {
                     const selectedTrip = trips && trips.find(l => l.code === s.abbr);
                     return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
