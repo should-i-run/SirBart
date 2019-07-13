@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, ViewStyle, TextStyle } from 'react-native';
+import { Platform, ViewStyle, TextStyle } from 'react-native';
 
 import { genericText, colors } from '../styles';
 import { pickerHeight } from './StationPicker.styles';

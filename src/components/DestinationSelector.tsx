@@ -39,7 +39,7 @@ type State = {
 class DestinationSelector extends React.Component<Props, State> {
   state = { adding: false, code: 'EMBR', addingLabel: null };
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     if (!prevState.adding && this.state.adding) {
       tracker.logEvent('destination_picker_open');
     } else if (prevState.adding && !this.state.adding) {

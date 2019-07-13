@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { genericText, colors } from '../styles';
+import { genericText } from '../styles';
 
 export default StyleSheet.create({
   genericText: {

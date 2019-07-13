@@ -5,7 +5,6 @@ import { getAbbrForName } from '../utils/stations';
 import { Location, DataActions } from '../actions/dataActions';
 import { DestinationActions } from '../actions/destinationActions';
 import { LocationActions, LocationErrorReason } from '../actions/locationActions';
-import { SelectorActions, SelectorKinds } from '../actions/selectorActions';
 
 export type Advisory = {
   '@id': string;
@@ -54,8 +53,6 @@ export type Station = {
   departures: Departure[];
 };
 
-export type SelectionData = { station: Station };
-
 export type State = {
   stations?: Station[];
   location?: {
@@ -66,8 +63,6 @@ export type State = {
   locationErrorReason: LocationErrorReason | undefined;
   refreshingStations: boolean;
   selectorShown: boolean;
-  selectionKind?: SelectorKinds;
-  selectionData?: SelectionData;
   selectionKey?: string;
   selectedDestinationCode?: string;
   savedDestinations: SavedDestinations;
@@ -82,8 +77,6 @@ const initialState: State = {
   locationErrorReason: undefined,
   refreshingStations: false,
   selectorShown: false,
-  selectionData: undefined,
-  selectionKind: undefined,
   selectionKey: undefined,
   selectedDestinationCode: undefined,
   savedDestinations: {},
@@ -103,7 +96,7 @@ const mergeStations = (existing: Station, newStation: Station) => ({
 
 export default function(
   state: State = initialState,
-  action: DataActions | DestinationActions | LocationActions | SelectorActions,
+  action: DataActions | DestinationActions | LocationActions,
 ) {
   switch (action.type) {
     case 'RECEIVE_LOCATION': {
@@ -247,22 +240,6 @@ export default function(
       return {
         ...state,
         refreshingStations: true,
-      };
-    }
-    case 'SHOW_SELECTOR': {
-      return {
-        ...state,
-        selectorShown: true,
-        selectionKind: action.kind,
-        selectionData: action.data,
-        selectionKey: action.selectionKey,
-      };
-    }
-    case 'HIDE_SELECTOR': {
-      return {
-        ...state,
-        selectorShown: false,
-        selectionKey: undefined,
       };
     }
     case 'DEST_SELECT': {

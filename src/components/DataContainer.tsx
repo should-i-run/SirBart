@@ -2,11 +2,10 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 
-import { ScrollView, Text, RefreshControl, View, Platform } from 'react-native';
+import { ScrollView, RefreshControl, View, Platform } from 'react-native';
 
 import Advisories from './Advisories';
 import StationView from './Station';
-import Selector from './Selector';
 import DestinationSelector from './DestinationSelector';
 import LocationError from './LocationError';
 import ReviewPrompt from './ReviewPrompt';
@@ -178,7 +177,6 @@ class DataContainer extends React.Component<Props, State> {
                     return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
                   })}
             </ScrollView>
-            <Selector />
             <DestinationSelector />
           </React.Fragment>
         )}

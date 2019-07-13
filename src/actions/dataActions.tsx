@@ -1,12 +1,7 @@
-// import { NativeModules } from 'react-native';
-import { throttle } from 'lodash';
-
 import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 import retry from 'async-retry';
-
-// const { WalkingDirectionsManager } = NativeModules;
 
 const URL = 'https://bart.rgoldfinger.com/bart';
 let interval: NodeJS.Timer;
