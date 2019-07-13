@@ -1,16 +1,15 @@
 image: node:latest
 stages:
   - test
-  - typecheck
 
 test:
   stage: test
   script:
     - yarn install
     - yarn test
-    
+
 typecheck:
-  stage: typecheck
+  stage: test
   script:
     - yarn install
     - yarn tsc
