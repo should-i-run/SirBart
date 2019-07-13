@@ -1,14 +1,19 @@
 image: node:latest
 stages:
   - test
-  # - deploy
+  - typecheck
 
 test:
   stage: test
   script:
     - yarn install
-    - yarn tsc
     - yarn test
+    
+typecheck:
+  stage: typecheck
+  script:
+    - yarn install
+    - yarn tsc
 # staging:
 #   stage: deploy
 #   script:
