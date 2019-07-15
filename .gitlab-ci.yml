@@ -7,6 +7,10 @@ install:
   stage: install
   script:
     - yarn install
+  cache:
+    key: node_modules
+    paths:
+      - node_modules/
 
 test:
   stage: test
