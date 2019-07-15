@@ -5,8 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "lint": "eslint src/**/*.*",
-    "precommit": "lint-staged"
+    "lint": "eslint src/**/*.*"
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.3.3",
@@ -60,5 +59,10 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
