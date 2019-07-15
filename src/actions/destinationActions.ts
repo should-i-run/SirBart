@@ -57,7 +57,7 @@ export function selectDestinationAction(code?: string) {
   };
 }
 
-function fetchData(trips: Object[], dispatch: Dispatch<any>) {
+function fetchData(trips: Record<string, any>[], dispatch: Dispatch<any>) {
   fetch(URL, {
     method: 'POST',
     body: JSON.stringify(trips),

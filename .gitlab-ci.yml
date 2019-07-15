@@ -22,6 +22,11 @@ prettier:
   stage: test
   script:
     - yarn prettier --check ./src/**/*.{ts,tsx}
+
+lint:
+  stage: test
+  script:
+    - yarn lint
 # staging:
 #   stage: deploy
 #   script:

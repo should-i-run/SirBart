@@ -1,9 +1,13 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:prettier/recommended'],
-  parser: 'babel-eslint',
-  plugins: ['prettier'],
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier', 'prettier/@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['prettier', '@typescript-eslint'],
   rules: {
-    // allow things that airbnb forbids
+    // allow these things
+    '@typescript-eslint/no-non-null-assertion': 0,
+    '@typescript-eslint/camelcase': 0,
+    '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/prefer-interface': 0,
     'react/jsx-filename-extension': 0,
     'react/prefer-stateless-function': 0,
     'import/no-extraneous-dependencies': 0,
@@ -15,13 +19,15 @@ module.exports = {
     'class-methods-use-this': 0,
     'import/prefer-default-export': 0,
 
-    // change airbnb rules
-    'react/sort-comp': [
-      2,
-      {
-        order: ['props', 'state', 'static-methods', 'lifecycle', 'everything-else', 'render'],
-      },
-    ],
+    // Downgrade to warnings
+    '@typescript-eslint/explicit-member-accessibility': 1,
+
+    // 'react/sort-comp': [
+    //   2,
+    //   {
+    //     order: ['props', 'state', 'static-methods', 'lifecycle', 'everything-else', 'render'],
+    //   },
+    // ],
     'react-a11y/anchor-has-content': 0,
   },
   globals: {

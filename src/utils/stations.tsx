@@ -47,11 +47,6 @@ export const stationNames: { [k: string]: string } = {
   WARM: 'Warm Springs / South Freemont',
 };
 
-export const getAbbrForName = (name: string) => {
-  const matchingStation = stationData.find(s => s.name === name);
-  return matchingStation ? matchingStation.abbr : null;
-};
-
 const stationData = [
   {
     name: '12th St. Oakland City Center',
@@ -582,3 +577,8 @@ const stationData = [
     zipcode: '94607',
   },
 ];
+
+export const getAbbrForName = (name: string) => {
+  const matchingStation = stationData.find(s => s.name === name);
+  return matchingStation ? matchingStation.abbr : null;
+};
