@@ -82,6 +82,15 @@ const initialState: State = {
   savedDestinations: {},
   trips: undefined,
   advisories: undefined,
+  // advisories: [{
+  //   ['@id']: '1',
+  //   description: {
+  //     '#cdata-section': "there is a delay at blah blah blah due to police activity,  blah due to police activity,  blah due to police activity,  blah due to police activity,  blah due to police activity,  blah due to police activity."
+  //   },
+  //   station: 'foo',
+  //   type: 'bar',
+  //   expires: '1235'
+  // }],
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -300,7 +309,7 @@ export default function(
     case 'RECEIVE_ADVS': {
       return {
         ...state,
-        advisories: action.advs,
+        // advisories: action.advs,
       };
     }
     default:

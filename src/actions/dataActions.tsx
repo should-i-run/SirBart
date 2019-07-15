@@ -139,16 +139,6 @@ export function fetchWalkingDirections(station: Station) {
     if (location) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
-      // if (WalkingDirectionsManager) {
-      //   WalkingDirectionsManager.getWalkingDirectionsBetween(
-      //     location.lat,
-      //     location.lng,
-      //     closestEntrance.lat,
-      //     closestEntrance.lng,
-      //   ).then(result => {
-      //     dispatch(receiveWalkingDirections(station, result));
-      //   });
-      // } else {
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${
         location.lng
       }&destination=${closestEntrance.lat},${
@@ -168,7 +158,6 @@ export function fetchWalkingDirections(station: Station) {
           console.warn(error);
           tracker.logEvent('fetch_walking_directions_error');
         });
-      // }
     }
   };
 }
