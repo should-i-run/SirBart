@@ -11,28 +11,28 @@ install:
 test:
   stage: test
   dependencies:
-    - build
+    - install
   script:
     - yarn test
 
 typecheck:
   stage: test
   dependencies:
-    - build
+    - install
   script:
     - yarn tsc
 
 prettier:
   stage: test
   dependencies:
-    - build
+    - install
   script:
     - yarn prettier --check ./src/**/*.{ts,tsx}
 
 lint:
   stage: test
   dependencies:
-    - build
+    - install
   script:
     - yarn lint
 # staging:
