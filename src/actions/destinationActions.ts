@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
+import wrappedFetch from './wrappedFetch';
 
 const URL = 'https://bart.rgoldfinger.com/bart/directions';
 
@@ -58,7 +59,7 @@ export function selectDestinationAction(code?: string) {
 }
 
 function fetchData(trips: Record<string, any>[], dispatch: Dispatch<any>) {
-  fetch(URL, {
+  wrappedFetch(dispatch, URL, {
     method: 'POST',
     body: JSON.stringify(trips),
     headers: {

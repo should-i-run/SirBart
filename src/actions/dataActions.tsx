@@ -2,6 +2,7 @@ import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 import retry from 'async-retry';
+import wrappedFetch from './wrappedFetch';
 
 const URL = 'https://bart.rgoldfinger.com/bart';
 let interval: NodeJS.Timer;
@@ -30,9 +31,13 @@ function receiveAdvs(advs: Advisory[]) {
 }
 
 const fetchAdvs = (dispatch: Dispatch<any>) => {
-  fetch('https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y', {
-    method: 'GET',
-  })
+  wrappedFetch(
+    dispatch,
+    'https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y',
+    {
+      method: 'GET',
+    },
+  )
     .then(response => response.json())
     .then(
       data => {
@@ -57,7 +62,7 @@ const fetchData = (dispatch: Dispatch<any>) => {
       if (!location) {
         return;
       }
-      const res = await fetch(URL, {
+      const res = await wrappedFetch(dispatch, URL, {
         method: 'POST',
         body: JSON.stringify({
           lat: location.lat,
@@ -139,8 +144,12 @@ export function fetchWalkingDirections(station: Station) {
     if (location) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
-      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
-      fetch(url)
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${
+        location.lng
+      }&destination=${closestEntrance.lat},${
+        closestEntrance.lng
+      }&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
+      wrappedFetch(dispatch, url)
         .then(response => response.json())
         .then(result => {
           const leg = result.routes[0].legs[0];

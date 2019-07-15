@@ -5,6 +5,13 @@ import { getAbbrForName } from '../utils/stations';
 import { Location, DataActions } from '../actions/dataActions';
 import { DestinationActions } from '../actions/destinationActions';
 import { LocationActions, LocationErrorReason } from '../actions/locationActions';
+import { WrappedFetchActions } from '../actions/wrappedFetch';
+
+export enum NetworkStatus {
+  Fetching,
+  Error,
+  Success,
+}
 
 export type Advisory = {
   '@id': string;
@@ -68,6 +75,7 @@ export type State = {
   savedDestinations: SavedDestinations;
   trips?: Trip[];
   advisories?: Advisory[];
+  network: Record<string, NetworkStatus>;
 };
 
 const initialState: State = {
@@ -91,6 +99,7 @@ const initialState: State = {
   //   type: 'bar',
   //   expires: '1235'
   // }],
+  network: {},
 };
 
 const initialWalkingDirections: WalkingDirections = {
@@ -105,7 +114,7 @@ const mergeStations = (existing: Station, newStation: Station) => ({
 
 export default function(
   state: State = initialState,
-  action: DataActions | DestinationActions | LocationActions,
+  action: DataActions | DestinationActions | LocationActions | WrappedFetchActions,
 ) {
   switch (action.type) {
     case 'RECEIVE_LOCATION': {
@@ -309,7 +318,13 @@ export default function(
     case 'RECEIVE_ADVS': {
       return {
         ...state,
-        // advisories: action.advs,
+        advisories: action.advs,
+      };
+    }
+    case 'NETWORK_CHANGE': {
+      return {
+        ...state,
+        network: state.network.url = action.status,
       };
     }
     default:
