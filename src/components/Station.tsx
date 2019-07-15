@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, Linking, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import StationName from './StationName';
 import styles from './Station.styles';
@@ -61,7 +60,7 @@ export default class StationView extends React.Component<Props> {
       <View
         style={{ flexDirection: 'row', margin: 10, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Icon name="chain-broken" size={24} color="#FC5B3F" />
+        <Text style={[styles.genericText, {fontSize: 24}]}>😴</Text>
         <View style={{ marginLeft: 10, flex: 1 }}>
           <Text
             style={[
