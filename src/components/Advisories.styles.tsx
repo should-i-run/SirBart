@@ -27,5 +27,7 @@ export default StyleSheet.create({
     marginLeft: 10,
     marginHorizontal: 10,
     top: 4,
+    ...genericText,
+    fontSize: 26,
   },
 });

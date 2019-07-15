@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Text, View, Linking, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './Advisories.styles';
 import tracker from '../native/analytics';
@@ -27,7 +26,7 @@ export default class StationView extends React.Component<Props> {
     return (
       <TouchableOpacity style={styles.container} onPress={this.goToAdvisories}>
         <View style={{ flexDirection: 'row' }}>
-          <Icon name="exclamation-triangle" size={25} color="#FC5B3F" style={styles.icon} />
+          <Text style={styles.icon}>⚠️</Text>
           <Text style={[styles.genericText, { fontSize: 26 }]}>BART Service Advisories</Text>
         </View>
         <View>
