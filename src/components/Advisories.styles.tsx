@@ -28,6 +28,6 @@ export default StyleSheet.create({
     marginHorizontal: 10,
     top: 4,
     ...genericText,
-    fontSize: 26,
+    fontSize: 16,
   },
 });
