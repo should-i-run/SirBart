@@ -7,28 +7,32 @@ install:
   stage: install
   script:
     - yarn install
-  cache:
-    key: node_modules
-    paths:
-      - node_modules/
 
 test:
   stage: test
+  dependencies:
+    - build
   script:
     - yarn test
 
 typecheck:
   stage: test
+  dependencies:
+    - build
   script:
     - yarn tsc
 
 prettier:
   stage: test
+  dependencies:
+    - build
   script:
     - yarn prettier --check ./src/**/*.{ts,tsx}
 
 lint:
   stage: test
+  dependencies:
+    - build
   script:
     - yarn lint
 # staging:
