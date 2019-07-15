@@ -11,8 +11,8 @@ type Props = {
 };
 
 type State = {
-  expanded: boolean
-}
+  expanded: boolean;
+};
 
 export default class StationView extends React.Component<Props, State> {
   state = {
@@ -26,7 +26,7 @@ export default class StationView extends React.Component<Props, State> {
 
   render() {
     const { advisories } = this.props;
-    const {expanded} = this.state;
+    const { expanded } = this.state;
     if (
       !advisories ||
       advisories.some(a => a.description['#cdata-section'] === 'No delays reported.')
@@ -34,7 +34,10 @@ export default class StationView extends React.Component<Props, State> {
       return null;
     }
     return (
-      <TouchableOpacity style={styles.container} onPress={() => this.setState({expanded: !expanded})}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => this.setState({ expanded: !expanded })}
+      >
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.icon}>⚠️</Text>
           <Text style={[styles.genericText, { fontSize: 20 }]}>BART Service Advisories</Text>
@@ -42,14 +45,24 @@ export default class StationView extends React.Component<Props, State> {
         <View>
           {advisories.map(adv => (
             <View style={styles.advisory} key={adv['@id']}>
-              <Text style={styles.text} numberOfLines={expanded ? undefined : 2} ellipsizeMode={'tail'}>
+              <Text
+                style={styles.text}
+                numberOfLines={expanded ? undefined : 2}
+                ellipsizeMode={'tail'}
+              >
                 {adv.description['#cdata-section'].replace(' Visit bart.gov.', '')}
               </Text>
             </View>
           ))}
-          {expanded && (<TouchableOpacity style={styles.advisory} onPress={this.goToAdvisories}>
-            <Text style={[styles.text, {textDecorationLine: 'underline', color: colors.lightText}]}>Go to Service Advisories</Text>
-          </TouchableOpacity>)}
+          {expanded && (
+            <TouchableOpacity style={styles.advisory} onPress={this.goToAdvisories}>
+              <Text
+                style={[styles.text, { textDecorationLine: 'underline', color: colors.lightText }]}
+              >
+                Go to Service Advisories
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </TouchableOpacity>
     );

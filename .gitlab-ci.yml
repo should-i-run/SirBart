@@ -1,18 +1,27 @@
 image: node:latest
 stages:
+  - install
   - test
+
+install:
+  stage: install
+  script:
+    - yarn install
 
 test:
   stage: test
   script:
-    - yarn install
     - yarn test
 
 typecheck:
   stage: test
   script:
-    - yarn install
     - yarn tsc
+
+prettier:
+  stage: test
+  script:
+    - yarn prettier --check ./src/**/*.{ts,tsx}
 # staging:
 #   stage: deploy
 #   script:

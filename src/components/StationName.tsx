@@ -10,7 +10,6 @@ type Props = {
 };
 
 class StationView extends React.Component<Props> {
-
   render() {
     const { station, distance } = this.props;
     return (

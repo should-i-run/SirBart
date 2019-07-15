@@ -168,7 +168,7 @@ class DataContainer extends React.Component<Props, State> {
                   .filter(s => s.abbr !== this.props.selectedDestinationCode)
                   .sort((a, b) => {
                     if (a.walkingDirections.distance && b.walkingDirections.distance) {
-                      return a.walkingDirections!.distance! - b.walkingDirections!.distance!
+                      return a.walkingDirections!.distance! - b.walkingDirections!.distance!;
                     }
                     return 0;
                   })

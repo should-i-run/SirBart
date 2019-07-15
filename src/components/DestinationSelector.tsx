@@ -93,7 +93,12 @@ class DestinationSelector extends React.Component<Props, State> {
     }
     return (
       <Text>
-        <Text style={[styles.genericText, { fontSize: 20, paddingRight: 5, color: disabled ? colors.disabledText : '#E6E6E6' }]}>
+        <Text
+          style={[
+            styles.genericText,
+            { fontSize: 20, paddingRight: 5, color: disabled ? colors.disabledText : '#E6E6E6' },
+          ]}
+        >
           {label === 'work' ? '🏢' : '🏡'}
         </Text>{' '}
       </Text>

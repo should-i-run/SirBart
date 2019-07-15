@@ -60,7 +60,7 @@ export default class StationView extends React.Component<Props> {
       <View
         style={{ flexDirection: 'row', margin: 10, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Text style={[styles.genericText, {fontSize: 24}]}>😴</Text>
+        <Text style={[styles.genericText, { fontSize: 24 }]}>😴</Text>
         <View style={{ marginLeft: 10, flex: 1 }}>
           <Text
             style={[
