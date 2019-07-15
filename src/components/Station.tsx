@@ -96,15 +96,15 @@ export default class StationView extends React.Component<Props> {
         <StationName station={s} distance={distance} />
         <View style={styles.stationMetadataContainer}>
           <Text style={styles.stationMetadata}>
-            Running:
+            Walk
+            <Text style={styles.walk}> {typeof time === 'number' ? time || 1 : '...'} min</Text>
+          </Text>
+          <Text style={styles.stationMetadata}>
+            Run
             <Text style={styles.run}>
               {' '}
               {typeof distance === 'number' ? getRunningTime(distance) : '...'} min
             </Text>
-          </Text>
-          <Text style={styles.stationMetadata}>
-            Walking:
-            <Text style={styles.walk}> {typeof time === 'number' ? time || 1 : '...'} min</Text>
           </Text>
         </View>
         {!s.lines.length && this.renderNoDepartures()}
