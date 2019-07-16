@@ -8,7 +8,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     padding: 10,
-    paddingTop: 10,
+    paddingTop: 0,
   },
   genericText: {
     ...genericText,

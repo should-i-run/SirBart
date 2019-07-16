@@ -1,23 +1,22 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, ViewStyle } from 'react-native';
 import { State as ReducerState, NetworkStatus } from '../reducers/appStore';
 import { colors, genericText } from '../styles';
 import { StyleSheet } from 'react-native';
 import { differenceSeconds } from '../utils/time';
 
 const styles = StyleSheet.create({
-  alighRight: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
-    marginTop: 10,
+  alignRight: {
+    alignContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   darkText: {
     ...genericText,
     color: colors.lightText,
     fontSize: 14,
     textAlign: 'right',
-    marginRight: 10,
   },
 });
 
@@ -27,22 +26,21 @@ type Props = {
 };
 
 type State = {
-  timeDifferenceString?: string;
+  timeDifference: number;
 };
 
 class LastUpdatedTime extends React.Component<Props, State> {
   state = {
-    timeDifferenceString: undefined,
+    timeDifference: 0,
   };
 
   componentDidMount() {
     setInterval(() => {
       const { time } = this.props;
       this.setState({
-        timeDifferenceString:
-          time && differenceSeconds(time, new Date()).toString(),
+        timeDifference: time ? differenceSeconds(time, new Date()) : 0,
       });
-    }, 1000);
+    }, 200);
   }
 
   render() {
@@ -51,15 +49,31 @@ class LastUpdatedTime extends React.Component<Props, State> {
       n => n === NetworkStatus.Fetching,
     );
 
-    const { timeDifferenceString } = this.state;
-    if (!timeDifferenceString) return null;
+    const { timeDifference } = this.state;
     return (
-      <View style={styles.alighRight}>
+      <View
+        style={[
+          styles.alignRight,
+          {
+            height: 18,
+            marginVertical: 10,
+            marginRight: 10,
+            // backgroundColor: colors.darkBackground,
+          },
+        ]}
+      >
         {isFetching && <ActivityIndicator style={{ marginRight: 10 }} />}
-
-        <Text style={styles.darkText}>
-          updated {this.state.timeDifferenceString} seconds ago
-        </Text>
+        {timeDifference !== undefined && (
+          <View style={styles.alignRight}>
+            <Text style={[styles.darkText, { marginRight: 4 }]}>Updated</Text>
+            {/*
+            // @ts-ignore Bad Defs */}
+            <Text style={[styles.darkText, { fontVariant: ['tabular-nums'] }]}>
+              {timeDifference}
+            </Text>
+            <Text style={styles.darkText}>s ago</Text>
+          </View>
+        )}
       </View>
     );
   }

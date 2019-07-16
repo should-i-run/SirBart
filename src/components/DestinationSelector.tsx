@@ -26,7 +26,6 @@ import PulseView from './PulseView';
 import { stationNames } from '../utils/stations';
 
 import styles from './DestinationSelector.styles';
-import LastUpdatedTime from './LastUpdatedTime';
 
 type Props = {
   savedDestinations: SavedDestinations;
@@ -255,12 +254,7 @@ class DestinationSelector extends React.Component<Props, State> {
     } else {
       body = this.renderSelector();
     }
-    return (
-      <View style={styles.wrapper}>
-        <LastUpdatedTime time={timesLastUpdatedAt} />
-        {body}
-      </View>
-    );
+    return <View style={styles.wrapper}>{body}</View>;
   }
 }
 
