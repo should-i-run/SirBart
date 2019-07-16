@@ -18,7 +18,9 @@ type Props = {
 export default class StationView extends React.Component<Props> {
   goToSchedule = () => {
     tracker.logEvent('go_to_schedule');
-    Linking.openURL(`https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`);
+    Linking.openURL(
+      `https://m.bart.gov/schedules/eta?stn=${this.props.station.abbr}`,
+    );
   };
 
   renderDirection = (departures: Departure[], direction: string) => {
@@ -31,20 +33,27 @@ export default class StationView extends React.Component<Props> {
     const firstRunableIndex = departures.findIndex(d =>
       station.walkingDirections.distance === undefined
         ? false
-        : (d.estimate.minutes || 0) >= getRunningTime(station.walkingDirections.distance),
+        : (d.estimate.minutes || 0) >=
+          getRunningTime(station.walkingDirections.distance),
     );
     return (
       <View key={direction}>
         {departures.slice(0, 4).map((d, i) => {
           const tripForLine = selectedTrip
-            ? selectedTrip.lines.find(l => l.abbreviation === d.line.abbreviation)
+            ? selectedTrip.lines.find(
+                l => l.abbreviation === d.line.abbreviation,
+              )
             : undefined;
           return (
             <DepartureView
               key={`${d.estimate.minutes}${d.line.abbreviation}${d.estimate.length}${i}`}
               departure={d}
-              firstWalkableIndex={firstWalkableIndex === undefined ? -1 : firstWalkableIndex}
-              firstRunableIndex={firstRunableIndex === undefined ? -1 : firstRunableIndex}
+              firstWalkableIndex={
+                firstWalkableIndex === undefined ? -1 : firstWalkableIndex
+              }
+              firstRunableIndex={
+                firstRunableIndex === undefined ? -1 : firstRunableIndex
+              }
               index={i}
               station={this.props.station}
               tripForLine={tripForLine}
@@ -58,20 +67,32 @@ export default class StationView extends React.Component<Props> {
   renderNoDepartures() {
     return (
       <View
-        style={{ flexDirection: 'row', margin: 10, justifyContent: 'center', alignItems: 'center' }}
+        style={{
+          flexDirection: 'row',
+          margin: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
         <Text style={[styles.genericText, { fontSize: 24 }]}>😴</Text>
         <View style={{ marginLeft: 10, flex: 1 }}>
           <Text
             style={[
               styles.genericText,
-              { fontSize: 16, color: colors.lightText, fontWeight: '400', marginBottom: 4 },
+              {
+                fontSize: 16,
+                color: colors.lightText,
+                fontWeight: '400',
+                marginBottom: 4,
+              },
             ]}
           >
             No departure times avaliable.
           </Text>
           <TouchableOpacity onPress={this.goToSchedule}>
-            <Text style={{ color: '#565FBF', fontSize: 16 }}>Check service status.</Text>
+            <Text style={{ color: '#565FBF', fontSize: 16 }}>
+              Check service status.
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -85,38 +106,54 @@ export default class StationView extends React.Component<Props> {
 
     const selectedDepartures = selectedTrip
       ? s.departures.filter(d =>
-          selectedTrip.lines.map(line => line.abbreviation).includes(d.line.abbreviation),
+          selectedTrip.lines
+            .map(line => line.abbreviation)
+            .includes(d.line.abbreviation),
         )
       : s.departures;
 
-    const north = selectedDepartures.filter(d => d.estimate.direction === 'North');
-    const south = selectedDepartures.filter(d => d.estimate.direction === 'South');
+    const north = selectedDepartures.filter(
+      d => d.estimate.direction === 'North',
+    );
+    const south = selectedDepartures.filter(
+      d => d.estimate.direction === 'South',
+    );
     return (
       <View style={styles.station}>
         <StationName station={s} distance={distance} />
         <View style={styles.stationMetadataContainer}>
           <Text style={styles.stationMetadata}>
             Walk
-            <Text style={styles.walk}> {typeof time === 'number' ? time || 1 : '...'} min</Text>
+            <Text style={styles.walk}>
+              {' '}
+              {typeof time === 'number' ? time || 1 : '...'} min
+            </Text>
           </Text>
           <Text style={styles.stationMetadata}>
             Run
             <Text style={styles.run}>
               {' '}
-              {typeof distance === 'number' ? getRunningTime(distance) : '...'} min
+              {typeof distance === 'number'
+                ? getRunningTime(distance)
+                : '...'}{' '}
+              min
             </Text>
           </Text>
         </View>
         {!s.lines.length && this.renderNoDepartures()}
         {!!north.length && (
           <View style={styles.direction}>
-            {!selectedTrip && <Text style={styles.directionText}>Northbound departures</Text>}
+            {!selectedTrip && (
+              <Text style={styles.directionText}>Northbound departures</Text>
+            )}
             {this.renderDirection(north, 'north')}
           </View>
         )}
         {!!south.length && (
           <View style={styles.direction}>
-            {!selectedTrip && <Text style={styles.directionText}>Southbound departures</Text>}
+            {!selectedTrip && (
+              <Text style={styles.directionText}>Southbound departures</Text>
+            )}
             {this.renderDirection(south, 'south')}
           </View>
         )}

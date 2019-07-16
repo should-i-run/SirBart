@@ -29,7 +29,9 @@ export default class StationView extends React.Component<Props, State> {
     const { expanded } = this.state;
     if (
       !advisories ||
-      advisories.some(a => a.description['#cdata-section'] === 'No delays reported.')
+      advisories.some(
+        a => a.description['#cdata-section'] === 'No delays reported.',
+      )
     ) {
       return null;
     }
@@ -40,7 +42,9 @@ export default class StationView extends React.Component<Props, State> {
       >
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.icon}>⚠️</Text>
-          <Text style={[styles.genericText, { fontSize: 20 }]}>BART Service Advisories</Text>
+          <Text style={[styles.genericText, { fontSize: 20 }]}>
+            BART Service Advisories
+          </Text>
         </View>
         <View>
           {advisories.map(adv => (
@@ -50,14 +54,23 @@ export default class StationView extends React.Component<Props, State> {
                 numberOfLines={expanded ? undefined : 2}
                 ellipsizeMode={'tail'}
               >
-                {adv.description['#cdata-section'].replace(' Visit bart.gov.', '')}
+                {adv.description['#cdata-section'].replace(
+                  ' Visit bart.gov.',
+                  '',
+                )}
               </Text>
             </View>
           ))}
           {expanded && (
-            <TouchableOpacity style={styles.advisory} onPress={this.goToAdvisories}>
+            <TouchableOpacity
+              style={styles.advisory}
+              onPress={this.goToAdvisories}
+            >
               <Text
-                style={[styles.text, { textDecorationLine: 'underline', color: colors.lightText }]}
+                style={[
+                  styles.text,
+                  { textDecorationLine: 'underline', color: colors.lightText },
+                ]}
               >
                 Go to Service Advisories
               </Text>

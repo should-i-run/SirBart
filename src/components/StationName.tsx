@@ -21,7 +21,8 @@ class StationView extends React.Component<Props> {
         </View>
         <View style={[styles.stationDistance]}>
           <Text style={styles.stationDistanceText} numberOfLines={1}>
-            {typeof distance === 'number' ? distance.toLocaleString() : '...'} meters
+            {typeof distance === 'number' ? distance.toLocaleString() : '...'}{' '}
+            meters
           </Text>
         </View>
       </View>

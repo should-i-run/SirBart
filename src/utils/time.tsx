@@ -1,4 +1,3 @@
-
 // https://stackoverflow.com/a/8888498
 export function formatAMPM(date: Date): string {
   let hours = date.getHours();
@@ -12,11 +11,11 @@ export function formatAMPM(date: Date): string {
 }
 
 export function differenceMinutesSeconds(then: Date, now: Date): string {
-  var seconds = Math.floor((now.getTime() - (then.getTime())) / 1000);
-  console.log(seconds)
+  var seconds = Math.floor((now.getTime() - then.getTime()) / 1000);
+  console.log(seconds);
   var minutes = Math.floor(seconds / 60);
-  return `${minutes}:${seconds}`
+  return `${minutes}:${seconds}`;
 }
 export function differenceSeconds(then: Date, now: Date): number {
-  return Math.floor((now.getTime() - (then.getTime())) / 1000);
+  return Math.floor((now.getTime() - then.getTime()) / 1000);
 }

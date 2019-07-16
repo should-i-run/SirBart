@@ -4,7 +4,10 @@ import { getClosestEntrance, isSameLocation } from '../utils/distance';
 import { getAbbrForName } from '../utils/stations';
 import { Location, DataActions } from '../actions/dataActions';
 import { DestinationActions } from '../actions/destinationActions';
-import { LocationActions, LocationErrorReason } from '../actions/locationActions';
+import {
+  LocationActions,
+  LocationErrorReason,
+} from '../actions/locationActions';
 import { WrappedFetchActions } from '../actions/wrappedFetch';
 
 export enum NetworkStatus {
@@ -116,11 +119,19 @@ const mergeStations = (existing: Station, newStation: Station) => ({
 
 export default function(
   state: State = initialState,
-  action: DataActions | DestinationActions | LocationActions | WrappedFetchActions,
+  action:
+    | DataActions
+    | DestinationActions
+    | LocationActions
+    | WrappedFetchActions,
 ) {
   switch (action.type) {
     case 'RECEIVE_LOCATION': {
-      if (state.location && action.location && isSameLocation(state.location, action.location)) {
+      if (
+        state.location &&
+        action.location &&
+        isSameLocation(state.location, action.location)
+      ) {
         return state;
       }
       return {
@@ -152,7 +163,8 @@ export default function(
     case 'RECEIVE_TIMES': {
       const newStations = action.stations
         .map(s => {
-          const existing = state.stations && state.stations.find(os => os.abbr === s.abbr);
+          const existing =
+            state.stations && state.stations.find(os => os.abbr === s.abbr);
           if (existing) {
             return mergeStations(existing, s);
           }
@@ -169,7 +181,10 @@ export default function(
               ...l,
               estimates: l.estimates.map(e => ({
                 ...e,
-                minutes: String(e.minutes) === 'Leaving' ? 0 : parseInt(String(e.minutes), 10),
+                minutes:
+                  String(e.minutes) === 'Leaving'
+                    ? 0
+                    : parseInt(String(e.minutes), 10),
               })),
             })),
           }),
@@ -196,7 +211,8 @@ export default function(
         }));
 
       const selectedDestinationCode =
-        newStations.some(s => s.abbr === state.selectedDestinationCode) && newStations.length === 1
+        newStations.some(s => s.abbr === state.selectedDestinationCode) &&
+        newStations.length === 1
           ? undefined
           : state.selectedDestinationCode;
       return {
@@ -275,7 +291,10 @@ export default function(
         ...state.savedDestinations,
         [action.label]: action.code,
       };
-      AsyncStorage.setItem('savedDestinations', JSON.stringify(newSavedDestinations));
+      AsyncStorage.setItem(
+        'savedDestinations',
+        JSON.stringify(newSavedDestinations),
+      );
       return {
         ...state,
         savedDestinations: newSavedDestinations,
@@ -327,7 +346,10 @@ export default function(
     case 'NETWORK_CHANGE': {
       return {
         ...state,
-        network: state.network.url = action.status,
+        network: {
+          ...state.network,
+          [action.url]: action.status,
+        },
       };
     }
     default:

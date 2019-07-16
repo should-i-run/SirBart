@@ -30,7 +30,8 @@ export default class LocationError extends React.Component<Props> {
           </Text>
           <TouchableOpacity onPress={this.goToSettings}>
             <Text style={[styles.text]}>
-              Tap here and go to Privacy > Location Services > BART Check to enable access.
+              Tap here and go to Privacy > Location Services > BART Check to
+              enable access.
             </Text>
           </TouchableOpacity>
         </View>
@@ -41,8 +42,8 @@ export default class LocationError extends React.Component<Props> {
         <Text style={[styles.genericText, { fontSize: 26 }]}>😩 Oh No!</Text>
         <TouchableOpacity onPress={this.goToSettings}>
           <Text style={[styles.text]}>
-            Looks like there was a problem getting your location. Please wait a few moments and try
-            again.
+            Looks like there was a problem getting your location. Please wait a
+            few moments and try again.
           </Text>
         </TouchableOpacity>
       </View>

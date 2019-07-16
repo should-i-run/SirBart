@@ -79,7 +79,9 @@ function fetchData(trips: Record<string, any>[], dispatch: Dispatch<any>) {
 
 export function selectDestination(endCode?: string, stationCodes?: string[]) {
   if (endCode && stationCodes) {
-    const trips = stationCodes.filter(c => c !== endCode).map(c => ({ startCode: c, endCode }));
+    const trips = stationCodes
+      .filter(c => c !== endCode)
+      .map(c => ({ startCode: c, endCode }));
     return (dispatch: Dispatch<any>) => {
       dispatch(selectDestinationAction(endCode));
       fetchData(trips, dispatch);

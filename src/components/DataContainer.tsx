@@ -21,7 +21,10 @@ import {
 } from '../actions/dataActions';
 import { State as ReducerState } from '../reducers/appStore';
 
-import { loadSavedDestinations, selectDestination } from '../actions/destinationActions';
+import {
+  loadSavedDestinations,
+  selectDestination,
+} from '../actions/destinationActions';
 
 import tracker from '../native/analytics';
 import { distanceBetweenCoordinates } from '../utils/distance';
@@ -73,15 +76,24 @@ class DataContainer extends React.Component<Props, State> {
       stations: prevStations,
       savedDestinations: prevSavedDestinations,
     } = prevProps;
-    const { stations, savedDestinations, selectedDestinationCode, location } = this.props;
+    const {
+      stations,
+      savedDestinations,
+      selectedDestinationCode,
+      location,
+    } = this.props;
     hackilySetLoc(location);
     if (!prevLocation && location) {
       this.props.fetchStations();
     } else if (
       prevLocation &&
       location &&
-      distanceBetweenCoordinates(prevLocation.lat, prevLocation.lng, location.lat, location.lng) >
-        0.5
+      distanceBetweenCoordinates(
+        prevLocation.lat,
+        prevLocation.lng,
+        location.lat,
+        location.lng,
+      ) > 0.5
     ) {
       this.props.refreshStations();
       this.props.selectDestination();
@@ -101,18 +113,23 @@ class DataContainer extends React.Component<Props, State> {
         return;
       }
       const previousEligibleDestinations = prevStations
-        ? Object.values(prevSavedDestinations).filter(d => !prevStations.some(s => s.abbr === d))
+        ? Object.values(prevSavedDestinations).filter(
+            d => !prevStations.some(s => s.abbr === d),
+          )
         : [];
-      const currentEligibleDestinations = Object.values(savedDestinations).filter(
-        d => !stations.some(s => s.abbr === d),
-      );
+      const currentEligibleDestinations = Object.values(
+        savedDestinations,
+      ).filter(d => !stations.some(s => s.abbr === d));
       const inCommon = previousEligibleDestinations.filter(d =>
         currentEligibleDestinations.includes(d),
       );
       if (inCommon.length === 0 && currentEligibleDestinations.length === 1) {
         tracker.logEvent('auto_select_destination');
         const stationCodes = stations.map((s: Station) => s.abbr);
-        this.props.selectDestination(currentEligibleDestinations[0], stationCodes);
+        this.props.selectDestination(
+          currentEligibleDestinations[0],
+          stationCodes,
+        );
       }
     }
 
@@ -151,6 +168,7 @@ class DataContainer extends React.Component<Props, State> {
         }}
       >
         <NetworkStatus />
+        <LastUpdatedTime />
         {locationErrorReason ? (
           <LocationError errorReason={locationErrorReason} />
         ) : (
@@ -158,7 +176,9 @@ class DataContainer extends React.Component<Props, State> {
             <ScrollView
               refreshControl={
                 <RefreshControl
-                  refreshing={this.props.refreshingStations || this.state.fakeRefreshing}
+                  refreshing={
+                    this.props.refreshingStations || this.state.fakeRefreshing
+                  }
                   onRefresh={this.refreshStations}
                   tintColor="#E6E6E6"
                   style={{ paddingTop: 10 }}
@@ -170,14 +190,27 @@ class DataContainer extends React.Component<Props, State> {
                 stations
                   .filter(s => s.abbr !== this.props.selectedDestinationCode)
                   .sort((a, b) => {
-                    if (a.walkingDirections.distance && b.walkingDirections.distance) {
-                      return a.walkingDirections!.distance! - b.walkingDirections!.distance!;
+                    if (
+                      a.walkingDirections.distance &&
+                      b.walkingDirections.distance
+                    ) {
+                      return (
+                        a.walkingDirections!.distance! -
+                        b.walkingDirections!.distance!
+                      );
                     }
                     return 0;
                   })
                   .map(s => {
-                    const selectedTrip = trips && trips.find(l => l.code === s.abbr);
-                    return <StationView key={s.abbr} station={s} selectedTrip={selectedTrip} />;
+                    const selectedTrip =
+                      trips && trips.find(l => l.code === s.abbr);
+                    return (
+                      <StationView
+                        key={s.abbr}
+                        station={s}
+                        selectedTrip={selectedTrip}
+                      />
+                    );
                   })}
             </ScrollView>
             <DestinationSelector />

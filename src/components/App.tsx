@@ -31,4 +31,6 @@ class App extends React.Component<{}> {
   }
 }
 
-export default codePush({ checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME })(App);
+export default codePush({
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+})(App);

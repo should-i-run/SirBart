@@ -15,7 +15,10 @@ class DataContainer extends React.Component<Props> {
 
   render() {
     const { network } = this.props;
-    const isFetching = Object.values(network).some(n => n === NetworkStatus.Fetching);
+    const urls = Object.keys(network).filter(
+      k => network[k] === NetworkStatus.Fetching,
+    );
+    console.log(network);
     return (
       <View
         style={{
@@ -23,8 +26,7 @@ class DataContainer extends React.Component<Props> {
           backgroundColor: colors.background,
         }}
       >
-        <Text style={[genericText]}>Network Status</Text>
-        {isFetching && <ActivityIndicator style={{ marginRight: 10 }} />}
+        <Text style={[genericText, { fontSize: 10 }]}>{urls.join('')}</Text>
       </View>
     );
   }

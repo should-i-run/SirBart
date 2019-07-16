@@ -33,7 +33,8 @@ class Departure extends React.Component<Props> {
   // };
   renderEstimateArrive = (trip: TripForLine, min: number) => {
     const now = new Date().getTime();
-    const minutesToAdd = (min + parseInt(String(trip.timeEstimate), 10)) * 1000 * 60;
+    const minutesToAdd =
+      (min + parseInt(String(trip.timeEstimate), 10)) * 1000 * 60;
     const time = new Date(now + minutesToAdd);
     return (
       <Text key="a" style={[styles.metadataText]}>
@@ -83,8 +84,12 @@ class Departure extends React.Component<Props> {
     // }
 
     return (
-      <View style={[styles.departure, styles.row, { alignItems: 'flex-start' }]}>
-        <Text style={[styles.departureTime, labelStyle]}>{estimate.minutes}</Text>
+      <View
+        style={[styles.departure, styles.row, { alignItems: 'flex-start' }]}
+      >
+        <Text style={[styles.departureTime, labelStyle]}>
+          {estimate.minutes}
+        </Text>
         <View>
           <Text
             style={[
@@ -104,7 +109,8 @@ class Departure extends React.Component<Props> {
                 Takes {tripForLine.timeEstimate} minutes
               </Text>
             )} */}
-            {tripForLine && this.renderEstimateArrive(tripForLine, estimate.minutes)}
+            {tripForLine &&
+              this.renderEstimateArrive(tripForLine, estimate.minutes)}
           </View>
         </View>
       </View>

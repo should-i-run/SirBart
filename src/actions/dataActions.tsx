@@ -83,7 +83,9 @@ const fetchData = (dispatch: Dispatch<any>) => {
     {
       onRetry(error) {
         console.warn(error);
-        tracker.logEvent('fetchData_stations_error', { error: error.toString() });
+        tracker.logEvent('fetchData_stations_error', {
+          error: error.toString(),
+        });
       },
     },
   );
@@ -131,7 +133,10 @@ function startWalkingDirections(station: Station) {
     station,
   };
 }
-function receiveWalkingDirections(station: Station, result: { time: number; distance: number }) {
+function receiveWalkingDirections(
+  station: Station,
+  result: { time: number; distance: number },
+) {
   return {
     type: 'RECEIVE_WALKING_DIRECTIONS' as 'RECEIVE_WALKING_DIRECTIONS',
     station,
@@ -144,11 +149,7 @@ export function fetchWalkingDirections(station: Station) {
     if (location) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
-      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${
-        location.lng
-      }&destination=${closestEntrance.lat},${
-        closestEntrance.lng
-      }&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
       wrappedFetch(dispatch, url)
         .then(response => response.json())
         .then(result => {

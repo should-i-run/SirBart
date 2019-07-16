@@ -24,7 +24,10 @@ export default class ReviewPrompt extends React.Component {
     const launchCount = await getLaunchCount();
     const hasReviewed = await AsyncStorage.getItem(HAS_REVIEWED_KEY);
     const shouldPrompt =
-      launchCount === 5 || launchCount === 20 || launchCount === 50 || launchCount === 100;
+      launchCount === 5 ||
+      launchCount === 20 ||
+      launchCount === 50 ||
+      launchCount === 100;
     if (shouldPrompt && !hasReviewed) {
       setTimeout(() => {
         tracker.logEvent('rate_prompted');

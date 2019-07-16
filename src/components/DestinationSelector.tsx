@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
@@ -29,7 +36,7 @@ type Props = {
   add: Function;
   remove: Function;
   select: Function;
-  timesLastUpdatedAt?: Date; 
+  timesLastUpdatedAt?: Date;
 };
 
 type State = {
@@ -98,7 +105,11 @@ class DestinationSelector extends React.Component<Props, State> {
         <Text
           style={[
             styles.genericText,
-            { fontSize: 20, paddingRight: 5, color: disabled ? colors.disabledText : '#E6E6E6' },
+            {
+              fontSize: 20,
+              paddingRight: 5,
+              color: disabled ? colors.disabledText : '#E6E6E6',
+            },
           ]}
         >
           {label === 'work' ? '🏢' : '🏡'}
@@ -123,7 +134,9 @@ class DestinationSelector extends React.Component<Props, State> {
         </PulseView>
       );
     }
-    const disabled = !stations || (stations.some(s => s.abbr === code) && stations.length === 1);
+    const disabled =
+      !stations ||
+      (stations.some(s => s.abbr === code) && stations.length === 1);
     return (
       <TouchableOpacity
         key={code}
@@ -131,7 +144,10 @@ class DestinationSelector extends React.Component<Props, State> {
         disabled={disabled}
         onPress={() => this.select(code)}
       >
-        <Text numberOfLines={1} style={[styles.label, disabled && styles.disabledText]}>
+        <Text
+          numberOfLines={1}
+          style={[styles.label, disabled && styles.disabledText]}
+        >
           {this.renderLabelIcon(label, disabled)}
           {stationNames[code]}
         </Text>
@@ -166,14 +182,20 @@ class DestinationSelector extends React.Component<Props, State> {
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
           <View style={styles.leftRight}>
-            <TouchableOpacity onPress={() => this.setState({ adding: false, code: 'EMBR' })}>
+            <TouchableOpacity
+              onPress={() => this.setState({ adding: false, code: 'EMBR' })}
+            >
               <Text style={styles.genericText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 this.save(this.state.addingLabel, this.state.code);
                 this.select(this.state.code);
-                this.setState({ adding: false, code: 'EMBR', addingLabel: null });
+                this.setState({
+                  adding: false,
+                  code: 'EMBR',
+                  addingLabel: null,
+                });
               }}
             >
               <Text style={[styles.genericText]}>Select</Text>
@@ -202,7 +224,11 @@ class DestinationSelector extends React.Component<Props, State> {
     return (
       <View style={[styles.container, styles.leftRight]}>
         <View style={[styles.leftRight, { flex: 1 }]}>
-          <Text numberOfLines={1} style={styles.label} key={selectedDestinationCode}>
+          <Text
+            numberOfLines={1}
+            style={styles.label}
+            key={selectedDestinationCode}
+          >
             {this.renderLabelIcon(matchedSavedLabel)}
             Showing trains to
             {` ${stationNames[selectedDestinationCode]}`}
@@ -229,9 +255,12 @@ class DestinationSelector extends React.Component<Props, State> {
     } else {
       body = this.renderSelector();
     }
-    return <View style={styles.wrapper}>
-      <LastUpdatedTime time={timesLastUpdatedAt} />
-      {body}</View>;
+    return (
+      <View style={styles.wrapper}>
+        <LastUpdatedTime time={timesLastUpdatedAt} />
+        {body}
+      </View>
+    );
   }
 }
 
@@ -240,7 +269,7 @@ const mapStateToProps = (state: ReducerState) => ({
   selectedDestinationCode: state.selectedDestinationCode,
   stations: state.stations,
   trips: state.trips,
-  timesLastUpdatedAt: state.timesLastUpdatedAt
+  timesLastUpdatedAt: state.timesLastUpdatedAt,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) =>

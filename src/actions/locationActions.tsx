@@ -18,7 +18,10 @@ function receiveLocation(location: LocationType) {
   };
 }
 
-export type LocationErrorReason = 'PERMISSION_DENIED' | 'POSITION_UNAVAILABLE' | 'TIMEOUT';
+export type LocationErrorReason =
+  | 'PERMISSION_DENIED'
+  | 'POSITION_UNAVAILABLE'
+  | 'TIMEOUT';
 interface LocationError {
   PERMISSION_DENIED: number;
   POSITION_UNAVAILABLE: number;
@@ -57,7 +60,10 @@ export function startLocation() {
 
       dispatch(locationError(reason!));
     };
-    navigator.geolocation.getCurrentPosition(handlePosition, handlePositionError);
+    navigator.geolocation.getCurrentPosition(
+      handlePosition,
+      handlePositionError,
+    );
     navigator.geolocation.watchPosition(handlePosition, handlePositionError, {
       ...locationOptions,
       distanceFilter: 20,
@@ -65,4 +71,6 @@ export function startLocation() {
   };
 }
 
-export type LocationActions = ReturnType<typeof locationError> | ReturnType<typeof receiveLocation>;
+export type LocationActions =
+  | ReturnType<typeof locationError>
+  | ReturnType<typeof receiveLocation>;
