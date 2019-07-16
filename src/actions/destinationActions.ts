@@ -3,7 +3,7 @@ import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 import wrappedFetch from './wrappedFetch';
 
-export const URL = 'https://bart.rgoldfinger.com/bart/directions';
+const URL = 'https://bart.rgoldfinger.com/bart/directions';
 
 export function destinationAdd(label: string, code: string) {
   return {

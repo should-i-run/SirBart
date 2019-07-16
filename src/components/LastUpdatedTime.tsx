@@ -5,7 +5,7 @@ import { State as ReducerState, NetworkStatus } from '../reducers/appStore';
 import { colors, genericText } from '../styles';
 import { StyleSheet } from 'react-native';
 import { differenceSeconds } from '../utils/time';
-import { URL as directionsUrl } from '../actions/destinationActions';
+import { URL as stationsURL } from '../actions/dataActions';
 
 const styles = StyleSheet.create({
   alignRight: {
@@ -47,7 +47,7 @@ class LastUpdatedTime extends React.Component<Props, State> {
   render() {
     const { network } = this.props;
     const isFetching = Object.keys(network).some(
-      k => network[k] === NetworkStatus.Fetching && !k.includes(directionsUrl),
+      k => network[k] === NetworkStatus.Fetching && k === stationsURL,
     );
 
     const { timeDifference } = this.state;
