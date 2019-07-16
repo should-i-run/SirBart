@@ -17,7 +17,6 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 14,
     paddingHorizontal: 10,
   },
   pickerContainer: {

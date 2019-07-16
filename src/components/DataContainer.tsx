@@ -9,7 +9,6 @@ import StationView from './Station';
 import DestinationSelector from './DestinationSelector';
 import LocationError from './LocationError';
 import ReviewPrompt from './ReviewPrompt';
-import LastUpdatedTime from './LastUpdatedTime';
 import { startLocation, LocationErrorReason } from '../actions/locationActions';
 import {
   setupDataFetching,
@@ -168,7 +167,6 @@ class DataContainer extends React.Component<Props, State> {
         }}
       >
         <NetworkStatus />
-        <LastUpdatedTime />
         {locationErrorReason ? (
           <LocationError errorReason={locationErrorReason} />
         ) : (
