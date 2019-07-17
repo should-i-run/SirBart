@@ -36,7 +36,6 @@ type Props = {
   add: Function;
   remove: Function;
   select: Function;
-  timesLastUpdatedAt?: Date;
 };
 
 type State = {
@@ -246,7 +245,7 @@ class DestinationSelector extends React.Component<Props, State> {
   }
 
   render() {
-    const { selectedDestinationCode, timesLastUpdatedAt } = this.props;
+    const { selectedDestinationCode } = this.props;
     let body;
     if (this.state.adding) {
       body = this.renderPicker();
@@ -269,7 +268,6 @@ const mapStateToProps = (state: ReducerState) => ({
   selectedDestinationCode: state.selectedDestinationCode,
   stations: state.stations,
   trips: state.trips,
-  timesLastUpdatedAt: state.timesLastUpdatedAt,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) =>

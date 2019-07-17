@@ -1,7 +1,8 @@
-import { AsyncStorage } from 'react-native';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 import wrappedFetch from './wrappedFetch';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 const URL = 'https://bart.rgoldfinger.com/bart/directions';
 

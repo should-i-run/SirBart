@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { View, Text, ActivityIndicator, ViewStyle } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { State as ReducerState, NetworkStatus } from '../reducers/appStore';
 import { colors, genericText } from '../styles';
 import { StyleSheet } from 'react-native';
