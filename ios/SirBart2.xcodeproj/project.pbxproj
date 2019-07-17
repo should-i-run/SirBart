@@ -7,31 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0074C1BC58B84FC09DAEDE01 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57013A65841549AFBE5B6BFF /* Feather.ttf */; };
 		00E356F31AD99517003FC87E /* SirBart2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SirBart2Tests.m */; };
-		13A9B209BCA1468B9465738B /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8533E2D75E6D4E72BBF405EA /* SimpleLineIcons.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1775283B19864AA7980A97AE /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 521D35E81EC1426EB3A337CB /* Octicons.ttf */; };
 		2513973322263D7C004735B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2513973222263D7C004735B0 /* LaunchScreen.storyboard */; };
 		25331A1022347CB100514AF2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253319E622347CB100514AF2 /* LaunchScreen.xib */; };
-		25331A4F22348DA600514AF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25331A4E22348DA600514AF2 /* GoogleService-Info.plist */; };
-		2B54647ED53748539FE73366 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07E4BF2673F442E9D6BFFDC /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* SirBart2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SirBart2Tests.m */; };
-		379973ABBF484BCAB78FF4C8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFA34F2C5DF6488CB4C429ED /* FontAwesome.ttf */; };
-		56D865D813A1442EAD764060 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F293FF179F7A4BCF8A1888DC /* MaterialCommunityIcons.ttf */; };
-		6BC43D170D0C437BAD794121 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FBFA654DBAD41CE91D79911 /* MaterialIcons.ttf */; };
 		93C9D6B742BC4A05086E0D82 /* libPods-SirBart2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD9BC0E033541E3C97E7DE3 /* libPods-SirBart2Tests.a */; };
-		95A2716608A040169E9746F4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8750C7D7345478FA140D504 /* Foundation.ttf */; };
-		AABA054BA2F84601BE545DD4 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB41EA36A0C54DCAA7B5AB3E /* EvilIcons.ttf */; };
-		BCB77361110A487BBCC2D275 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF53EF0AD64A485DBFC33E80 /* Ionicons.ttf */; };
-		CDEDBD3A7D3E4F33912C4F7C /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20132ED0B75A40B990FB07C5 /* Entypo.ttf */; };
 		D79C5065F12B5B5123DD7E9E /* libPods-SirBart2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A424A9AEF3B6EF6BB53F9746 /* libPods-SirBart2.a */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
+		FEB2FE6122DF65AF00307C35 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25331A4E22348DA600514AF2 /* GoogleService-Info.plist */; };
 		FEE43AD622DEEBF200664E99 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = FEE43AD522DEEBF200664E99 /* AppCenter-Config.plist */; };
 		FEE8245B22DF5C4600B7BE97 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 /* End PBXBuildFile section */
@@ -410,22 +399,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEB2FE6122DF65AF00307C35 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				CDEDBD3A7D3E4F33912C4F7C /* Entypo.ttf in Resources */,
-				25331A4F22348DA600514AF2 /* GoogleService-Info.plist in Resources */,
-				AABA054BA2F84601BE545DD4 /* EvilIcons.ttf in Resources */,
-				0074C1BC58B84FC09DAEDE01 /* Feather.ttf in Resources */,
 				FEE43AD622DEEBF200664E99 /* AppCenter-Config.plist in Resources */,
-				379973ABBF484BCAB78FF4C8 /* FontAwesome.ttf in Resources */,
-				95A2716608A040169E9746F4 /* Foundation.ttf in Resources */,
-				BCB77361110A487BBCC2D275 /* Ionicons.ttf in Resources */,
-				56D865D813A1442EAD764060 /* MaterialCommunityIcons.ttf in Resources */,
-				6BC43D170D0C437BAD794121 /* MaterialIcons.ttf in Resources */,
-				1775283B19864AA7980A97AE /* Octicons.ttf in Resources */,
 				25331A1022347CB100514AF2 /* LaunchScreen.xib in Resources */,
 				2513973322263D7C004735B0 /* LaunchScreen.storyboard in Resources */,
-				13A9B209BCA1468B9465738B /* SimpleLineIcons.ttf in Resources */,
-				2B54647ED53748539FE73366 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,7 +562,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=/Users/rgoldfinger/n/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -981,7 +959,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1027,7 +1005,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
