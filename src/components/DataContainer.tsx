@@ -33,7 +33,7 @@ import { colors } from '../styles';
 import { Station, Advisory } from '../reducers/appStore';
 
 import { Location } from '../actions/dataActions';
-import NetworkStatus from './NetworkStatus';
+import LastUpdatedTime from './LastUpdatedTime';
 
 type State = {
   fakeRefreshing: boolean;
@@ -166,7 +166,11 @@ class DataContainer extends React.Component<Props, State> {
           paddingTop: Platform.select({ android: 0, ios: 40 }),
         }}
       >
-        <NetworkStatus />
+        <LastUpdatedTime
+          manualRefreshing={
+            this.props.refreshingStations || this.state.fakeRefreshing
+          }
+        />
         {locationErrorReason ? (
           <LocationError errorReason={locationErrorReason} />
         ) : (

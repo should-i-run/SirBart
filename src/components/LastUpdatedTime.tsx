@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
 type Props = {
   time?: Date;
   network: Record<string, NetworkStatus>;
+  manualRefreshing: boolean;
 };
 
 type State = {
@@ -45,7 +46,7 @@ class LastUpdatedTime extends React.Component<Props, State> {
   }
 
   render() {
-    const { network } = this.props;
+    const { network, manualRefreshing } = this.props;
     const isFetching = Object.keys(network).some(
       k => network[k] === NetworkStatus.Fetching && k === stationsURL,
     );
@@ -57,12 +58,14 @@ class LastUpdatedTime extends React.Component<Props, State> {
           styles.alignRight,
           {
             height: 18,
-            marginVertical: 4,
+            marginBottom: 4,
             marginRight: 10,
           },
         ]}
       >
-        {isFetching && <ActivityIndicator style={{ marginRight: 10 }} />}
+        {isFetching && !manualRefreshing && (
+          <ActivityIndicator style={{ marginRight: 10 }} />
+        )}
         {timeDifference !== undefined && (
           <View style={styles.alignRight}>
             <Text style={[styles.darkText, { marginRight: 4 }]}>Updated</Text>
