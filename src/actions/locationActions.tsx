@@ -1,3 +1,5 @@
+import Geolocation from '@react-native-community/geolocation';
+
 export const locationOptions = {
   enableHighAccuracy: true,
   timeout: 15000,
@@ -38,7 +40,7 @@ function locationError(errorReason: LocationErrorReason) {
 }
 
 export function startLocation() {
-  navigator.geolocation.requestAuthorization();
+  Geolocation.requestAuthorization();
   return (dispatch: Function) => {
     const handlePosition = (loc: LocationType) => {
       dispatch(receiveLocation(loc));
@@ -60,11 +62,8 @@ export function startLocation() {
 
       dispatch(locationError(reason!));
     };
-    navigator.geolocation.getCurrentPosition(
-      handlePosition,
-      handlePositionError,
-    );
-    navigator.geolocation.watchPosition(handlePosition, handlePositionError, {
+    Geolocation.getCurrentPosition(handlePosition, handlePositionError);
+    Geolocation.watchPosition(handlePosition, handlePositionError, {
       ...locationOptions,
       distanceFilter: 20,
     });

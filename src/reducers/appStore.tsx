@@ -1,4 +1,3 @@
-import { AsyncStorage } from 'react-native';
 import { uniqBy } from 'lodash';
 import { getClosestEntrance, isSameLocation } from '../utils/distance';
 import { getAbbrForName } from '../utils/stations';
@@ -9,6 +8,8 @@ import {
   LocationErrorReason,
 } from '../actions/locationActions';
 import { WrappedFetchActions } from '../actions/wrappedFetch';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 export enum NetworkStatus {
   Fetching,

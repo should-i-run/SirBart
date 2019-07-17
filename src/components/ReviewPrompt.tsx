@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { AsyncStorage, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { getLaunchCount } from '../utils/launches';
 import tracker from '../native/analytics';
 import * as StoreReview from 'react-native-store-review';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 const HAS_REVIEWED_KEY = 'has_reviewed';
 

@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { View, ActivityIndicator, Text } from 'react-native';
 import { State as ReducerState, NetworkStatus } from '../reducers/appStore';
-import { colors, genericText } from '../styles';
 
 type Props = {
   network: Record<string, NetworkStatus>;
