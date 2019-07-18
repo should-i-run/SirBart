@@ -1,7 +1,6 @@
 import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
-import retry from 'async-retry';
 import wrappedFetch from './wrappedFetch';
 
 export const URL = 'https://bart.rgoldfinger.com/bart';
@@ -54,41 +53,28 @@ const fetchAdvs = (dispatch: Dispatch<any>) => {
     });
 };
 
-const fetchData = (dispatch: Dispatch<any>) => {
+const fetchData = async (dispatch: Dispatch<any>) => {
   fetchAdvs(dispatch);
-
-  retry(
-    async () => {
-      if (!location) {
-        return;
-      }
-      const res = await wrappedFetch(dispatch, URL, {
-        method: 'POST',
-        body: JSON.stringify({
-          lat: location.lat,
-          lng: location.lng,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await res.json();
-      try {
-        dispatch(receiveStations(data));
-      } catch (e) {
-        console.warn(e);
-        tracker.logEvent('fetchData_dispatch_error');
-      }
+  if (!location) {
+    return;
+  }
+  const res = await wrappedFetch(dispatch, URL, {
+    method: 'POST',
+    body: JSON.stringify({
+      lat: location.lat,
+      lng: location.lng,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
     },
-    {
-      onRetry(error) {
-        console.warn(error);
-        tracker.logEvent('fetchData_stations_error', {
-          error: error.toString(),
-        });
-      },
-    },
-  );
+  });
+  const data = await res.json();
+  try {
+    dispatch(receiveStations(data));
+  } catch (e) {
+    console.warn(e);
+    tracker.logEvent('fetchData_dispatch_error');
+  }
 };
 
 export function setupDataFetching() {
@@ -149,11 +135,7 @@ export function fetchWalkingDirections(station: Station) {
     if (location) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
-      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${
-        location.lat
-      },${location.lng}&destination=${closestEntrance.lat},${
-        closestEntrance.lng
-      }&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
       wrappedFetch(dispatch, url)
         .then(response => response.json())
         .then(result => {

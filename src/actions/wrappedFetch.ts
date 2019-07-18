@@ -1,4 +1,5 @@
 import { NetworkStatus } from '../reducers/appStore';
+import retry from 'async-retry';
 
 function statusChange(url: string, status: NetworkStatus) {
   return {
@@ -14,7 +15,22 @@ export default function wrappedFetch(
   opts?: RequestInit,
 ): Promise<Response> {
   dispatch(statusChange(url, NetworkStatus.Fetching));
-  return fetch(url, opts)
+
+  return retry(
+    async () => {
+      return fetch(url, opts);
+    },
+    {
+      onRetry(error, attempt) {
+        console.log('retrying attempt ', attempt, ' error ', error);
+      },
+      // https://github.com/tim-kos/node-retry#retrytimeoutsoptions
+      retries: 10,
+      minTimeout: 200,
+      maxTimeout: 5000,
+      factor: 2, // default
+    },
+  )
     .then((stuff: any) => {
       dispatch(statusChange(url, NetworkStatus.Success));
       return stuff;

@@ -76,6 +76,7 @@ export type State = {
   selectorShown: boolean;
   selectionKey?: string;
   selectedDestinationCode?: string;
+  selectedDestinationAt?: Date;
   savedDestinations: SavedDestinations;
   trips?: Trip[];
   advisories?: Advisory[];
@@ -92,6 +93,7 @@ const initialState: State = {
   selectorShown: false,
   selectionKey: undefined,
   selectedDestinationCode: undefined,
+  selectedDestinationAt: undefined,
   savedDestinations: {},
   trips: undefined,
   advisories: undefined,
@@ -285,6 +287,7 @@ export default function(
         ...state,
         selectedDestinationCode: action.code,
         trips: undefined,
+        selectedDestinationAt: action.code ? new Date() : undefined,
       };
     }
     case 'DEST_ADD': {

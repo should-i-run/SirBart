@@ -52,6 +52,7 @@ type Props = {
   fetchStations: Function;
   loadSavedDestinations: Function;
   selectedDestinationCode?: string;
+  selectedDestinationAt?: Date;
   selectDestination: Function;
   savedDestinations: SavedDestinations;
   locationErrorReason: LocationErrorReason | undefined;
@@ -80,6 +81,7 @@ class DataContainer extends React.Component<Props, State> {
       savedDestinations,
       selectedDestinationCode,
       location,
+      selectedDestinationAt,
     } = this.props;
     hackilySetLoc(location);
     if (!prevLocation && location) {
@@ -107,10 +109,7 @@ class DataContainer extends React.Component<Props, State> {
     }
 
     // Auto select destination
-    if (stations && !selectedDestinationCode) {
-      if (!stations) {
-        return;
-      }
+    if (stations) {
       const previousEligibleDestinations = prevStations
         ? Object.values(prevSavedDestinations).filter(
             d => !prevStations.some(s => s.abbr === d),
@@ -122,13 +121,20 @@ class DataContainer extends React.Component<Props, State> {
       const inCommon = previousEligibleDestinations.filter(d =>
         currentEligibleDestinations.includes(d),
       );
-      if (inCommon.length === 0 && currentEligibleDestinations.length === 1) {
-        tracker.logEvent('auto_select_destination');
-        const stationCodes = stations.map((s: Station) => s.abbr);
-        this.props.selectDestination(
-          currentEligibleDestinations[0],
-          stationCodes,
-        );
+      if (!selectedDestinationCode) {
+        if (inCommon.length === 0 && currentEligibleDestinations.length === 1) {
+          tracker.logEvent('auto_select_destination');
+          const stationCodes = stations.map((s: Station) => s.abbr);
+          this.props.selectDestination(
+            currentEligibleDestinations[0],
+            stationCodes,
+          );
+        }
+      } else if (selectedDestinationAt && inCommon.length === 0) {
+        const thirtyMinAgo = Date.now() - 30 * 60 * 1000;
+        if (selectedDestinationAt.getTime() < thirtyMinAgo) {
+          this.props.selectDestination();
+        }
       }
     }
 
@@ -231,6 +237,7 @@ const mapStateToProps = (state: ReducerState) => ({
   trips: state.trips,
   advisories: state.advisories,
   selectedDestinationCode: state.selectedDestinationCode,
+  selectedDestinationAt: state.selectedDestinationAt,
   savedDestinations: state.savedDestinations,
   locationErrorReason: state.locationErrorReason,
 });
