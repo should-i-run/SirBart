@@ -2,7 +2,14 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 
-import { ScrollView, RefreshControl, View, Platform } from 'react-native';
+import {
+  AppState,
+  ScrollView,
+  RefreshControl,
+  View,
+  Platform,
+  AppStateStatus,
+} from 'react-native';
 
 import Advisories from './Advisories';
 import StationView from './Station';
@@ -37,6 +44,7 @@ import LastUpdatedTime from './LastUpdatedTime';
 
 type State = {
   fakeRefreshing: boolean;
+  appState: AppStateStatus;
 };
 
 type Props = {
@@ -59,8 +67,9 @@ type Props = {
 };
 
 class DataContainer extends React.Component<Props, State> {
-  state = {
+  state: State = {
     fakeRefreshing: false,
+    appState: AppState.currentState,
   };
 
   componentDidMount() {
@@ -68,6 +77,7 @@ class DataContainer extends React.Component<Props, State> {
     this.props.fetchStations();
     this.props.setupDataFetching();
     this.props.loadSavedDestinations();
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -133,6 +143,7 @@ class DataContainer extends React.Component<Props, State> {
       } else if (selectedDestinationAt && inCommon.length === 0) {
         const thirtyMinAgo = Date.now() - 30 * 60 * 1000;
         if (selectedDestinationAt.getTime() < thirtyMinAgo) {
+          tracker.logEvent('auto_deselect_destination');
           this.props.selectDestination();
         }
       }
@@ -152,6 +163,22 @@ class DataContainer extends React.Component<Props, State> {
       }
     }
   }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = (nextAppState: AppStateStatus) => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.log('App has come to the foreground!');
+      tracker.logEvent('refresh_on_foreground');
+      this.props.refreshStations();
+    }
+    this.setState({ appState: nextAppState });
+  };
 
   refreshStations = () => {
     this.props.refreshStations();
