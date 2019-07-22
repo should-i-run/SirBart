@@ -199,15 +199,15 @@ class DataContainer extends React.Component<Props, State> {
           paddingTop: Platform.select({ android: 0, ios: 40 }),
         }}
       >
-        <LastUpdatedTime
-          manualRefreshing={
-            this.props.refreshingStations || this.state.fakeRefreshing
-          }
-        />
         {locationErrorReason ? (
           <LocationError errorReason={locationErrorReason} />
         ) : (
           <React.Fragment>
+            <LastUpdatedTime
+              manualRefreshing={
+                this.props.refreshingStations || this.state.fakeRefreshing
+              }
+            />
             <ScrollView
               refreshControl={
                 <RefreshControl
