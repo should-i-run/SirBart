@@ -13,5 +13,3 @@ declare type Trip = {
   code: string;
   lines: TripForLine[];
 };
-
-declare type __DEV__ = boolean;

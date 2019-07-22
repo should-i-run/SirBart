@@ -1,6 +1,13 @@
 import { NetworkStatus } from '../reducers/appStore';
 import retry from 'async-retry';
 
+// enum FetchingStates {
+//   Active,
+//   Complete,
+// }
+
+// const fetchingMap: Record<string, FetchingStates> = {};
+
 function statusChange(url: string, status: NetworkStatus) {
   return {
     type: 'NETWORK_CHANGE' as 'NETWORK_CHANGE',
@@ -15,6 +22,10 @@ export default function wrappedFetch(
   opts?: RequestInit,
 ): Promise<Response> {
   dispatch(statusChange(url, NetworkStatus.Fetching));
+
+  // if (fetchingMap[url] && fetchingMap[url] === FetchingStates.Active) {
+  //   return Promise.resolve(new Response());
+  // }
 
   return retry(
     async () => {
