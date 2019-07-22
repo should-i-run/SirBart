@@ -36,13 +36,19 @@ class LastUpdatedTime extends React.Component<Props, State> {
     timeDifference: undefined,
   };
 
+  interval?: any;
+
   componentDidMount() {
-    setInterval(() => {
+    this.interval = setInterval(() => {
       const { time } = this.props;
       this.setState({
         timeDifference: time ? differenceSeconds(time, new Date()) : undefined,
       });
     }, 200);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   renderUpdatedTime(timeDifference: number) {

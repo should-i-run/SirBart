@@ -26,9 +26,12 @@ export default class LocationError extends React.Component<Props> {
       return (
         <View style={styles.container}>
           <Text style={[styles.genericText, { fontSize: 26 }]}>
-            We can't get you to BART without your location! 😩
+            😩 No Location
           </Text>
           <TouchableOpacity onPress={this.goToSettings}>
+            <Text style={[styles.text]}>
+              We can't get you to BART without your location!
+            </Text>
             <Text style={[styles.text]}>
               Tap here and go to Privacy > Location Services > BART Check to
               enable access.
@@ -37,15 +40,29 @@ export default class LocationError extends React.Component<Props> {
         </View>
       );
     }
+    if (errorReason === 'OUTSIDE_RANGE') {
+      return (
+        <View style={styles.container}>
+          <Text style={[styles.genericText, { fontSize: 26 }]}>
+            😩 Out of Range
+          </Text>
+          <Text style={[styles.text]}>
+            Looks like you're outside the BART coverage area.
+          </Text>
+          <Text style={[styles.text]}>
+            This app is only useful in the San Francisco Bay Area. Come join us
+            to get in on the public transit fun.
+          </Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <Text style={[styles.genericText, { fontSize: 26 }]}>😩 Oh No!</Text>
-        <TouchableOpacity onPress={this.goToSettings}>
-          <Text style={[styles.text]}>
-            Looks like there was a problem getting your location. Please wait a
-            few moments and try again.
-          </Text>
-        </TouchableOpacity>
+        <Text style={[styles.text]}>
+          Looks like there was a problem getting your location. Please wait a
+          few moments and try again.
+        </Text>
       </View>
     );
   }

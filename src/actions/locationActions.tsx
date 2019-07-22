@@ -6,6 +6,15 @@ export const locationOptions = {
   maximumAge: 1000 * 30,
 };
 
+// Northeast corner (Sac): 38.585532,-121.498054
+// Southwest corner: 37.040709,-123.002518
+function isLocationOutsideRange(loc: LocationType): boolean {
+  const { latitude, longitude } = loc.coords;
+  const latOutOfRange = latitude < 37.04 || latitude > 38.58;
+  const lonOutOfRange = longitude > -121.5 || longitude < -123.0;
+  return latOutOfRange || lonOutOfRange;
+}
+
 type LocationType = {
   coords: { latitude: number; longitude: number };
 };
@@ -23,6 +32,7 @@ function receiveLocation(location: LocationType) {
 export type LocationErrorReason =
   | 'PERMISSION_DENIED'
   | 'POSITION_UNAVAILABLE'
+  | 'OUTSIDE_RANGE'
   | 'TIMEOUT';
 interface LocationError {
   PERMISSION_DENIED: number;
@@ -43,7 +53,11 @@ export function startLocation() {
   Geolocation.requestAuthorization();
   return (dispatch: Function) => {
     const handlePosition = (loc: LocationType) => {
-      dispatch(receiveLocation(loc));
+      if (isLocationOutsideRange(loc)) {
+        dispatch(locationError('OUTSIDE_RANGE'));
+      } else {
+        dispatch(receiveLocation(loc));
+      }
     };
     const handlePositionError = (err: LocationError) => {
       // PERMISSION_DENIED: 1
@@ -55,7 +69,7 @@ export function startLocation() {
         'PERMISSION_DENIED',
         'POSITION_UNAVAILABLE',
         'TIMEOUT',
-      ] as LocationErrorReason[];
+      ] as const;
       const reason = possibleReasons.find(k => {
         return err[k] === err.code;
       });
