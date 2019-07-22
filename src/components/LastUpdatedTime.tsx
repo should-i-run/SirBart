@@ -28,21 +28,35 @@ type Props = {
 };
 
 type State = {
-  timeDifference: number;
+  timeDifference?: number;
 };
 
 class LastUpdatedTime extends React.Component<Props, State> {
-  state = {
-    timeDifference: 0,
+  state: State = {
+    timeDifference: undefined,
   };
 
   componentDidMount() {
     setInterval(() => {
       const { time } = this.props;
       this.setState({
-        timeDifference: time ? differenceSeconds(time, new Date()) : 0,
+        timeDifference: time ? differenceSeconds(time, new Date()) : undefined,
       });
     }, 200);
+  }
+
+  renderUpdatedTime(timeDifference: number) {
+    return (
+      <React.Fragment>
+        <Text style={[styles.darkText, { marginRight: 4 }]}>Updated</Text>
+        {/*
+        // @ts-ignore Bad Defs */}
+        <Text style={[styles.darkText, { fontVariant: ['tabular-nums'] }]}>
+          {timeDifference}
+        </Text>
+        <Text style={styles.darkText}>s ago</Text>
+      </React.Fragment>
+    );
   }
 
   render() {
@@ -66,17 +80,13 @@ class LastUpdatedTime extends React.Component<Props, State> {
         {isFetching && !manualRefreshing && (
           <ActivityIndicator style={{ marginRight: 10 }} />
         )}
-        {timeDifference !== undefined && (
-          <View style={styles.alignRight}>
-            <Text style={[styles.darkText, { marginRight: 4 }]}>Updated</Text>
-            {/*
-            // @ts-ignore Bad Defs */}
-            <Text style={[styles.darkText, { fontVariant: ['tabular-nums'] }]}>
-              {timeDifference}
-            </Text>
-            <Text style={styles.darkText}>s ago</Text>
-          </View>
-        )}
+        <View style={styles.alignRight}>
+          {timeDifference === undefined ? (
+            <Text style={styles.darkText}>Updating</Text>
+          ) : (
+            this.renderUpdatedTime(timeDifference)
+          )}
+        </View>
       </View>
     );
   }
