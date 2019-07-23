@@ -107,7 +107,6 @@ class DataContainer extends React.Component<Props, State> {
       ) > 0.5
     ) {
       this.props.refreshStations();
-      this.props.selectDestination();
     }
 
     if (stations) {
