@@ -87,7 +87,7 @@ export function setupDataFetching() {
     }
     interval = setInterval(() => {
       fetchData(dispatch);
-    }, 1000 * 20);
+    }, 1000 * 15);
   };
 }
 
