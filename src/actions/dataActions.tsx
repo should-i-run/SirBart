@@ -2,6 +2,7 @@ import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
 import wrappedFetch from './wrappedFetch';
+import { throttle } from 'lodash';
 
 export const URL = 'https://bart.rgoldfinger.com/bart';
 let interval: NodeJS.Timer;
@@ -29,14 +30,13 @@ function receiveAdvs(advs: Advisory[]) {
   };
 }
 
-const fetchAdvs = (dispatch: Dispatch<any>) => {
-  wrappedFetch(
-    dispatch,
-    'https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y',
-    {
-      method: 'GET',
-    },
-  )
+const advUrl =
+  'https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y';
+
+const fetchAdvs = throttle((dispatch: Dispatch<any>) => {
+  wrappedFetch(dispatch, advUrl, {
+    method: 'GET',
+  })
     .then(response => response.json())
     .then(
       data => {
@@ -51,7 +51,7 @@ const fetchAdvs = (dispatch: Dispatch<any>) => {
       console.warn(error);
       tracker.logEvent('fetchAdvs_dispatch_error');
     });
-};
+}, 1000 * 60);
 
 const fetchData = async (dispatch: Dispatch<any>) => {
   fetchAdvs(dispatch);
