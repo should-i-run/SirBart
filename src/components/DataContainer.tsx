@@ -20,7 +20,6 @@ import { startLocation, LocationErrorReason } from '../actions/locationActions';
 import {
   setupDataFetching,
   stopFetchingTimes,
-  hackilySetLoc,
   fetchWalkingDirections,
   fetchStations,
   refreshStations,
@@ -93,7 +92,6 @@ class DataContainer extends React.Component<Props, State> {
       location,
       selectedDestinationAt,
     } = this.props;
-    hackilySetLoc(location);
     if (!prevLocation && location) {
       this.props.fetchStations();
     } else if (

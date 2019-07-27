@@ -54,6 +54,7 @@ class DestinationSelector extends React.Component<Props, State> {
     }
   }
 
+  // TODO It looks like this is called without a label too often
   save = (label: string | null, code: string | null) => {
     if (!label) {
       tracker.logEvent('add_temp_destination');

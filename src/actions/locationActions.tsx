@@ -1,4 +1,5 @@
 import Geolocation from '@react-native-community/geolocation';
+import { hackilySetLoc } from './dataActions';
 
 export const locationOptions = {
   enableHighAccuracy: true,
@@ -20,13 +21,15 @@ type LocationType = {
 };
 
 function receiveLocation(location: LocationType) {
-  return {
+  const locationAction = {
     type: 'RECEIVE_LOCATION' as 'RECEIVE_LOCATION',
     location: {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     },
   };
+  hackilySetLoc(locationAction.location);
+  return locationAction;
 }
 
 export type LocationErrorReason =
