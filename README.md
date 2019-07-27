@@ -25,12 +25,5 @@
 ### Code push
 
 Codepush account: https://appcenter.ms/users/rgoldfinger/apps/BART-Check/distribute/code-push/Production
-➜ ios git:(master) ✗
 To see releases: `appcenter codepush deployment list -a rgoldfinger/BART-Check`.
-Build new release for Production: `code-push release-react SirBart ios --deploymentName Production`.
-`code-push release-react SirBart android --deploymentName Production`
-
-`config.h` missing
-
-cd node_modules/react-native/third-party/glog-0.3.4
-../../scripts/ios-configure-glog.sh
+Build new release for Production: `appcenter codepush release-react -a rgoldfinger/BART-Check -d Production`
