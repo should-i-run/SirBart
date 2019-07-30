@@ -76,6 +76,7 @@ const fetchData = async (dispatch: Dispatch<any>) => {
     });
     const data = await res.json();
     dispatch(receiveStations(data));
+    setupDataFetching()(dispatch);
   } catch (e) {
     console.log(e);
     dispatch(stopRefreshStations());

@@ -283,37 +283,30 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
     dispatch,
   );
 
-function propsChecker(WrappedComponent) {
-  return class PropsChecker extends React.Component<Props> {
-    componentDidUpdate(prevProps: Props) {
-      Object.keys(this.props)
-        .filter(key => {
-          return this.props[key] !== prevProps[key];
-        })
-        .map(key => {
-          console.log(
-            'changed property:',
-            key,
-            'from',
-            prevProps[key],
-            'to',
-            this.props[key],
-          );
-        });
-    }
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  };
-}
-const withPropsChecker = ((): Function => {
-  if (__DEV__) {
-    return propsChecker;
-  }
-  return () => {};
-})();
+// function propsChecker(WrappedComponent) {
+//   return class PropsChecker extends React.Component<Props> {
+//     componentDidUpdate(prevProps: Props) {
+//       Object.keys(this.props)
+//         .filter(key => {
+//           return this.props[key] !== prevProps[key];
+//         })
+//         .map(key => {
+//           console.log(
+//             'changed property:',
+//             key,
+//             'from',
+//             prevProps[key],
+//             'to',
+//             this.props[key],
+//           );
+//         });
+//     }
+//     render() {
+//       return <WrappedComponent {...this.props} />;
+//     }
+//   };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withPropsChecker(DataContainer));
+)(DataContainer);
