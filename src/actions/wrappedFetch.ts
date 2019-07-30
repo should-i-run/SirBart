@@ -36,9 +36,9 @@ export default function wrappedFetch(
         console.log('retrying attempt ', attempt, ' error ', error);
       },
       // https://github.com/tim-kos/node-retry#retrytimeoutsoptions
-      retries: 30,
-      minTimeout: 0,
-      maxTimeout: 5000,
+      retries: 10,
+      minTimeout: 200,
+      maxTimeout: 2000,
       factor: 2, // default
     },
   )
