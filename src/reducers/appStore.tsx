@@ -282,12 +282,6 @@ export default function(
         refreshingStations: true,
       };
     }
-    case 'STOP_REFRESH_STATIONS': {
-      return {
-        ...state,
-        refreshingStations: false,
-      };
-    }
     case 'DEST_SELECT': {
       return {
         ...state,

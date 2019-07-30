@@ -1,6 +1,6 @@
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
-import wrappedFetch, { isFetching } from './wrappedFetch';
+import wrappedFetch from './wrappedFetch';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -60,9 +60,6 @@ export function selectDestinationAction(code?: string) {
 }
 
 function fetchData(trips: Record<string, any>[], dispatch: Dispatch<any>) {
-  if (isFetching(URL)) {
-    return;
-  }
   wrappedFetch(dispatch, URL, {
     method: 'POST',
     body: JSON.stringify(trips),

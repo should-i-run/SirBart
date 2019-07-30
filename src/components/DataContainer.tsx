@@ -9,7 +9,6 @@ import {
   View,
   Platform,
   AppStateStatus,
-  Text,
 } from 'react-native';
 
 import Advisories from './Advisories';
@@ -23,7 +22,7 @@ import {
   stopFetchingTimes,
   fetchWalkingDirections,
   fetchStations,
-  fetchStationsWithIndicator,
+  refreshStations,
 } from '../actions/dataActions';
 import { State as ReducerState } from '../reducers/appStore';
 
@@ -35,7 +34,7 @@ import {
 import tracker from '../native/analytics';
 import { distanceBetweenCoordinates } from '../utils/distance';
 
-import { colors, genericText } from '../styles';
+import { colors } from '../styles';
 
 import { Station, Advisory } from '../reducers/appStore';
 
@@ -56,8 +55,8 @@ type Props = {
   setupDataFetching: Function;
   fetchWalkingDirections: (s: Station) => void;
   refreshingStations: boolean;
-  fetchStationsWithIndicator: () => void;
-  fetchStations: () => void;
+  refreshStations: Function;
+  fetchStations: Function;
   loadSavedDestinations: Function;
   selectedDestinationCode?: string;
   selectedDestinationAt?: Date;
@@ -74,7 +73,7 @@ class DataContainer extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.startLocation();
-    this.props.fetchStationsWithIndicator();
+    this.props.fetchStations();
     this.props.setupDataFetching();
     this.props.loadSavedDestinations();
     AppState.addEventListener('change', this._handleAppStateChange);
@@ -94,7 +93,7 @@ class DataContainer extends React.Component<Props, State> {
       selectedDestinationAt,
     } = this.props;
     if (!prevLocation && location) {
-      this.props.fetchStationsWithIndicator();
+      this.props.fetchStations();
     } else if (
       prevLocation &&
       location &&
@@ -105,7 +104,7 @@ class DataContainer extends React.Component<Props, State> {
         location.lng,
       ) > 0.5
     ) {
-      this.props.fetchStations();
+      this.props.refreshStations();
     }
 
     if (stations) {
@@ -173,13 +172,13 @@ class DataContainer extends React.Component<Props, State> {
     ) {
       console.log('App has come to the foreground!');
       tracker.logEvent('refresh_on_foreground');
-      this.props.fetchStations();
+      this.props.refreshStations();
     }
     this.setState({ appState: nextAppState });
   };
 
   refreshStations = () => {
-    this.props.fetchStationsWithIndicator();
+    this.props.refreshStations();
     this.setState({ fakeRefreshing: true });
     setTimeout(() => {
       this.setState({ fakeRefreshing: false });
@@ -245,7 +244,6 @@ class DataContainer extends React.Component<Props, State> {
                       />
                     );
                   })}
-              {__DEV__ && <Text style={genericText}>Debug</Text>}
             </ScrollView>
             <DestinationSelector />
           </React.Fragment>
@@ -275,7 +273,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
       setupDataFetching,
       stopFetchingTimes,
       fetchWalkingDirections,
-      fetchStationsWithIndicator,
+      refreshStations,
       fetchStations,
       loadSavedDestinations,
       selectDestination,
@@ -283,37 +281,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) =>
     dispatch,
   );
 
-function propsChecker(WrappedComponent) {
-  return class PropsChecker extends React.Component<Props> {
-    componentDidUpdate(prevProps: Props) {
-      Object.keys(this.props)
-        .filter(key => {
-          return this.props[key] !== prevProps[key];
-        })
-        .map(key => {
-          console.log(
-            'changed property:',
-            key,
-            'from',
-            prevProps[key],
-            'to',
-            this.props[key],
-          );
-        });
-    }
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  };
-}
-const withPropsChecker = ((): Function => {
-  if (__DEV__) {
-    return propsChecker;
-  }
-  return () => {};
-})();
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withPropsChecker(DataContainer));
+)(DataContainer);
