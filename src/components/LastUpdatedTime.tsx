@@ -44,7 +44,7 @@ class LastUpdatedTime extends React.Component<Props, State> {
       this.setState({
         timeDifference: time ? differenceSeconds(time, new Date()) : undefined,
       });
-    }, 200);
+    }, 100);
   }
 
   componentWillUnmount() {

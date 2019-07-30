@@ -58,21 +58,22 @@ const fetchData = async (dispatch: Dispatch<any>) => {
   if (!location) {
     return;
   }
-  const res = await wrappedFetch(dispatch, URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      lat: location.lat,
-      lng: location.lng,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const data = await res.json();
   try {
+    const res = await wrappedFetch(dispatch, URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        lat: location.lat,
+        lng: location.lng,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await res.json();
     dispatch(receiveStations(data));
   } catch (e) {
-    console.warn(e);
+    console.log(e);
+    dispatch(stopRefreshStations());
     tracker.logEvent('fetchData_dispatch_error');
   }
 };
