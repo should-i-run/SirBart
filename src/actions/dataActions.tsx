@@ -22,6 +22,11 @@ function startRefreshStations() {
     type: 'START_REFRESH_STATIONS' as 'START_REFRESH_STATIONS',
   };
 }
+function stopRefreshStations() {
+  return {
+    type: 'STOP_REFRESH_STATIONS' as 'STOP_REFRESH_STATIONS',
+  };
+}
 
 function receiveAdvs(advs: Advisory[]) {
   return {
@@ -92,13 +97,12 @@ export function setupDataFetching() {
   };
 }
 
-export function refreshStations() {
+export function fetchStations() {
   return (dispatch: Dispatch<any>) => {
-    dispatch(startRefreshStations());
     fetchData(dispatch);
   };
 }
-export function fetchStations() {
+export function fetchStationsWithIndicator() {
   return (dispatch: Dispatch<any>) => {
     dispatch(startRefreshStations());
     fetchData(dispatch);
@@ -157,6 +161,7 @@ export function fetchWalkingDirections(station: Station) {
 
 export type DataActions =
   | ReturnType<typeof startRefreshStations>
+  | ReturnType<typeof stopRefreshStations>
   | ReturnType<typeof receiveAdvs>
   | ReturnType<typeof startWalkingDirections>
   | ReturnType<typeof receiveWalkingDirections>
