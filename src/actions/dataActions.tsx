@@ -1,7 +1,7 @@
 import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
-import wrappedFetch from './wrappedFetch';
+import wrappedFetch, { isFetching } from './wrappedFetch';
 import { throttle } from 'lodash';
 
 export const URL = 'https://bart.rgoldfinger.com/bart';
@@ -22,6 +22,11 @@ function startRefreshStations() {
     type: 'START_REFRESH_STATIONS' as 'START_REFRESH_STATIONS',
   };
 }
+function stopRefreshStations() {
+  return {
+    type: 'STOP_REFRESH_STATIONS' as 'STOP_REFRESH_STATIONS',
+  };
+}
 
 function receiveAdvs(advs: Advisory[]) {
   return {
@@ -34,6 +39,9 @@ const advUrl =
   'https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y';
 
 const fetchAdvs = throttle((dispatch: Dispatch<any>) => {
+  if (isFetching(advUrl)) {
+    return;
+  }
   wrappedFetch(dispatch, advUrl, {
     method: 'GET',
   })
@@ -58,6 +66,10 @@ const fetchData = async (dispatch: Dispatch<any>) => {
   if (!location) {
     return;
   }
+  if (isFetching(URL)) {
+    return;
+  }
+
   try {
     const res = await wrappedFetch(dispatch, URL, {
       method: 'POST',
@@ -92,13 +104,12 @@ export function setupDataFetching() {
   };
 }
 
-export function refreshStations() {
+export function fetchStations() {
   return (dispatch: Dispatch<any>) => {
-    dispatch(startRefreshStations());
     fetchData(dispatch);
   };
 }
-export function fetchStations() {
+export function fetchStationsWithIndicator() {
   return (dispatch: Dispatch<any>) => {
     dispatch(startRefreshStations());
     fetchData(dispatch);
@@ -137,6 +148,9 @@ export function fetchWalkingDirections(station: Station) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
+      if (isFetching(url)) {
+        return;
+      }
       wrappedFetch(dispatch, url)
         .then(response => response.json())
         .then(result => {
@@ -157,6 +171,7 @@ export function fetchWalkingDirections(station: Station) {
 
 export type DataActions =
   | ReturnType<typeof startRefreshStations>
+  | ReturnType<typeof stopRefreshStations>
   | ReturnType<typeof receiveAdvs>
   | ReturnType<typeof startWalkingDirections>
   | ReturnType<typeof receiveWalkingDirections>

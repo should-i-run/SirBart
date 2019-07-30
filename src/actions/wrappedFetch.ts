@@ -1,12 +1,12 @@
 import { NetworkStatus } from '../reducers/appStore';
 import retry from 'async-retry';
 
-// enum FetchingStates {
-//   Active,
-//   Complete,
-// }
+enum FetchingStates {
+  Active,
+  Complete,
+}
 
-// const fetchingMap: Record<string, FetchingStates> = {};
+const fetchingMap: Record<string, FetchingStates> = {};
 
 function statusChange(url: string, status: NetworkStatus) {
   return {
@@ -16,6 +16,10 @@ function statusChange(url: string, status: NetworkStatus) {
   };
 }
 
+export function isFetching(url: string): boolean {
+  return fetchingMap[url] === FetchingStates.Active;
+}
+
 export default function wrappedFetch(
   dispatch: any,
   url: string,
@@ -23,30 +27,30 @@ export default function wrappedFetch(
 ): Promise<Response> {
   dispatch(statusChange(url, NetworkStatus.Fetching));
 
-  // if (fetchingMap[url] && fetchingMap[url] === FetchingStates.Active) {
-  //   return Promise.resolve(new Response());
-  // }
-
   return retry(
     async () => {
+      fetchingMap[url] = FetchingStates.Active;
       return fetch(url, opts);
     },
     {
       onRetry(error, attempt) {
-        console.log('retrying attempt ', attempt, ' error ', error);
+        console.log('retrying attempt ', attempt, ' url: ', url)
+        console.log(' error ', error);
       },
       // https://github.com/tim-kos/node-retry#retrytimeoutsoptions
-      retries: 30,
-      minTimeout: 0,
-      maxTimeout: 5000,
+      retries: 10,
+      minTimeout: 200,
+      maxTimeout: 2000,
       factor: 2, // default
     },
   )
     .then((stuff: any) => {
+      fetchingMap[url] = FetchingStates.Complete;
       dispatch(statusChange(url, NetworkStatus.Success));
       return stuff;
     })
     .catch((e: Error) => {
+      fetchingMap[url] = FetchingStates.Complete;
       dispatch(statusChange(url, NetworkStatus.Error));
       throw e;
     });
