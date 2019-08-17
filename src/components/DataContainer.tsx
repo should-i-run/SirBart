@@ -1,4 +1,4 @@
-import { bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 
@@ -268,7 +268,7 @@ const mapStateToProps = (state: ReducerState) => ({
   locationErrorReason: state.locationErrorReason,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) =>
+const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       startLocation,

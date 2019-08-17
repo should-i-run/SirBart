@@ -6,7 +6,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import { bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -265,7 +265,7 @@ const mapStateToProps = (state: ReducerState) => ({
   trips: state.trips,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) =>
+const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       add: destinationAdd,

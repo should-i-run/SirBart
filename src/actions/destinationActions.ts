@@ -1,6 +1,6 @@
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
-import wrappedFetch from './wrappedFetch';
+import wrappedFetch, { SKIPPED } from './wrappedFetch';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -59,8 +59,8 @@ export function selectDestinationAction(code?: string) {
   };
 }
 
-function fetchData(trips: Record<string, any>[], dispatch: Dispatch<any>) {
-  wrappedFetch(dispatch, URL, {
+function fetchTripsToDestination(trips: Record<string, any>[], dispatch: Dispatch<any>) {
+  wrappedFetch(dispatch, URL, 'select_destination', {
     method: 'POST',
     body: JSON.stringify(trips),
     headers: {
@@ -72,6 +72,7 @@ function fetchData(trips: Record<string, any>[], dispatch: Dispatch<any>) {
       dispatch(loadTrips(data));
     })
     .catch(error => {
+      if (error === SKIPPED) return;
       console.warn(error);
       tracker.logEvent('fetchTrips_error');
       dispatch(selectDestinationAction(undefined));
@@ -85,7 +86,7 @@ export function selectDestination(endCode?: string, stationCodes?: string[]) {
       .map(c => ({ startCode: c, endCode }));
     return (dispatch: Dispatch<any>) => {
       dispatch(selectDestinationAction(endCode));
-      fetchData(trips, dispatch);
+      fetchTripsToDestination(trips, dispatch);
     };
   }
   return selectDestinationAction(undefined);

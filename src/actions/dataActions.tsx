@@ -1,7 +1,7 @@
 import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
-import wrappedFetch from './wrappedFetch';
+import wrappedFetch, { SKIPPED } from './wrappedFetch';
 import { throttle } from 'lodash';
 
 export const URL = 'https://bart.rgoldfinger.com/bart';
@@ -39,7 +39,7 @@ const advUrl =
   'https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=ZELI-U2UY-IBKQ-DT35&json=y';
 
 const fetchAdvs = throttle((dispatch: Dispatch<any>) => {
-  wrappedFetch(dispatch, advUrl, {
+  wrappedFetch(dispatch, advUrl, 'advs', {
     method: 'GET',
   })
     .then(response => response.json())
@@ -48,6 +48,7 @@ const fetchAdvs = throttle((dispatch: Dispatch<any>) => {
         dispatch(receiveAdvs(data.root.bsa));
       },
       error => {
+        if (error === SKIPPED) return;
         console.warn(error);
         tracker.logEvent('fetchAdvs_error');
       },
@@ -64,7 +65,7 @@ const fetchData = async (dispatch: Dispatch<any>) => {
     return;
   }
   try {
-    const res = await wrappedFetch(dispatch, URL, {
+    const res = await wrappedFetch(dispatch, URL, 'stations', {
       method: 'POST',
       body: JSON.stringify({
         lat: location.lat,
@@ -78,6 +79,7 @@ const fetchData = async (dispatch: Dispatch<any>) => {
     dispatch(receiveStations(data));
     setupDataFetching()(dispatch);
   } catch (e) {
+    if (e === SKIPPED) return;
     console.log(e);
     dispatch(stopRefreshStations());
     tracker.logEvent('fetchData_dispatch_error');
@@ -142,7 +144,7 @@ export function fetchWalkingDirections(station: Station) {
       dispatch(startWalkingDirections(station));
       const closestEntrance = station.closestEntranceLoc;
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.lat},${location.lng}&destination=${closestEntrance.lat},${closestEntrance.lng}&units=metric&mode=walking&key=AIzaSyDtzqYGAIdJSmbN63uzvkGsin1kwS5HXvQ`;
-      wrappedFetch(dispatch, url)
+      wrappedFetch(dispatch, url, `walking_directions_${station.abbr}`)
         .then(response => response.json())
         .then(result => {
           const leg = result.routes[0].legs[0];
@@ -153,6 +155,7 @@ export function fetchWalkingDirections(station: Station) {
           dispatch(receiveWalkingDirections(station, directions));
         })
         .catch(error => {
+          if (error === SKIPPED) return;
           console.warn(error);
           tracker.logEvent('fetch_walking_directions_error');
         });
