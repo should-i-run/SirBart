@@ -699,7 +699,7 @@
 			baseConfigurationReference = 4AC20B0E0A30223E818A6460 /* Pods-SirBart2.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 25;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = UZM8CJQFWX;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -724,7 +724,7 @@
 			baseConfigurationReference = 2FC67AC07983AF749520BAE5 /* Pods-SirBart2.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = UZM8CJQFWX;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SirBart2/Info.plist;
