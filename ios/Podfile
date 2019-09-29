@@ -53,9 +53,6 @@ target 'SirBart2' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   # Other Libraries
-  pod 'appcenter', path: '../node_modules/appcenter/ios'
-  pod 'appcenter-analytics', path: '../node_modules/appcenter-analytics/ios'
-  pod 'appcenter-crashes', path: '../node_modules/appcenter-crashes/ios'
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
   pod 'RNStoreReview', :path => '../node_modules/react-native-store-review/ios'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
