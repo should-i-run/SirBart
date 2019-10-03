@@ -1,7 +1,7 @@
 import { Station, Advisory } from '../reducers/appStore';
 import tracker from '../native/analytics';
 import { Dispatch } from 'redux';
-import wrappedFetch, { SKIPPED } from './wrappedFetch';
+import wrappedFetch, { SKIPPED, STALE } from './wrappedFetch';
 import { throttle } from 'lodash';
 
 export const URL = 'https://bart.rgoldfinger.com/bart';
@@ -49,6 +49,7 @@ const fetchAdvs = throttle((dispatch: Dispatch<any>) => {
       },
       error => {
         if (error === SKIPPED) return;
+        if (error === STALE) return fetchAdvs(dispatch);
         console.warn(error);
         tracker.logEvent('fetchAdvs_error');
       },
@@ -80,6 +81,7 @@ const fetchData = async (dispatch: Dispatch<any>) => {
     setupDataFetching()(dispatch);
   } catch (e) {
     if (e === SKIPPED) return;
+    if (e === STALE) return;
     console.log(e);
     dispatch(stopRefreshStations());
     tracker.logEvent('fetchData_dispatch_error');
@@ -156,6 +158,7 @@ export function fetchWalkingDirections(station: Station) {
         })
         .catch(error => {
           if (error === SKIPPED) return;
+          if (error === STALE) return;
           console.warn(error);
           tracker.logEvent('fetch_walking_directions_error');
         });

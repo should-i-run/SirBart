@@ -1,3 +1,13 @@
+import { GlobalWithFetchMock } from 'jest-fetch-mock';
+
+const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
+customGlobal.fetch = require('jest-fetch-mock');
+customGlobal.fetchMock = customGlobal.fetch;
+
+jest.mock('@react-native-community/async-storage', () => {
+  return require('@react-native-community/async-storage/jest/async-storage-mock');
+});
+
 jest.mock('react-native-code-push', () => {
   const cp = (_: any) => (app: any) => app;
   Object.assign(cp, {

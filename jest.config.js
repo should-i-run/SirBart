@@ -14,4 +14,7 @@ module.exports = {
   },
   setupFiles: ['./tests/mocks.tsx'],
   cacheDirectory: '.jest/cache',
+  transformIgnorePatterns: [
+    'node_modules/(?!(@react-native-community|react-native)/)',
+  ],
 };
