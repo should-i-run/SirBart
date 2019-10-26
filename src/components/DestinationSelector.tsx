@@ -168,7 +168,7 @@ class DestinationSelector extends React.Component<Props, State> {
           </View>
         </ScrollView>
         <View style={styles.listContainer}>
-          <TouchableOpacity onPress={this.remove}>
+          <TouchableOpacity onPress={this.remove} style={{ marginRight: 10 }}>
             <Icon name="trash" size={20} color={colors.icon} />
           </TouchableOpacity>
         </View>
