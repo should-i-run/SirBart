@@ -1,6 +1,11 @@
 import Geolocation from '@react-native-community/geolocation';
 import { hackilySetLoc } from './dataActions';
 
+Geolocation.setRNConfiguration({
+  skipPermissionRequests: false,
+  authorizationLevel: 'whenInUse',
+});
+
 export const locationOptions = {
   enableHighAccuracy: true,
   timeout: 15000,
