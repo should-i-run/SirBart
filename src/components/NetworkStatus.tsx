@@ -21,7 +21,7 @@ class NetworkStatusLog extends React.Component<Props> {
     //   <View
     //     style={{
     //       height: 20,
-    //       backgroundColor: colors.background,
+    //       backgroundColor: colors.layer1,
     //     }}
     //   >
     //     <Text style={[genericText, { fontSize: 10 }]}>{urls.join('')}</Text>

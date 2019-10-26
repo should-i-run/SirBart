@@ -12,7 +12,6 @@ export default StyleSheet.create({
     marginVertical: 10,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    // backgroundColor: colors.lightBackground,
     borderRadius: 5,
   },
   advisory: {

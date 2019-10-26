@@ -14,7 +14,7 @@ export default StyleSheet.create({
     ...genericText,
   },
   direction: {
-    backgroundColor: colors.lightBackground,
+    backgroundColor: colors.layer1,
     paddingLeft: 10,
     paddingBottom: 5,
     paddingTop: 5,

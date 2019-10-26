@@ -163,13 +163,13 @@ class DestinationSelector extends React.Component<Props, State> {
             {this.renderSaveableDest('home', savedDestinations.home)}
             {this.renderSaveableDest('work', savedDestinations.work)}
             <TouchableOpacity onPress={() => this.setState({ adding: true })}>
-              <Icon name="plus-square" size={20} color="#E6E6E6" />
+              <Icon name="plus" size={20} color={colors.icon} />
             </TouchableOpacity>
           </View>
         </ScrollView>
         <View style={styles.listContainer}>
           <TouchableOpacity onPress={this.remove}>
-            <Icon name="times" size={20} color="#E6E6E6" />
+            <Icon name="trash" size={20} color={colors.icon} />
           </TouchableOpacity>
         </View>
       </View>

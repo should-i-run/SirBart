@@ -193,7 +193,7 @@ class DataContainer extends React.Component<Props, State> {
       <View
         style={{
           flex: 1,
-          backgroundColor: colors.background,
+          backgroundColor: colors.layer0,
           paddingTop: Platform.select({ android: 0, ios: 40 }),
         }}
       >
