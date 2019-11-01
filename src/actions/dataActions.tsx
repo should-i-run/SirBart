@@ -149,6 +149,7 @@ export function fetchWalkingDirections(station: Station) {
       wrappedFetch(dispatch, url, `walking_directions_${station.abbr}`)
         .then(response => response.json())
         .then(result => {
+          if (result.error_message) throw new Error(result.error_message);
           const leg = result.routes[0].legs[0];
           const directions = {
             distance: leg.distance.value,
@@ -160,7 +161,7 @@ export function fetchWalkingDirections(station: Station) {
           if (error === SKIPPED) return;
           if (error === STALE) return;
           console.warn(error);
-          tracker.logEvent('fetch_walking_directions_error');
+          tracker.logEvent('fetch_walking_directions_error', { error });
         });
     }
   };
