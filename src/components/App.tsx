@@ -9,11 +9,13 @@ import DataContainer from './DataContainer';
 import appStore from '../reducers/appStore';
 import CodePush from 'react-native-code-push';
 import { incrementLaunchCount } from '../utils/launches';
+import { log } from '../utils/sumo';
 
 const store = createStore(appStore, applyMiddleware(thunkMiddleware));
 
 class App extends React.Component<{}> {
   async componentDidMount() {
+    log('App componentDidMount');
     if (Platform.OS === 'ios') {
       StatusBar.setBarStyle('light-content');
     } else {

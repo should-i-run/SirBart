@@ -26,6 +26,7 @@ import {
   fetchStationsWithIndicator,
 } from '../actions/dataActions';
 import { State as ReducerState } from '../reducers/appStore';
+import { log } from '../utils/sumo';
 
 import {
   loadSavedDestinations,
@@ -72,6 +73,7 @@ class DataContainer extends React.Component<Props, State> {
   appState = AppState.currentState;
 
   componentDidMount() {
+    log('DataContainer componentDidMount');
     this.props.startLocation();
     this.props.fetchStationsWithIndicator();
     this.props.setupDataFetching();
@@ -80,6 +82,7 @@ class DataContainer extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
+    log('DataContainer componentDidUpdate');
     const {
       location: prevLocation,
       stations: prevStations,
@@ -166,6 +169,7 @@ class DataContainer extends React.Component<Props, State> {
   }
 
   _handleAppStateChange = (nextAppState: AppStateStatus) => {
+    log(`nextAppState: ${nextAppState}`);
     if (
       this.appState.match(/inactive|background/) &&
       nextAppState === 'active'
@@ -188,6 +192,7 @@ class DataContainer extends React.Component<Props, State> {
 
   render() {
     const { locationErrorReason, stations, trips, advisories } = this.props;
+    log(locationErrorReason!);
     return (
       <View
         style={{

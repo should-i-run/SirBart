@@ -8,6 +8,7 @@ import {
   LocationErrorReason,
 } from '../actions/locationActions';
 import { WrappedFetchActions } from '../actions/wrappedFetch';
+import { log } from '../utils/sumo';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -128,6 +129,7 @@ export default function(
     | LocationActions
     | WrappedFetchActions,
 ) {
+  log(action.type);
   switch (action.type) {
     case 'RECEIVE_LOCATION': {
       if (
