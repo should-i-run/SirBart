@@ -44,7 +44,6 @@ import LastUpdatedTime from './LastUpdatedTime';
 
 type State = {
   fakeRefreshing: boolean;
-  appState: AppStateStatus;
 };
 
 type Props = {
@@ -69,8 +68,8 @@ type Props = {
 class DataContainer extends React.Component<Props, State> {
   state: State = {
     fakeRefreshing: false,
-    appState: AppState.currentState,
   };
+  appState = AppState.currentState;
 
   componentDidMount() {
     this.props.startLocation();
@@ -168,14 +167,14 @@ class DataContainer extends React.Component<Props, State> {
 
   _handleAppStateChange = (nextAppState: AppStateStatus) => {
     if (
-      this.state.appState.match(/inactive|background/) &&
+      this.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
       console.log('App has come to the foreground!');
       tracker.logEvent('refresh_on_foreground');
       this.props.fetchStations();
     }
-    this.setState({ appState: nextAppState });
+    this.appState = nextAppState;
   };
 
   refreshStations = () => {
