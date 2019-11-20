@@ -116,7 +116,6 @@ export function fetchStationsWithIndicator() {
 
 export function stopFetchingTimes() {
   clearInterval(interval);
-  return {};
 }
 
 export function hackilySetLoc(loc?: Location) {

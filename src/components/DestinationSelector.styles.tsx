@@ -7,7 +7,7 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
   wrapper: {
     ...(Platform.OS === 'ios' ? { zIndex: 100 } : {}),
     justifyContent: 'flex-start',
-    backgroundColor: colors.layer2,
+  backgroundColor: colors.layer1,
     shadowColor: colors.shadow,
     shadowRadius: 10,
     shadowOpacity: 1,

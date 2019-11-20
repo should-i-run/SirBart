@@ -1,5 +1,6 @@
 import Geolocation from '@react-native-community/geolocation';
 import { hackilySetLoc } from './dataActions';
+import { log } from '../utils/sumo';
 
 Geolocation.setRNConfiguration({
   skipPermissionRequests: false,
@@ -57,9 +58,13 @@ function locationError(errorReason: LocationErrorReason) {
   };
 }
 
+let watchID: number | undefined;
+
 export function startLocation() {
+  log('startLocation');
   Geolocation.requestAuthorization();
   return (dispatch: Function) => {
+    log('startLocation callback');
     const handlePosition = (loc: LocationType) => {
       if (isLocationOutsideRange(loc)) {
         dispatch(locationError('OUTSIDE_RANGE'));
@@ -85,11 +90,18 @@ export function startLocation() {
       dispatch(locationError(reason!));
     };
     Geolocation.getCurrentPosition(handlePosition, handlePositionError);
-    Geolocation.watchPosition(handlePosition, handlePositionError, {
+    watchID = Geolocation.watchPosition(handlePosition, handlePositionError, {
       ...locationOptions,
       distanceFilter: 20,
     });
   };
+}
+
+export function stopLocation() {
+  log('stopLocation');
+  if (watchID) {
+    Geolocation.clearWatch(watchID);
+  }
 }
 
 export type LocationActions =

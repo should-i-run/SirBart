@@ -245,7 +245,7 @@ PODS:
     - React-cxxreact (= 0.61.1)
     - React-jsi (= 0.61.1)
     - ReactCommon/jscallinvoker (= 0.61.1)
-  - RNCAsyncStorage (1.5.1):
+  - RNCAsyncStorage (1.6.2):
     - React
   - RNStoreReview (0.1.5):
     - React
@@ -293,7 +293,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - AppCenter
     - AppCenterReactNativeShared
     - Base64
@@ -404,7 +404,7 @@ SPEC CHECKSUMS:
   React-RCTText: 81b62b4e7f11531a5154e4daa5617670d5a2d5de
   React-RCTVibration: 8be61459e3749d1fb02cf414edd05b3007622882
   ReactCommon: 4fba5be89efdf0b5720e0adb3d8d7edf6e532db0
-  RNCAsyncStorage: b63d6e83fc629b01df6b624688f17944cea5637f
+  RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
   RNStoreReview: 62d6afd7c37db711a594bbffca6b0ea3a812b7a8
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
@@ -412,4 +412,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 8590ac8c05d26ee9fc06b8e8769e055975dad3cf
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.8.4

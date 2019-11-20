@@ -17,7 +17,7 @@ import StationView from './Station';
 import DestinationSelector from './DestinationSelector';
 import LocationError from './LocationError';
 import ReviewPrompt from './ReviewPrompt';
-import { startLocation, LocationErrorReason } from '../actions/locationActions';
+import { startLocation, LocationErrorReason, stopLocation } from '../actions/locationActions';
 import {
   setupDataFetching,
   stopFetchingTimes,
@@ -176,7 +176,12 @@ class DataContainer extends React.Component<Props, State> {
     ) {
       console.log('App has come to the foreground!');
       tracker.logEvent('refresh_on_foreground');
-      this.props.fetchStations();
+      this.props.setupDataFetching();
+      this.props.startLocation();
+    } else if (this.appState === 'active' && nextAppState.match(/inactive|background/)) {
+      // Shut down location and data fetching
+      stopFetchingTimes();
+      stopLocation();
     }
     this.appState = nextAppState;
   };
@@ -277,7 +282,6 @@ const mapDispatchToProps = (dispatch: any) =>
     {
       startLocation,
       setupDataFetching,
-      stopFetchingTimes,
       fetchWalkingDirections,
       fetchStationsWithIndicator,
       fetchStations,
