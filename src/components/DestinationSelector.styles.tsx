@@ -31,7 +31,7 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     shadowColor: colors.shadow,
     shadowRadius: 10,
     shadowOpacity: 1,
-    backgroundColor: colors.layer3,
+    backgroundColor: colors.layer2,
     padding: 10,
   },
   picker: {
