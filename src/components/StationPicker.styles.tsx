@@ -1,7 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 
 import { genericText } from '../styles';
-export const pickerHeight = 200;
 
 export default StyleSheet.create({
   item: {
