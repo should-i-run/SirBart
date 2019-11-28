@@ -30,24 +30,22 @@ import { stationNames } from '../utils/stations';
 import styles from './DestinationSelector.styles';
 
 type TokenProps = {
-  contents: string;
   label: string;
-  index: string;
+  icon: string;
   onPress: () => void;
   disabled: boolean;
 };
 
-function Token({ contents, label, index, onPress, disabled }: TokenProps) {
+function Token({ icon, label, onPress, disabled }: TokenProps) {
   return (
     <TouchableOpacity
-      key={index}
+      key={icon}
       style={[styles.destTokenContainer]}
-      // style={[styles.destToken, disabled && styles.disabled]}
       disabled={disabled}
       onPress={onPress}
     >
       <View style={[styles.destToken, disabled && styles.disabled]}>
-        <Text style={[styles.destTokenIcon]}>{contents}</Text>
+        <Icon name={icon} size={24} color={colors.lightText} />
       </View>
       <Text
         numberOfLines={1}
@@ -76,11 +74,15 @@ type State = {
   addingLabel?: string | null;
 };
 
+const PICKER_HEIGHT = 230;
+const SELECTOR_HEIGHT = 70;
+const SELECTED_HEIGHT = 70;
+
 class DestinationSelector extends React.Component<Props, State> {
   state = { adding: false, code: 'EMBR', addingLabel: null };
   constructor(props: Props) {
     super(props);
-    this.height = new Animated.Value(props.inset.bottom + 105);
+    this.height = new Animated.Value(props.inset.bottom + SELECTOR_HEIGHT);
   }
   height: Animated.Value;
 
@@ -91,27 +93,27 @@ class DestinationSelector extends React.Component<Props, State> {
       tracker.logEvent('destination_picker_close');
     }
     // TODO this is crap
+    const { bottom } = this.props.inset;
     if (this.state.adding) {
-      this.animateToHeight(250);
+      this.animateToHeight(PICKER_HEIGHT + bottom);
     } else if (this.props.selectedDestinationCode) {
-      this.animateToHeight(100);
+      this.animateToHeight(SELECTED_HEIGHT + bottom);
     } else {
-      this.animateToHeight(125);
+      this.animateToHeight(SELECTOR_HEIGHT + bottom);
     }
   }
 
   animateToHeight(height: number) {
     Animated.timing(this.height, {
       toValue: height,
-      duration: 200,
-      easing: Easing.bezier(0.17, 0.67, 0.83, 0.67),
+      duration: 400,
+      easing: Easing.elastic(1),
     }).start();
   }
 
-  // TODO It looks like this is called without a label too often
   save = (label: string | null, code: string | null) => {
     if (!label) {
-      tracker.logEvent('add_temp_destination');
+      tracker.logEvent('somewhere_else');
       return;
     }
     tracker.logEvent('add_destination');
@@ -149,38 +151,16 @@ class DestinationSelector extends React.Component<Props, State> {
     }
   };
 
-  renderLabelIcon = (label?: string, disabled?: boolean) => {
-    if (!label) {
-      return null;
-    }
-    return (
-      <Text>
-        <Text
-          style={[
-            styles.genericText,
-            {
-              fontSize: 20,
-              paddingRight: 5,
-              color: disabled ? colors.disabledText : '#E6E6E6',
-            },
-          ]}
-        >
-          {label === 'work' ? '🏢' : '🏡'}
-        </Text>{' '}
-      </Text>
-    );
-  };
-
   renderSaveableDest = (label: string, code?: string) => {
     const { stations } = this.props;
-    const contents = label === 'work' ? '🏢' : '🏡';
+    // TODO Extract icon logic into component
+    const contents = label === 'work' ? 'briefcase' : 'home';
     if (!code) {
       return (
         <PulseView>
           <Token
             label={`Set ${label}`}
-            contents={contents}
-            index={label}
+            icon={contents}
             disabled={false}
             onPress={() => this.setState({ adding: true, addingLabel: label })}
           />
@@ -193,8 +173,7 @@ class DestinationSelector extends React.Component<Props, State> {
     return (
       <Token
         label={stationNames[code]}
-        contents={contents}
-        index={code}
+        icon={contents}
         disabled={disabled}
         onPress={() => this.select(code)}
       />
@@ -204,26 +183,22 @@ class DestinationSelector extends React.Component<Props, State> {
   renderSelector() {
     const { savedDestinations } = this.props;
     return (
-      // {/* <Text style={styles.destTokenLabel}>Show trains to</Text> */}
-      <View style={[styles.container, styles.leftRight]}>
-        <View style={styles.listContainer}>
-          {this.renderSaveableDest('home', savedDestinations.home)}
-          {this.renderSaveableDest('work', savedDestinations.work)}
-          <Token
-            label="Somewhere else"
-            contents="🚉"
-            index="somewhere"
-            disabled={false}
-            onPress={() => this.setState({ adding: true })}
-          />
-        </View>
+      <View style={styles.selectorItemsContainer}>
+        {this.renderSaveableDest('home', savedDestinations.home)}
+        {this.renderSaveableDest('work', savedDestinations.work)}
+        <Token
+          label="Somewhere else"
+          icon="random"
+          disabled={false}
+          onPress={() => this.setState({ adding: true })}
+        />
       </View>
     );
   }
 
   renderPicker() {
     return (
-      <View style={styles.pickerContainer}>
+      <View>
         <View style={styles.leftRight}>
           <TouchableOpacity
             onPress={() => this.setState({ adding: false, code: 'EMBR' })}
@@ -258,23 +233,24 @@ class DestinationSelector extends React.Component<Props, State> {
   // If it's home/work, allow to choose a new station
   renderSelected() {
     const { selectedDestinationCode, trips, savedDestinations } = this.props;
-    // const { trips, savedDestinations } = this.props;
-    // const selectedDestinationCode = 'EMBR';
     const matchedSavedLabel =
       selectedDestinationCode === savedDestinations.home
         ? 'home'
         : selectedDestinationCode === savedDestinations.work
         ? 'work'
         : undefined;
+    const contents = matchedSavedLabel === 'work' ? 'briefcase' : 'home';
     return (
-      <View style={[styles.container, styles.leftRight]}>
+      <View style={[styles.leftRight]}>
         <View style={[styles.leftRight, { flex: 1 }]}>
           <Text
             numberOfLines={1}
             style={styles.label}
             key={selectedDestinationCode}
           >
-            {this.renderLabelIcon(matchedSavedLabel)}
+            {matchedSavedLabel && (
+              <Icon name={contents} size={24} color={colors.lightText} />
+            )}{' '}
             Showing trains to
             {` ${stationNames[selectedDestinationCode!]}`}
           </Text>
@@ -284,8 +260,7 @@ class DestinationSelector extends React.Component<Props, State> {
           style={[{ marginRight: 0, marginLeft: 5 }]}
           onPress={() => this.select(null)}
         >
-          {/* <Text style={[styles.genericText, { fontSize: 14 }]}>Clear</Text> */}
-          <Icon name="close" size={20} color={colors.icon} />
+          <Icon name="times-circle" size={24} color={colors.lightText} />
         </TouchableOpacity>
       </View>
     );

@@ -12,22 +12,15 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     shadowOpacity: 1,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-  },
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 10,
-  },
-  pickerContainer: {
     padding: 10,
   },
   picker: {
     alignItems: 'center',
   },
-  listContainer: {
+  selectorItemsContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
   },
   genericText,
   label: {
@@ -38,27 +31,20 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     justifyContent: 'space-between',
   },
   destToken: {
-    height: 60,
+    height: 30,
     width: 60,
     borderRadius: 60,
     marginBottom: 6,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.button,
   },
   destTokenLabel: {
     ...genericText,
     fontSize: 12,
   },
-  destTokenIcon: {
-    fontSize: 24,
-  },
   destTokenContainer: {
     width: 100,
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   disabled: {
     borderColor: colors.lightText,
