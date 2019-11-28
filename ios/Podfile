@@ -58,6 +58,7 @@ target 'SirBart2' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
   target 'SirBart2Tests' do
     inherit! :search_paths

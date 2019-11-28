@@ -4,6 +4,7 @@ import * as React from 'react';
 import { StatusBar, Platform } from 'react-native';
 import thunkMiddleware from 'redux-thunk';
 import codePush from 'react-native-code-push';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import DataContainer from './DataContainer';
 import appStore from '../reducers/appStore';
@@ -26,9 +27,11 @@ class App extends React.Component<{}> {
 
   render() {
     return (
-      <Provider store={store}>
-        <DataContainer />
-      </Provider>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <DataContainer />
+        </Provider>
+      </SafeAreaProvider>
     );
   }
 }

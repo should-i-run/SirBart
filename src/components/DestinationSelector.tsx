@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SafeAreaConsumer } from 'react-native-safe-area-context';
 
 import { State as ReducerState } from '../reducers/appStore';
 import tracker from '../native/analytics';
@@ -246,7 +247,7 @@ class DestinationSelector extends React.Component<Props, State> {
 
   render() {
     const { selectedDestinationCode } = this.props;
-    let body;
+    let body: JSX.Element;
     if (this.state.adding) {
       body = this.renderPicker();
     } else if (selectedDestinationCode) {
@@ -254,7 +255,15 @@ class DestinationSelector extends React.Component<Props, State> {
     } else {
       body = this.renderSelector();
     }
-    return <View style={styles.wrapper}>{body}</View>;
+    return (
+      <SafeAreaConsumer>
+        {insets => (
+          <View style={[styles.wrapper, { height: 105 + insets!.bottom }]}>
+            {body}
+          </View>
+        )}
+      </SafeAreaConsumer>
+    );
   }
 }
 

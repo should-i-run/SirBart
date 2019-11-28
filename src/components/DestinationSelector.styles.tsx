@@ -11,8 +11,8 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     shadowColor: colors.shadow,
     shadowRadius: 10,
     shadowOpacity: 1,
-    borderRadius: 12,
-    height: 105,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   container: {
     flexDirection: 'row',

@@ -1,6 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
+import { SafeAreaConsumer } from 'react-native-safe-area-context';
 
 import {
   AppState,
@@ -199,68 +200,75 @@ class DataContainer extends React.Component<Props, State> {
     const { locationErrorReason, stations, trips, advisories } = this.props;
     log(locationErrorReason!);
     return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: colors.layer0,
-          paddingTop: Platform.select({ android: 0, ios: 40 }),
-        }}
-      >
-        {locationErrorReason ? (
-          <LocationError errorReason={locationErrorReason} />
-        ) : (
-          <React.Fragment>
-            <LastUpdatedTime
-              manualRefreshing={
-                this.props.refreshingStations || this.state.fakeRefreshing
-              }
-            />
-            <ScrollView
-              refreshControl={
-                <RefreshControl
-                  refreshing={
+      <SafeAreaConsumer>
+        {insets => (
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: colors.layer0,
+              paddingTop: Platform.select({ android: 0, ios: insets!.top }),
+            }}
+          >
+            {locationErrorReason ? (
+              <LocationError errorReason={locationErrorReason} />
+            ) : (
+              <React.Fragment>
+                <LastUpdatedTime
+                  manualRefreshing={
                     this.props.refreshingStations || this.state.fakeRefreshing
                   }
-                  onRefresh={this.refreshStations}
-                  tintColor="#E6E6E6"
-                  style={{ paddingTop: 10 }}
                 />
-              }
-            >
-              <Advisories advisories={advisories} />
-              {stations &&
-                stations
-                  .filter(s => s.abbr !== this.props.selectedDestinationCode)
-                  .sort((a, b) => {
-                    if (
-                      a.walkingDirections.distance &&
-                      b.walkingDirections.distance
-                    ) {
-                      return (
-                        a.walkingDirections!.distance! -
-                        b.walkingDirections!.distance!
-                      );
-                    }
-                    return 0;
-                  })
-                  .map(s => {
-                    const selectedTrip =
-                      trips && trips.find(l => l.code === s.abbr);
-                    return (
-                      <StationView
-                        key={s.abbr}
-                        station={s}
-                        selectedTrip={selectedTrip}
-                      />
-                    );
-                  })}
-              {__DEV__ && <Text style={genericText}>Debug</Text>}
-            </ScrollView>
-            <DestinationSelector />
-          </React.Fragment>
+                <ScrollView
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={
+                        this.props.refreshingStations ||
+                        this.state.fakeRefreshing
+                      }
+                      onRefresh={this.refreshStations}
+                      tintColor="#E6E6E6"
+                      style={{ paddingTop: 10 }}
+                    />
+                  }
+                >
+                  <Advisories advisories={advisories} />
+                  {stations &&
+                    stations
+                      .filter(
+                        s => s.abbr !== this.props.selectedDestinationCode,
+                      )
+                      .sort((a, b) => {
+                        if (
+                          a.walkingDirections.distance &&
+                          b.walkingDirections.distance
+                        ) {
+                          return (
+                            a.walkingDirections!.distance! -
+                            b.walkingDirections!.distance!
+                          );
+                        }
+                        return 0;
+                      })
+                      .map(s => {
+                        const selectedTrip =
+                          trips && trips.find(l => l.code === s.abbr);
+                        return (
+                          <StationView
+                            key={s.abbr}
+                            station={s}
+                            selectedTrip={selectedTrip}
+                          />
+                        );
+                      })}
+                  {__DEV__ && <Text style={genericText}>Debug</Text>}
+                </ScrollView>
+                <DestinationSelector />
+              </React.Fragment>
+            )}
+            <ReviewPrompt />
+          </View>
         )}
-        <ReviewPrompt />
-      </View>
+      </SafeAreaConsumer>
     );
   }
 }
@@ -314,7 +322,4 @@ const mapDispatchToProps = (dispatch: any) =>
 //     }
 //   };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DataContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(DataContainer);
