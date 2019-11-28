@@ -120,25 +120,33 @@ export default class StationView extends React.Component<Props> {
     );
     return (
       <View style={styles.station}>
-        <StationName station={s} distance={distance} />
+        <StationName station={s} />
         <View style={styles.stationMetadataContainer}>
-          <Text style={styles.stationMetadata}>
-            Walk
-            <Text style={styles.walk}>
-              {' '}
-              {typeof time === 'number' ? time || 1 : '...'} min
+          <View style={styles.runWalkContainer}>
+            <Text style={styles.stationMetadata}>
+              Walk
+              <Text style={styles.walk}>
+                {' '}
+                {typeof time === 'number' ? time || 1 : '...'} min
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.stationMetadata}>
-            Run
-            <Text style={styles.run}>
-              {' '}
-              {typeof distance === 'number'
-                ? getRunningTime(distance)
-                : '...'}{' '}
-              min
+            <Text style={styles.stationMetadata}>
+              Run
+              <Text style={styles.run}>
+                {' '}
+                {typeof distance === 'number'
+                  ? getRunningTime(distance)
+                  : '...'}{' '}
+                min
+              </Text>
             </Text>
-          </Text>
+          </View>
+          <View style={[styles.stationDistance]}>
+            <Text style={styles.stationDistanceText} numberOfLines={1}>
+              {typeof distance === 'number' ? distance.toLocaleString() : '...'}{' '}
+              meters
+            </Text>
+          </View>
         </View>
         {!s.lines.length && this.renderNoDepartures()}
         {!!north.length && (

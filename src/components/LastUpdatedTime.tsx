@@ -78,7 +78,6 @@ class LastUpdatedTime extends React.Component<Props, State> {
           styles.alignRight,
           {
             height: 18,
-            marginBottom: 4,
             marginRight: 10,
           },
         ]}

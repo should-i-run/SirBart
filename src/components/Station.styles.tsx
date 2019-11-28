@@ -32,13 +32,18 @@ export default StyleSheet.create({
     fontSize: 14,
     marginRight: 15,
     color: colors.lightText,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   stationMetadataContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
     paddingLeft: 10,
-    marginTop: 6,
+    marginBottom: 10,
+  },
+  runWalkContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   departureTime: {
     ...genericText,
@@ -59,5 +64,15 @@ export default StyleSheet.create({
   },
   missed: {
     color: '#999',
+  },
+  stationDistance: {
+    maxWidth: 120,
+  },
+  stationDistanceText: {
+    ...genericText,
+    color: colors.lightText,
+    fontSize: 20,
+    textAlign: 'right',
+    lineHeight: 26,
   },
 });
