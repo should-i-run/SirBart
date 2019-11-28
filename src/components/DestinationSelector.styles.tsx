@@ -1,11 +1,9 @@
-import { Platform, ViewStyle, TextStyle } from 'react-native';
+import { ViewStyle, TextStyle } from 'react-native';
 
 import { genericText, colors } from '../styles';
 
 const styles: { [k: string]: ViewStyle | TextStyle } = {
   wrapper: {
-    ...(Platform.OS === 'ios' ? { zIndex: 100 } : {}),
-    justifyContent: 'flex-start',
     backgroundColor: colors.layer1,
     shadowColor: colors.shadow,
     shadowRadius: 10,
@@ -32,8 +30,6 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
   },
   destToken: {
     height: 30,
-    width: 60,
-    borderRadius: 60,
     marginBottom: 6,
     alignItems: 'center',
     justifyContent: 'center',

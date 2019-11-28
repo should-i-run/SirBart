@@ -76,7 +76,7 @@ type State = {
 
 const PICKER_HEIGHT = 230;
 const SELECTOR_HEIGHT = 70;
-const SELECTED_HEIGHT = 70;
+const SELECTED_HEIGHT = 54;
 
 class DestinationSelector extends React.Component<Props, State> {
   state = { adding: false, code: 'EMBR', addingLabel: null };
@@ -229,8 +229,6 @@ class DestinationSelector extends React.Component<Props, State> {
     );
   }
 
-  // TODO
-  // If it's home/work, allow to choose a new station
   renderSelected() {
     const { selectedDestinationCode, trips, savedDestinations } = this.props;
     const matchedSavedLabel =
@@ -239,29 +237,62 @@ class DestinationSelector extends React.Component<Props, State> {
         : selectedDestinationCode === savedDestinations.work
         ? 'work'
         : undefined;
+    // TODO extract this out, and icons
     const contents = matchedSavedLabel === 'work' ? 'briefcase' : 'home';
     return (
-      <View style={[styles.leftRight]}>
-        <View style={[styles.leftRight, { flex: 1 }]}>
-          <Text
-            numberOfLines={1}
-            style={styles.label}
-            key={selectedDestinationCode}
-          >
-            {matchedSavedLabel && (
-              <Icon name={contents} size={24} color={colors.lightText} />
-            )}{' '}
-            Showing trains to
-            {` ${stationNames[selectedDestinationCode!]}`}
-          </Text>
-        </View>
-        {!trips && <ActivityIndicator style={{ marginRight: 10 }} />}
+      <View>
         <TouchableOpacity
-          style={[{ marginRight: 0, marginLeft: 5 }]}
+          style={[
+            {
+              position: 'absolute',
+              right: -5,
+              top: -5,
+              zIndex: 1, // Allows it to receive touch events first
+            },
+          ]}
           onPress={() => this.select(null)}
         >
           <Icon name="times-circle" size={24} color={colors.lightText} />
         </TouchableOpacity>
+        <View
+          style={[
+            {
+              alignItems: 'center',
+              flexDirection: 'row',
+            },
+          ]}
+        >
+          {matchedSavedLabel && (
+            <Icon name={contents} size={40} color={colors.lightText} />
+          )}
+          <View style={{ marginLeft: 10 }}>
+            {/* TODO truncate */}
+            <Text
+              numberOfLines={1}
+              style={styles.label}
+              key={selectedDestinationCode}
+            >
+              Going to
+              {` ${stationNames[selectedDestinationCode!]}`}
+            </Text>
+            {matchedSavedLabel && (
+              <TouchableOpacity
+                onPress={() =>
+                  this.setState({
+                    adding: true,
+                    addingLabel: matchedSavedLabel,
+                  })
+                }
+              >
+                <Text numberOfLines={1} style={styles.destTokenLabel}>
+                  Set {matchedSavedLabel} station
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+        {/* TODO spinner placement */}
+        {!trips && <ActivityIndicator style={{ marginRight: 10 }} />}
       </View>
     );
   }
