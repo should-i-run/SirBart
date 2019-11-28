@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Text, View, Linking, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  Linking,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 
 import styles from './Advisories.styles';
 import tracker from '../native/analytics';
@@ -36,7 +42,7 @@ export default class StationView extends React.Component<Props, State> {
       return null;
     }
     return (
-      <TouchableOpacity
+      <TouchableWithoutFeedback
         style={styles.container}
         onPress={() => this.setState({ expanded: !expanded })}
       >
@@ -77,7 +83,7 @@ export default class StationView extends React.Component<Props, State> {
             </TouchableOpacity>
           )}
         </View>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     );
   }
 }
