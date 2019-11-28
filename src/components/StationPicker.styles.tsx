@@ -9,8 +9,6 @@ export default StyleSheet.create({
   },
   picker: {
     width: 350,
-    height: Platform.select({ ios: pickerHeight, android: 30 }),
-    elevation: 5,
     ...(Platform.OS === 'android' ? { color: '#FFF' } : {}),
   },
 });

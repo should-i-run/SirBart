@@ -227,7 +227,6 @@ class DataContainer extends React.Component<Props, State> {
                       }
                       onRefresh={this.refreshStations}
                       tintColor="#E6E6E6"
-                      style={{ paddingTop: 10 }}
                     />
                   }
                 >
