@@ -30,9 +30,8 @@ export default StyleSheet.create({
   stationMetadata: {
     ...genericText,
     fontSize: 14,
-    marginRight: 15,
+    marginLeft: 15,
     color: colors.lightText,
-    // marginBottom: 10,
   },
   stationMetadataContainer: {
     flexDirection: 'row',
@@ -44,6 +43,7 @@ export default StyleSheet.create({
   runWalkContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    marginRight: 10,
   },
   departureTime: {
     ...genericText,

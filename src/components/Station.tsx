@@ -122,29 +122,29 @@ export default class StationView extends React.Component<Props> {
       <View style={styles.station}>
         <StationName station={s} />
         <View style={styles.stationMetadataContainer}>
+          <View style={[styles.stationDistance]}>
+            <Text style={styles.stationDistanceText} numberOfLines={1}>
+              {typeof distance === 'number' ? distance.toLocaleString() : '...'}{' '}
+              meters
+            </Text>
+          </View>
           <View style={styles.runWalkContainer}>
             <Text style={styles.stationMetadata}>
               Walk
               <Text style={styles.walk}>
-                {' '}
+                {'  '}
                 {typeof time === 'number' ? time || 1 : '...'} min
               </Text>
             </Text>
             <Text style={styles.stationMetadata}>
               Run
               <Text style={styles.run}>
-                {' '}
+                {'  '}
                 {typeof distance === 'number'
                   ? getRunningTime(distance)
                   : '...'}{' '}
                 min
               </Text>
-            </Text>
-          </View>
-          <View style={[styles.stationDistance]}>
-            <Text style={styles.stationDistanceText} numberOfLines={1}>
-              {typeof distance === 'number' ? distance.toLocaleString() : '...'}{' '}
-              meters
             </Text>
           </View>
         </View>

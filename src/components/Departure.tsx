@@ -17,20 +17,6 @@ type Props = {
 };
 
 class Departure extends React.Component<Props> {
-  // renderArrive = (trip: TripForLine, min: number) => {
-  //   const now = new Date().getTime();
-  //   const minutesToAdd = (min + parseInt(trip.timeEstimate, 10)) * 1000 * 60;
-  //   const time = new Date(now + minutesToAdd);
-  //   return (
-  //     <View style={styles.arriveInfo}>
-  //       <Text style={[styles.genericText]}>Takes {trip.timeEstimate} minutes</Text>
-  //       <Text style={[styles.genericText]}>Arrives {formatAMPM(time)}</Text>
-  //       {trip.transferStation && (
-  //         <Text style={[styles.genericText]}>Transfer at {stationNames[trip.transferStation]}</Text>
-  //       )}
-  //     </View>
-  //   );
-  // };
   renderEstimateArrive = (trip: TripForLine, min: number) => {
     const now = new Date().getTime();
     const minutesToAdd =
@@ -65,28 +51,14 @@ class Departure extends React.Component<Props> {
       if (isFirstWalkable) {
         labelStyle = styles.best;
       } else if (isRunable) {
-        // labelStyle = styles.run;
         labelStyle = styles.walk as { color: string };
       } else if (isAfterFirstWalkable) {
         labelStyle = styles.walk as { color: string };
       }
     }
-    //
-    // function getStatus() {
-    //   if (isMissed) {
-    //     return 'missed';
-    //   } else if (isRunable) {
-    //     return 'run';
-    //   } else if (isFirstWalkable || isAfterFirstWalkable) {
-    //     return 'walk';
-    //   }
-    //   return '';
-    // }
 
     return (
-      <View
-        style={[styles.departure, styles.row, { alignItems: 'flex-start' }]}
-      >
+      <View style={[styles.departure, styles.row]}>
         <Text style={[styles.departureTime, labelStyle]}>
           {estimate.minutes}
         </Text>
@@ -95,20 +67,12 @@ class Departure extends React.Component<Props> {
             style={[
               styles.lineName,
               !isMissed && { color: colors.genericText },
-              // (isAfterFirstWalkable || isRunable) && { color: colors.genericText },
-              // isFirstWalkable && styles.best,
             ]}
           >
             {line.destination}
           </Text>
           <View style={styles.row}>
-            {/* <Text style={[styles.metadataText]}>{getStatus()}</Text> */}
             <Text style={[styles.metadataText]}>{estimate.length} cars</Text>
-            {/* {tripForLine && (
-              <Text key="t" style={[styles.metadataText]}>
-                Takes {tripForLine.timeEstimate} minutes
-              </Text>
-            )} */}
             {tripForLine &&
               this.renderEstimateArrive(tripForLine, estimate.minutes)}
           </View>
