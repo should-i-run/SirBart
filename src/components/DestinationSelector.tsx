@@ -261,7 +261,7 @@ class DestinationSelector extends React.Component<Props, State> {
             {
               position: 'absolute',
               right: -5,
-              top: 0,
+              top: -5,
               zIndex: 1, // Allows it to receive touch events first
             },
           ]}
@@ -306,7 +306,9 @@ class DestinationSelector extends React.Component<Props, State> {
               </TouchableOpacity>
             )}
           </View>
-          {!trips && <ActivityIndicator style={{ marginHorizontal: 10 }} />}
+          {!trips && (
+            <ActivityIndicator size="large" style={{ marginHorizontal: 10 }} />
+          )}
           <View style={{ width: 20 }}></View>
         </View>
       </View>

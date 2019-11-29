@@ -18,7 +18,11 @@ import StationView from './Station';
 import DestinationSelector from './DestinationSelector';
 import LocationError from './LocationError';
 import ReviewPrompt from './ReviewPrompt';
-import { startLocation, LocationErrorReason, stopLocation } from '../actions/locationActions';
+import {
+  startLocation,
+  LocationErrorReason,
+  stopLocation,
+} from '../actions/locationActions';
 import {
   setupDataFetching,
   stopFetchingTimes,
@@ -26,7 +30,10 @@ import {
   fetchStations,
   fetchStationsWithIndicator,
 } from '../actions/dataActions';
-import { State as ReducerState } from '../reducers/appStore';
+import {
+  State as ReducerState,
+  SelectedDestination,
+} from '../reducers/appStore';
 import { log } from '../utils/sumo';
 
 import {
@@ -60,7 +67,7 @@ type Props = {
   fetchStationsWithIndicator: () => void;
   fetchStations: () => void;
   loadSavedDestinations: Function;
-  selectedDestinationCode?: string;
+  selectedDestination?: SelectedDestination;
   selectedDestinationAt?: Date;
   selectDestination: Function;
   savedDestinations: SavedDestinations;
@@ -92,7 +99,7 @@ class DataContainer extends React.Component<Props, State> {
     const {
       stations,
       savedDestinations,
-      selectedDestinationCode,
+      selectedDestination,
       location,
       selectedDestinationAt,
     } = this.props;
@@ -132,7 +139,7 @@ class DataContainer extends React.Component<Props, State> {
       const inCommon = previousEligibleDestinations.filter(d =>
         currentEligibleDestinations.includes(d),
       );
-      if (!selectedDestinationCode) {
+      if (!selectedDestination) {
         if (inCommon.length === 0 && currentEligibleDestinations.length === 1) {
           tracker.logEvent('auto_select_destination');
           const stationCodes = stations.map((s: Station) => s.abbr);
@@ -151,15 +158,19 @@ class DataContainer extends React.Component<Props, State> {
     }
 
     // when a destination is selected, and the stations change, get directions for the new station
-    if (prevStations && stations && selectedDestinationCode) {
+    if (prevStations && stations && selectedDestination) {
       const stationsHaveChanged =
         !prevStations.every(s => stations.some(n => n.abbr === s.abbr)) &&
         prevStations.length === stations.length;
       if (stationsHaveChanged) {
         const stationCodes = stations.map((s: Station) => s.abbr);
-        if (!stationCodes.includes(selectedDestinationCode)) {
+        if (!stationCodes.includes(selectedDestination.code)) {
           tracker.logEvent('select_destination');
-          this.props.selectDestination(selectedDestinationCode, stationCodes);
+          this.props.selectDestination(
+            selectedDestination.code,
+            stationCodes,
+            selectedDestination.label,
+          );
         }
       }
     }
@@ -179,7 +190,10 @@ class DataContainer extends React.Component<Props, State> {
       tracker.logEvent('refresh_on_foreground');
       this.props.setupDataFetching();
       this.props.startLocation();
-    } else if (this.appState === 'active' && nextAppState.match(/inactive|background/)) {
+    } else if (
+      this.appState === 'active' &&
+      nextAppState.match(/inactive|background/)
+    ) {
       // Shut down location and data fetching
       stopFetchingTimes();
       stopLocation();
@@ -278,7 +292,7 @@ const mapStateToProps = (state: ReducerState) => ({
   refreshingStations: state.refreshingStations,
   trips: state.trips,
   advisories: state.advisories,
-  selectedDestinationCode: state.selectedDestinationCode,
+  selectedDestination: state.selectedDestination,
   selectedDestinationAt: state.selectedDestinationAt,
   savedDestinations: state.savedDestinations,
   locationErrorReason: state.locationErrorReason,
