@@ -32,23 +32,46 @@ import { stationNames } from '../utils/stations';
 
 import styles from './DestinationSelector.styles';
 
+function iconNameForLabel(label: 'home' | 'work' | 'somewhere') {
+  if (label === 'work') return 'briefcase';
+  if (label === 'home') return 'home';
+  return 'random';
+}
+
+function LabelIcon({
+  label,
+  addToSize,
+}: {
+  label: 'home' | 'work' | 'somewhere';
+  addToSize?: number;
+}) {
+  const size = label === 'home' ? 28 : 24;
+  return (
+    <Icon
+      name={iconNameForLabel(label)}
+      size={size + (addToSize || 0)}
+      color={colors.lightText}
+    />
+  );
+}
+
 type TokenProps = {
+  destinationLabel: 'home' | 'work' | 'somewhere';
   label: string;
-  icon: string;
   onPress: () => void;
   disabled: boolean;
 };
 
-function Token({ icon, label, onPress, disabled }: TokenProps) {
+function Token({ destinationLabel, label, onPress, disabled }: TokenProps) {
   return (
     <TouchableOpacity
-      key={icon}
+      key={destinationLabel}
       style={[styles.destTokenContainer]}
       disabled={disabled}
       onPress={onPress}
     >
       <View style={[styles.destToken, disabled && styles.disabled]}>
-        <Icon name={icon} size={24} color={colors.lightText} />
+        <LabelIcon label={destinationLabel} addToSize={8} />
       </View>
       <Text
         numberOfLines={1}
@@ -156,14 +179,12 @@ class DestinationSelector extends React.Component<Props, State> {
 
   renderSaveableDest = (label: 'home' | 'work', code?: string) => {
     const { stations } = this.props;
-    // TODO Extract icon logic into component
-    const contents = label === 'work' ? 'briefcase' : 'home';
     if (!code) {
       return (
         <PulseView>
           <Token
             label={`Set ${label}`}
-            icon={contents}
+            destinationLabel={label}
             disabled={false}
             onPress={() => this.setState({ adding: true, addingLabel: label })}
           />
@@ -176,7 +197,7 @@ class DestinationSelector extends React.Component<Props, State> {
     return (
       <Token
         label={stationNames[code]}
-        icon={contents}
+        destinationLabel={label}
         disabled={disabled}
         onPress={() => this.select(code, label)}
       />
@@ -191,7 +212,7 @@ class DestinationSelector extends React.Component<Props, State> {
         {this.renderSaveableDest('work', savedDestinations.work)}
         <Token
           label="Somewhere else"
-          icon="random"
+          destinationLabel="somewhere"
           disabled={false}
           onPress={() => this.setState({ adding: true })}
         />
@@ -233,10 +254,8 @@ class DestinationSelector extends React.Component<Props, State> {
   }
 
   renderSelected() {
-    const { selectedDestination, trips, savedDestinations } = this.props;
+    const { selectedDestination, trips } = this.props;
 
-    // TODO extract this out, and icons
-    const contents = selectedDestination?.label === 'work' ? 'briefcase' : 'home';
     return (
       <View>
         <TouchableOpacity
@@ -244,7 +263,7 @@ class DestinationSelector extends React.Component<Props, State> {
             {
               position: 'absolute',
               right: -5,
-              top: -5,
+              top: 0,
               zIndex: 1, // Allows it to receive touch events first
             },
           ]}
@@ -260,11 +279,11 @@ class DestinationSelector extends React.Component<Props, State> {
             },
           ]}
         >
-          {selectedDestination?.label && (
-            <Icon name={contents} size={40} color={colors.lightText} />
-          )}
-          <View style={{ marginLeft: 10 }}>
-            {/* TODO truncate */}
+          <LabelIcon
+            label={selectedDestination?.label || 'somewhere'}
+            addToSize={8}
+          />
+          <View style={{ marginLeft: 10, flex: 1 }}>
             <Text
               numberOfLines={1}
               style={styles.label}
@@ -273,24 +292,25 @@ class DestinationSelector extends React.Component<Props, State> {
               Going to
               {` ${stationNames[selectedDestination?.code!]}`}
             </Text>
-            {selectedDestination?.code && (
+            {selectedDestination?.label && (
               <TouchableOpacity
-                onPress={() =>
+                onPress={() => {
+                  tracker.logEvent('change_destination');
                   this.setState({
                     adding: true,
                     addingLabel: selectedDestination.label,
-                  })
-                }
+                  });
+                }}
               >
-                <Text numberOfLines={1} style={styles.destTokenLabel}>
-                  Set {selectedDestination.label} station
+                <Text numberOfLines={1} style={[styles.destTokenLabel]}>
+                  Choose new {selectedDestination.label} station
                 </Text>
               </TouchableOpacity>
             )}
           </View>
+          {!trips && <ActivityIndicator style={{ marginHorizontal: 10 }} />}
+          <View style={{ width: 20 }}></View>
         </View>
-        {/* TODO spinner placement */}
-        {!trips && <ActivityIndicator style={{ marginRight: 10 }} />}
       </View>
     );
   }
