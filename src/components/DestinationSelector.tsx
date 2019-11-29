@@ -13,7 +13,10 @@ import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeArea, EdgeInsets } from 'react-native-safe-area-context';
 
-import { State as ReducerState } from '../reducers/appStore';
+import {
+  State as ReducerState,
+  SelectedDestination,
+} from '../reducers/appStore';
 import tracker from '../native/analytics';
 
 import { colors } from '../styles';
@@ -59,7 +62,7 @@ function Token({ icon, label, onPress, disabled }: TokenProps) {
 
 type Props = {
   savedDestinations: SavedDestinations;
-  selectedDestinationCode?: string;
+  selectedDestination?: SelectedDestination;
   stations?: Station[];
   trips?: Trip[];
   add: Function;
@@ -96,7 +99,7 @@ class DestinationSelector extends React.Component<Props, State> {
     const { bottom } = this.props.inset;
     if (this.state.adding) {
       this.animateToHeight(PICKER_HEIGHT + bottom);
-    } else if (this.props.selectedDestinationCode) {
+    } else if (this.props.selectedDestination) {
       this.animateToHeight(SELECTED_HEIGHT + bottom);
     } else {
       this.animateToHeight(SELECTOR_HEIGHT + bottom);
@@ -139,7 +142,7 @@ class DestinationSelector extends React.Component<Props, State> {
     );
   };
 
-  select = (code?: string | null) => {
+  select = (code?: string | null, label?: 'work' | 'home') => {
     if (this.props.stations) {
       const stationCodes = this.props.stations.map((s: Station) => s.abbr);
       if (code) {
@@ -147,11 +150,11 @@ class DestinationSelector extends React.Component<Props, State> {
       } else {
         tracker.logEvent('clear_selected_destination');
       }
-      this.props.select(code, stationCodes);
+      this.props.select(code, stationCodes, label);
     }
   };
 
-  renderSaveableDest = (label: string, code?: string) => {
+  renderSaveableDest = (label: 'home' | 'work', code?: string) => {
     const { stations } = this.props;
     // TODO Extract icon logic into component
     const contents = label === 'work' ? 'briefcase' : 'home';
@@ -175,7 +178,7 @@ class DestinationSelector extends React.Component<Props, State> {
         label={stationNames[code]}
         icon={contents}
         disabled={disabled}
-        onPress={() => this.select(code)}
+        onPress={() => this.select(code, label)}
       />
     );
   };
@@ -230,15 +233,10 @@ class DestinationSelector extends React.Component<Props, State> {
   }
 
   renderSelected() {
-    const { selectedDestinationCode, trips, savedDestinations } = this.props;
-    const matchedSavedLabel =
-      selectedDestinationCode === savedDestinations.home
-        ? 'home'
-        : selectedDestinationCode === savedDestinations.work
-        ? 'work'
-        : undefined;
+    const { selectedDestination, trips, savedDestinations } = this.props;
+
     // TODO extract this out, and icons
-    const contents = matchedSavedLabel === 'work' ? 'briefcase' : 'home';
+    const contents = selectedDestination?.label === 'work' ? 'briefcase' : 'home';
     return (
       <View>
         <TouchableOpacity
@@ -262,7 +260,7 @@ class DestinationSelector extends React.Component<Props, State> {
             },
           ]}
         >
-          {matchedSavedLabel && (
+          {selectedDestination?.label && (
             <Icon name={contents} size={40} color={colors.lightText} />
           )}
           <View style={{ marginLeft: 10 }}>
@@ -270,22 +268,22 @@ class DestinationSelector extends React.Component<Props, State> {
             <Text
               numberOfLines={1}
               style={styles.label}
-              key={selectedDestinationCode}
+              key={selectedDestination?.code}
             >
               Going to
-              {` ${stationNames[selectedDestinationCode!]}`}
+              {` ${stationNames[selectedDestination?.code!]}`}
             </Text>
-            {matchedSavedLabel && (
+            {selectedDestination?.code && (
               <TouchableOpacity
                 onPress={() =>
                   this.setState({
                     adding: true,
-                    addingLabel: matchedSavedLabel,
+                    addingLabel: selectedDestination.label,
                   })
                 }
               >
                 <Text numberOfLines={1} style={styles.destTokenLabel}>
-                  Set {matchedSavedLabel} station
+                  Set {selectedDestination.label} station
                 </Text>
               </TouchableOpacity>
             )}
@@ -298,11 +296,11 @@ class DestinationSelector extends React.Component<Props, State> {
   }
 
   render() {
-    const { selectedDestinationCode } = this.props;
+    const { selectedDestination } = this.props;
     let body: JSX.Element;
     if (this.state.adding) {
       body = this.renderPicker();
-    } else if (selectedDestinationCode) {
+    } else if (selectedDestination) {
       body = this.renderSelected();
     } else {
       body = this.renderSelector();
@@ -321,7 +319,7 @@ function DestinationSelectorWrapper(props: Omit<Props, 'inset'>) {
 
 const mapStateToProps = (state: ReducerState) => ({
   savedDestinations: state.savedDestinations,
-  selectedDestinationCode: state.selectedDestinationCode,
+  selectedDestination: state.selectedDestination,
   stations: state.stations,
   trips: state.trips,
 });

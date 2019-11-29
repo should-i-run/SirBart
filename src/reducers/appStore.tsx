@@ -18,6 +18,10 @@ export enum NetworkStatus {
   Success,
 }
 
+export type SelectedDestination = {
+  code: string; label?: 'home' | 'work'
+};
+
 export type Advisory = {
   '@id': string;
   station: string;
@@ -76,7 +80,7 @@ export type State = {
   refreshingStations: boolean;
   selectorShown: boolean;
   selectionKey?: string;
-  selectedDestinationCode?: string;
+  selectedDestination?: SelectedDestination;
   selectedDestinationAt?: Date;
   savedDestinations: SavedDestinations;
   trips?: Trip[];
@@ -93,7 +97,7 @@ const initialState: State = {
   refreshingStations: false,
   selectorShown: false,
   selectionKey: undefined,
-  selectedDestinationCode: undefined,
+  selectedDestination: undefined,
   selectedDestinationAt: undefined,
   savedDestinations: {},
   trips: undefined,
@@ -197,16 +201,13 @@ export default function(
         .map(s => ({
           ...s,
           departures: s.lines
-            .reduce(
-              (acc, l) => {
-                const estimates = l.estimates.map(e => ({
-                  estimate: e,
-                  line: l,
-                }));
-                return acc.concat(estimates);
-              },
-              [] as Departure[],
-            )
+            .reduce((acc, l) => {
+              const estimates = l.estimates.map(e => ({
+                estimate: e,
+                line: l,
+              }));
+              return acc.concat(estimates);
+            }, [] as Departure[])
             .sort((a: Departure, b: Departure) => {
               if (a.estimate.minutes <= b.estimate.minutes) {
                 return -1;
@@ -215,11 +216,11 @@ export default function(
             }),
         }));
 
-      const selectedDestinationCode =
-        newStations.some(s => s.abbr === state.selectedDestinationCode) &&
+      const selectedDestination =
+        newStations.some(s => s.abbr === state.selectedDestination?.code) &&
         newStations.length === 1
           ? undefined
-          : state.selectedDestinationCode;
+          : state.selectedDestination;
       return {
         ...state,
         stations: newStations,
@@ -227,7 +228,7 @@ export default function(
         refreshingStations: false,
         selectorShown: false,
         selectionKey: undefined,
-        selectedDestinationCode,
+        selectedDestination,
         timesLastUpdatedAt: new Date(),
       };
     }
@@ -293,7 +294,7 @@ export default function(
     case 'DEST_SELECT': {
       return {
         ...state,
-        selectedDestinationCode: action.code,
+        selectedDestination: !action.code ? undefined : {code: action.code, label: action.label },
         trips: undefined,
         selectedDestinationAt: action.code ? new Date() : undefined,
       };

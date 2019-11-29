@@ -52,10 +52,14 @@ function loadTrips(trips: any[][]) {
   };
 }
 
-export function selectDestinationAction(code?: string) {
+export function selectDestinationAction(
+  code?: string,
+  label?: 'work' | 'home',
+) {
   return {
     type: 'DEST_SELECT' as 'DEST_SELECT',
     code,
+    label,
   };
 }
 
@@ -83,13 +87,17 @@ function fetchTripsToDestination(
     });
 }
 
-export function selectDestination(endCode?: string, stationCodes?: string[]) {
+export function selectDestination(
+  endCode?: string,
+  stationCodes?: string[],
+  label?: 'work' | 'home',
+) {
   if (endCode && stationCodes) {
     const trips = stationCodes
       .filter(c => c !== endCode)
       .map(c => ({ startCode: c, endCode }));
     return (dispatch: Dispatch<any>) => {
-      dispatch(selectDestinationAction(endCode));
+      dispatch(selectDestinationAction(endCode, label));
       fetchTripsToDestination(trips, dispatch);
     };
   }
