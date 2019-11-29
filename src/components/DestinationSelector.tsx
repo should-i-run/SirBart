@@ -97,7 +97,7 @@ type Props = {
 type State = {
   adding: boolean;
   code: string;
-  addingLabel?: string | null;
+  addingLabel?: 'home' | 'work' | null;
 };
 
 const PICKER_HEIGHT = 230;
@@ -118,20 +118,18 @@ class DestinationSelector extends React.Component<Props, State> {
     } else if (prevState.adding && !this.state.adding) {
       tracker.logEvent('destination_picker_close');
     }
-    // TODO this is crap
-    const { bottom } = this.props.inset;
     if (this.state.adding) {
-      this.animateToHeight(PICKER_HEIGHT + bottom);
+      this.animateToHeight(PICKER_HEIGHT);
     } else if (this.props.selectedDestination) {
-      this.animateToHeight(SELECTED_HEIGHT + bottom);
+      this.animateToHeight(SELECTED_HEIGHT);
     } else {
-      this.animateToHeight(SELECTOR_HEIGHT + bottom);
+      this.animateToHeight(SELECTOR_HEIGHT);
     }
   }
 
   animateToHeight(height: number) {
     Animated.timing(this.height, {
-      toValue: height,
+      toValue: height + this.props.inset.bottom,
       duration: 400,
       easing: Easing.elastic(1),
     }).start();
@@ -232,7 +230,7 @@ class DestinationSelector extends React.Component<Props, State> {
           <TouchableOpacity
             onPress={() => {
               this.save(this.state.addingLabel, this.state.code);
-              this.select(this.state.code);
+              this.select(this.state.code, this.state.addingLabel!);
               this.setState({
                 adding: false,
                 code: 'EMBR',
