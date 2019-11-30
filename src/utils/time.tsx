@@ -12,7 +12,6 @@ export function formatAMPM(date: Date): string {
 
 export function differenceMinutesSeconds(then: Date, now: Date): string {
   var seconds = Math.floor((now.getTime() - then.getTime()) / 1000);
-  console.log(seconds);
   var minutes = Math.floor(seconds / 60);
   return `${minutes}:${seconds}`;
 }

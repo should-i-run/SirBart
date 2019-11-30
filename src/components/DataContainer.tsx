@@ -186,7 +186,6 @@ class DataContainer extends React.Component<Props, State> {
       this.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      console.log('App has come to the foreground!');
       tracker.logEvent('refresh_on_foreground');
       this.props.setupDataFetching();
       this.props.startLocation();
@@ -248,7 +247,7 @@ class DataContainer extends React.Component<Props, State> {
                   {stations &&
                     stations
                       .filter(
-                        s => s.abbr !== this.props.selectedDestinationCode,
+                        s => s.abbr !== this.props.selectedDestination?.code,
                       )
                       .sort((a, b) => {
                         if (

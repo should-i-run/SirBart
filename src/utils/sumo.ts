@@ -3,9 +3,9 @@ const url =
 
 export const log = async (stuff: string) => {
   // console.log(stuff);
-  try {
-    await fetch(url, { body: stuff, method: 'POST' });
-  } catch (e) {
-    console.log(e);
-  }
+  // try {
+  //   await fetch(url, { body: stuff, method: 'POST' });
+  // } catch (e) {
+  //   console.log(e);
+  // }
 };

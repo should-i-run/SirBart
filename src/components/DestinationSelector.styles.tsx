@@ -42,9 +42,6 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     width: 100,
     alignItems: 'center',
   },
-  disabled: {
-    borderColor: colors.lightText,
-  },
   disabledText: {
     color: colors.disabledText,
   },

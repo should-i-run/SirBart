@@ -7,7 +7,7 @@ export const colors = {
   layer3: '#262D3F',
   shadow: '#000',
   button: '#2C2D44',
-  disabledText: '#999',
+  disabledText: '#888',
   walk: '#6FD57F',
   run: '#FC5B3F',
   lightText: '#AAA',

@@ -41,16 +41,18 @@ function iconNameForLabel(label: 'home' | 'work' | 'somewhere') {
 function LabelIcon({
   label,
   addToSize,
+  disabled,
 }: {
   label: 'home' | 'work' | 'somewhere';
   addToSize?: number;
+  disabled?: boolean;
 }) {
   const size = label === 'home' ? 28 : 24;
   return (
     <Icon
       name={iconNameForLabel(label)}
       size={size + (addToSize || 0)}
-      color={colors.lightText}
+      color={disabled ? colors.disabledText : colors.lightText}
     />
   );
 }
@@ -70,8 +72,8 @@ function Token({ destinationLabel, label, onPress, disabled }: TokenProps) {
       disabled={disabled}
       onPress={onPress}
     >
-      <View style={[styles.destToken, disabled && styles.disabled]}>
-        <LabelIcon label={destinationLabel} addToSize={8} />
+      <View style={[styles.destToken]}>
+        <LabelIcon label={destinationLabel} addToSize={8} disabled={disabled} />
       </View>
       <Text
         numberOfLines={1}
