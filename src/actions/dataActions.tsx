@@ -5,7 +5,7 @@ import wrappedFetch, { SKIPPED, STALE } from './wrappedFetch';
 import { throttle } from 'lodash';
 
 export const URL = 'https://bart.rgoldfinger.com/bart';
-let interval: NodeJS.Timer;
+let interval: NodeJS.Timer | undefined;
 
 export type Location = { lat: number; lng: number };
 let location: Location | undefined;
@@ -115,7 +115,8 @@ export function fetchStationsWithIndicator() {
 }
 
 export function stopFetchingTimes() {
-  clearInterval(interval);
+  clearInterval(interval!);
+  interval = undefined;
 }
 
 export function hackilySetLoc(loc?: Location) {
