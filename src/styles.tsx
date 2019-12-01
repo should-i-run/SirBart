@@ -29,3 +29,7 @@ export const genericText: TextStyle = {
   fontSize: 18,
   fontWeight: '200',
 };
+
+export const number: TextStyle = {
+  fontVariant: ['tabular-nums'],
+};

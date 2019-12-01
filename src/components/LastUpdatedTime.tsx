@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import * as React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { State as ReducerState, NetworkStatus } from '../reducers/appStore';
-import { colors, genericText } from '../styles';
+import { colors, genericText, number } from '../styles';
 import { StyleSheet } from 'react-native';
 import { differenceSeconds } from '../utils/time';
 import { URL as stationsURL } from '../actions/dataActions';
@@ -55,11 +55,7 @@ class LastUpdatedTime extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <Text style={[styles.darkText, { marginRight: 4 }]}>Updated</Text>
-        {/*
-        // @ts-ignore Bad Defs */}
-        <Text style={[styles.darkText, { fontVariant: ['tabular-nums'] }]}>
-          {timeDifference}
-        </Text>
+        <Text style={[styles.darkText, number]}>{timeDifference}</Text>
         <Text style={styles.darkText}>s ago</Text>
       </React.Fragment>
     );

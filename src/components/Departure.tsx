@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './Departure.styles';
-import { colors } from '../styles';
+import { colors, number } from '../styles';
 import { formatAMPM } from '../utils/time';
 
 import { Station, Departure as DepartureType } from '../reducers/appStore';
@@ -60,7 +60,7 @@ class Departure extends React.Component<Props> {
 
     return (
       <View style={[styles.departure, styles.row]}>
-        <Text style={[styles.departureTime, labelStyle]}>
+        <Text style={[styles.departureTime, labelStyle, number]}>
           {estimate.minutes}
         </Text>
         <View>

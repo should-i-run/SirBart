@@ -30,7 +30,7 @@ export default StyleSheet.create({
   stationMetadata: {
     ...genericText,
     fontSize: 14,
-    marginLeft: 15,
+    marginLeft: 10,
     color: colors.lightText,
   },
   stationMetadataContainer: {
