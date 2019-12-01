@@ -144,13 +144,17 @@ export default class StationView extends React.Component<Props> {
     const s = this.props.station;
     const { distance, time } = s.walkingDirections;
 
-    const selectedDepartures = selectedTrip
-      ? s.departures.filter(d =>
-          selectedTrip.lines
-            .map(line => line.abbreviation)
-            .includes(d.line.abbreviation),
-        )
-      : s.departures;
+    // XXX bad hack for the Antioch extension. A better version would at least do a direction filter on PCTR
+    // The BART API is reporting that they need to take a sfo train, but the trains are listed as millbrae
+    const isAntiochExtensionStation = s.abbr === 'ANTC' || s.abbr === 'PCTR';
+    const selectedDepartures =
+      selectedTrip && !isAntiochExtensionStation
+        ? s.departures.filter(d =>
+            selectedTrip.lines
+              .map(line => line.abbreviation)
+              .includes(d.line.abbreviation),
+          )
+        : s.departures;
 
     const north = selectedDepartures.filter(
       d => d.estimate.direction === 'North',
