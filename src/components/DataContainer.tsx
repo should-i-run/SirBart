@@ -146,6 +146,10 @@ class DataContainer extends React.Component<Props, State> {
           this.props.selectDestination(
             currentEligibleDestinations[0],
             stationCodes,
+            Object.keys(savedDestinations).find(
+              // @ts-ignore can't index with string
+              k => savedDestinations[k] === currentEligibleDestinations[0],
+            ),
           );
         }
       } else if (selectedDestinationAt && inCommon.length === 0) {
