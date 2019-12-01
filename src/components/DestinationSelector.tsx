@@ -121,6 +121,10 @@ class DestinationSelector extends React.Component<Props, State> {
   componentDidUpdate(_prevProps: Props, prevState: State) {
     if (!prevState.adding && this.state.adding) {
       tracker.logEvent('destination_picker_open');
+      if (!this.props.stations) {
+        // TODO does this actually happen? If so, prevent initial destination setting without stations.
+        tracker.logEvent('error_adding_without_stations');
+      }
     } else if (prevState.adding && !this.state.adding) {
       tracker.logEvent('destination_picker_close');
     }
@@ -209,7 +213,7 @@ class DestinationSelector extends React.Component<Props, State> {
   };
 
   renderSelector() {
-    const { savedDestinations } = this.props;
+    const { savedDestinations, stations } = this.props;
     return (
       <View style={styles.selectorItemsContainer}>
         {this.renderSaveableDest('home', savedDestinations.home)}
@@ -217,7 +221,7 @@ class DestinationSelector extends React.Component<Props, State> {
         <Token
           label="Somewhere else"
           destinationLabel="somewhere"
-          disabled={false}
+          disabled={!stations}
           onPress={() => this.setState({ adding: true })}
         />
       </View>
