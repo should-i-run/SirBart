@@ -72,12 +72,7 @@ export default class StationView extends React.Component<Props, State> {
               style={styles.advisory}
               onPress={this.goToAdvisories}
             >
-              <Text
-                style={[
-                  styles.text,
-                  { textDecorationLine: 'underline', color: colors.lightText },
-                ]}
-              >
+              <Text style={[styles.text, { color: colors.button }]}>
                 Go to Service Advisories
               </Text>
             </TouchableOpacity>

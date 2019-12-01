@@ -8,6 +8,9 @@ export const colors = {
   shadow: '#000',
   // button: '#056c65', // green
   button: '#0a9990', // green, lighter
+  // button: '#565FBF', // nice dark blue
+
+  // button: '#6FD57F', // walk
   // button: '#5badd3', // light blue
   // button: '#607d8b', // grey blue
   // button: '#03a9f4', // another light blue

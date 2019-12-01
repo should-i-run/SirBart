@@ -76,7 +76,7 @@ function Token({ destinationLabel, label, onPress, disabled }: TokenProps) {
         <LabelIcon
           label={destinationLabel}
           addToSize={8}
-          color={disabled ? colors.disabledText : colors.button}
+          color={disabled ? colors.disabledText : colors.lightText}
         />
       </View>
       <Text
