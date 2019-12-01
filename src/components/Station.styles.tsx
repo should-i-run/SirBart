@@ -37,13 +37,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    paddingLeft: 10,
+    paddingLeft: 8,
     marginBottom: 10,
   },
   runWalkContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginRight: 10,
+    marginRight: 8,
   },
   departureTime: {
     ...genericText,

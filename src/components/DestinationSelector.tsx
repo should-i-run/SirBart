@@ -41,18 +41,18 @@ function iconNameForLabel(label: 'home' | 'work' | 'somewhere') {
 function LabelIcon({
   label,
   addToSize,
-  disabled,
+  color = colors.lightText,
 }: {
   label: 'home' | 'work' | 'somewhere';
   addToSize?: number;
-  disabled?: boolean;
+  color?: string;
 }) {
   const size = label === 'home' ? 28 : 24;
   return (
     <Icon
       name={iconNameForLabel(label)}
       size={size + (addToSize || 0)}
-      color={disabled ? colors.disabledText : colors.lightText}
+      color={color}
     />
   );
 }
@@ -73,7 +73,11 @@ function Token({ destinationLabel, label, onPress, disabled }: TokenProps) {
       onPress={onPress}
     >
       <View style={[styles.destToken]}>
-        <LabelIcon label={destinationLabel} addToSize={8} disabled={disabled} />
+        <LabelIcon
+          label={destinationLabel}
+          addToSize={8}
+          color={disabled ? colors.disabledText : colors.button}
+        />
       </View>
       <Text
         numberOfLines={1}
@@ -255,7 +259,6 @@ class DestinationSelector extends React.Component<Props, State> {
 
   renderSelected() {
     const { selectedDestination, trips } = this.props;
-
     return (
       <View>
         <TouchableOpacity
@@ -269,13 +272,14 @@ class DestinationSelector extends React.Component<Props, State> {
           ]}
           onPress={() => this.select(null)}
         >
-          <Icon name="times-circle" size={24} color={colors.lightText} />
+          <Icon name="times-circle" size={30} color={colors.lightText} />
         </TouchableOpacity>
         <View
           style={[
             {
               alignItems: 'center',
               flexDirection: 'row',
+              marginRight: 25,
             },
           ]}
         >
@@ -302,8 +306,11 @@ class DestinationSelector extends React.Component<Props, State> {
                   });
                 }}
               >
-                <Text numberOfLines={1} style={[styles.destTokenLabel]}>
-                  Choose new {selectedDestination.label} station
+                <Text
+                  numberOfLines={1}
+                  style={[styles.destTokenLabel, { color: colors.button }]}
+                >
+                  Choose a new {selectedDestination.label} station
                 </Text>
               </TouchableOpacity>
             )}
@@ -311,7 +318,6 @@ class DestinationSelector extends React.Component<Props, State> {
           {!trips && (
             <ActivityIndicator size="large" style={{ marginHorizontal: 10 }} />
           )}
-          <View style={{ width: 20 }}></View>
         </View>
       </View>
     );

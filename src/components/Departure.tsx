@@ -72,7 +72,10 @@ class Departure extends React.Component<Props> {
             {line.destination}
           </Text>
           <View style={styles.row}>
-            <Text style={[styles.metadataText]}>{estimate.length} cars</Text>
+            <Text style={[styles.metadataText]}>
+              {estimate.length}{' '}
+              {parseInt(estimate.length, 10) > 1 ? 'cars' : 'car'}
+            </Text>
             {tripForLine &&
               this.renderEstimateArrive(tripForLine, estimate.minutes)}
           </View>
