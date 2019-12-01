@@ -25,6 +25,7 @@ class Departure extends React.Component<Props> {
     return (
       <Text key="a" style={[styles.metadataText]}>
         • Arrives {formatAMPM(time)}
+        {trip.transferStation ? ' • Transfer ' : ''}
       </Text>
     );
   };
