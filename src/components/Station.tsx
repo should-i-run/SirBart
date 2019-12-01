@@ -23,6 +23,11 @@ export default class StationView extends React.Component<Props> {
     );
   };
 
+  goToOaklandAirportPage = () => {
+    tracker.logEvent('go_to_oakland_airport');
+    Linking.openURL(`https://www.bart.gov/guide/airport/oak`);
+  };
+
   renderDirection = (departures: Departure[], direction: string) => {
     const { selectedTrip, station } = this.props;
     const firstWalkableIndex = departures.findIndex(d =>
@@ -65,6 +70,35 @@ export default class StationView extends React.Component<Props> {
   };
 
   renderNoDepartures() {
+    const { station } = this.props;
+
+    const renderOaklandAirport = () => {
+      return (
+        <>
+          <Text style={[styles.genericText, { fontSize: 24 }]}>🚝</Text>
+          <View style={{ marginLeft: 10, flex: 1 }}>
+            <Text
+              style={[
+                styles.genericText,
+                {
+                  fontSize: 16,
+                  color: colors.lightText,
+                  fontWeight: '400',
+                  marginBottom: 4,
+                },
+              ]}
+            >
+              No real-time departures avaliable for the Oakland Airport train.
+            </Text>
+            <TouchableOpacity onPress={this.goToOaklandAirportPage}>
+              <Text style={{ color: colors.button, fontSize: 16 }}>
+                Get service hours and frequency
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      );
+    };
     return (
       <View
         style={{
@@ -74,27 +108,33 @@ export default class StationView extends React.Component<Props> {
           alignItems: 'center',
         }}
       >
-        <Text style={[styles.genericText, { fontSize: 24 }]}>😴</Text>
-        <View style={{ marginLeft: 10, flex: 1 }}>
-          <Text
-            style={[
-              styles.genericText,
-              {
-                fontSize: 16,
-                color: colors.lightText,
-                fontWeight: '400',
-                marginBottom: 4,
-              },
-            ]}
-          >
-            No departure times avaliable.
-          </Text>
-          <TouchableOpacity onPress={this.goToSchedule}>
-            <Text style={{ color: '#565FBF', fontSize: 16 }}>
-              Check service status.
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {station.abbr === 'OAKL' ? (
+          renderOaklandAirport()
+        ) : (
+          <>
+            <Text style={[styles.genericText, { fontSize: 24 }]}>😴</Text>
+            <View style={{ marginLeft: 10, flex: 1 }}>
+              <Text
+                style={[
+                  styles.genericText,
+                  {
+                    fontSize: 16,
+                    color: colors.lightText,
+                    fontWeight: '400',
+                    marginBottom: 4,
+                  },
+                ]}
+              >
+                No departure times avaliable.
+              </Text>
+              <TouchableOpacity onPress={this.goToSchedule}>
+                <Text style={{ color: '#565FBF', fontSize: 16 }}>
+                  Check service status.
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
       </View>
     );
   }
