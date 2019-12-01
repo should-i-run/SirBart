@@ -39,7 +39,8 @@ const styles: { [k: string]: ViewStyle | TextStyle } = {
     fontSize: 12,
   },
   destTokenContainer: {
-    width: 100,
+    minWidth: 100,
+    flex: 1,
     alignItems: 'center',
   },
   disabledText: {
