@@ -371,6 +371,7 @@ export default function(
     case 'RESET': {
       return {
         ...initialState,
+        savedDestinations: state.savedDestinations,
       };
     }
     default:

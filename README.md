@@ -26,4 +26,4 @@
 
 Codepush account: https://appcenter.ms/users/rgoldfinger/apps/BART-Check/distribute/code-push/Production
 To see releases: `appcenter codepush deployment list -a rgoldfinger/BART-Check`.
-Build new release for Production: `appcenter codepush release-react -a rgoldfinger/BART-Check -d Production`
+Build new release for Production: `appcenter codepush release-react -a rgoldfinger/BART-Check -d Production -t [current xcode version, search for MARKETING_VERSION]`
