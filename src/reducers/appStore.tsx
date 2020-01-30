@@ -19,7 +19,8 @@ export enum NetworkStatus {
 }
 
 export type SelectedDestination = {
-  code: string; label?: 'home' | 'work'
+  code: string;
+  label?: 'home' | 'work';
 };
 
 export type Advisory = {
@@ -294,7 +295,9 @@ export default function(
     case 'DEST_SELECT': {
       return {
         ...state,
-        selectedDestination: !action.code ? undefined : {code: action.code, label: action.label },
+        selectedDestination: !action.code
+          ? undefined
+          : { code: action.code, label: action.label },
         trips: undefined,
         selectedDestinationAt: action.code ? new Date() : undefined,
       };
@@ -363,6 +366,11 @@ export default function(
           ...state.network,
           [action.url]: action.status,
         },
+      };
+    }
+    case 'RESET': {
+      return {
+        ...initialState,
       };
     }
     default:

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
@@ -50,6 +51,7 @@ import { Station, Advisory } from '../reducers/appStore';
 
 import { Location } from '../actions/dataActions';
 import LastUpdatedTime from './LastUpdatedTime';
+import Resettor from './Resettor';
 
 type State = {
   fakeRefreshing: boolean;
@@ -282,6 +284,7 @@ class DataContainer extends React.Component<Props, State> {
               </React.Fragment>
             )}
             <ReviewPrompt />
+            <Resettor />
           </View>
         )}
       </SafeAreaConsumer>

@@ -167,7 +167,20 @@ export function fetchWalkingDirections(station: Station) {
   };
 }
 
+function reset() {
+  return {
+    type: 'RESET' as const,
+  };
+}
+
+export function resetStore() {
+  return (dispatch: Function) => {
+    dispatch(reset());
+  };
+}
+
 export type DataActions =
+  | ReturnType<typeof reset>
   | ReturnType<typeof startRefreshStations>
   | ReturnType<typeof stopRefreshStations>
   | ReturnType<typeof receiveAdvs>

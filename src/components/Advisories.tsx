@@ -42,7 +42,7 @@ export default class StationView extends React.Component<Props, State> {
       return null;
     }
     return (
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         style={styles.container}
         onPress={() => this.setState({ expanded: !expanded })}
       >
@@ -78,7 +78,7 @@ export default class StationView extends React.Component<Props, State> {
             </TouchableOpacity>
           )}
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     );
   }
 }
