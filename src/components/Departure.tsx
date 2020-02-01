@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
@@ -60,7 +61,10 @@ class Departure extends React.Component<Props> {
 
     return (
       <View style={[styles.departure, styles.row]}>
-        <Text style={[styles.departureTime, labelStyle, number]}>
+        <Text
+          style={[styles.departureTime, labelStyle, number]}
+          allowFontScaling={false}
+        >
           {estimate.minutes}
         </Text>
         <View>
