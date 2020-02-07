@@ -168,6 +168,7 @@ export function fetchWalkingDirections(station: Station) {
 }
 
 function reset() {
+  hackilySetLoc(undefined);
   return {
     type: 'RESET' as const,
   };

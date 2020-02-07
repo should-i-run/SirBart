@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import React, { useState, useEffect } from 'react';
-import { AppState, AppStateStatus, View } from 'react-native';
+import { AppState, AppStateStatus } from 'react-native';
 import { resetStore } from '../actions/dataActions';
 
 export default function Resettor() {
